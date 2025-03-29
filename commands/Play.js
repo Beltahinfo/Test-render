@@ -15,8 +15,8 @@ const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
   forwardingScore: 999,
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363266249040649@newsletter",
-    newsletterName: "Keith Support 🔥",
+    newsletterJid: "120363249464136503@newsletter",
+    newsletterName: "Beltah Tech Updates",
     serverMessageId: Math.floor(100000 + Math.random() * 900000),
   },
   externalAdReply: {
@@ -92,7 +92,7 @@ keith({
     const video = await searchYouTube(query);
     
     await zk.sendMessage(dest, {
-      text: "⬇️ Downloading audio... This may take a moment...",
+      text: "BELTAH-MD is Downloading your Request...Please Wait...\n\n> ©ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ",
       contextInfo: getContextInfo("Downloading", userJid, video.thumbnail)
     }, { quoted: ms });
 
@@ -150,7 +150,7 @@ keith({
     const video = await searchYouTube(query);
     
     await zk.sendMessage(dest, {
-      text: "⬇️ Downloading video... This may take a moment...",
+      text: "BELTAH-MD is Downloading your Request...Please Wait...\n\n> ©ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ",
       contextInfo: getContextInfo("Downloading", userJid, video.thumbnail)
     }, { quoted: ms });
 
@@ -218,7 +218,7 @@ keith({
     fs.unlinkSync(mediaPath);
 
     await zk.sendMessage(dest, {
-      text: `✅ Here's your file URL:\n${fileUrl} \n> ©ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`,
+      text: `🛸 Here's your file URL 🛸\n${fileUrl} \n> ©ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`,
       contextInfo: getContextInfo("Upload Complete", userJid)
     });
 
