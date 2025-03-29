@@ -8,6 +8,7 @@ const { repondre } = require(__dirname + "/../keizzah/context");
 
 const readMore = String.fromCharCode(8206).repeat(4001);
 
+
 // Common contextInfo configuration
 const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
   mentionedJid: [userJid],
@@ -21,13 +22,14 @@ const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
   externalAdReply: {
     showAdAttribution: true,
     title: title || "𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘",
-    body: "Star 🌟 and fork repo to deploy",
+    body: "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿",
     thumbnailUrl: thumbnailUrl || 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg',
-    sourceUrl: conf.GURL || '',
+    sourceUrl: settings.GURL || '',
     mediaType: 1,
     renderLargerThumbnail: false
   }
 });
+
 const formatUptime = (seconds) => {
     seconds = Number(seconds);
     const days = Math.floor(seconds / 86400);
@@ -93,7 +95,7 @@ keith({
 ╰───────────────━⊷
 > © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`;
 
-            await reply.sendMessage(command, {
+            await client.sendMessage(message, {
             text: beltah
             contextInfo: getContextInfo("𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
         }, { quoted: ms });
@@ -143,9 +145,9 @@ keith({
 ╰───────────────━⊷
 > © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`;
 
-            await reply.sendMessage(command, {
+            await client.sendMessage(message, {
             text: beltah
-            contextInfo: getContextInfo("𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg' )
+            contextInfo: getContextInfo("𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
         }, { quoted: ms });
         } else {
             console.log("Could not fetch data");
@@ -194,9 +196,9 @@ keith({
 ╰───────────────━⊷
 > © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`;
 
-            await reply.sendMessage(command, {
+            await client.sendMessage(message, {
             text: beltah
-            contextInfo: getContextInfo("𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg' )
+            contextInfo: getContextInfo("𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
         }, { quoted: ms });
         } else {
             console.log("Could not fetch data");
