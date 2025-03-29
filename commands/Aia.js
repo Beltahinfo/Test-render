@@ -3,7 +3,28 @@ const ai = require('unlimited-ai');
 const axios = require('axios'); // Added missing axios import
 const fs = require('fs');
 const conf = require(__dirname + "/../set");
+const { repondre } = require(__dirname + "/../keizzah/context");
 
+// Common contextInfo configuration
+const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
+  mentionedJid: [userJid],
+  forwardingScore: 999,
+  isForwarded: true,
+  forwardedNewsletterMessageInfo: {
+    newsletterJid: "120363249464136503@newsletter",
+    newsletterName: "Beltah Tech Updates",
+    serverMessageId: Math.floor(100000 + Math.random() * 900000),
+  },
+  externalAdReply: {
+    showAdAttribution: true,
+    title: title || conf.BOT,
+    body: "Keep Leaning with Beltah Md",
+    thumbnailUrl: thumbnailUrl || 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg',
+    sourceUrl: settings.GURL || '',
+    mediaType: 1,
+    renderLargerThumbnail: false
+  }
+});
 // Common function for fetching GPT responses
 const fetchGptResponse = async (url, query) => {
   try {
@@ -34,19 +55,10 @@ const handleAiCommand = async (dest, zk, params, url, usageExample) => {
   try {
     const response = await fetchGptResponse(url, text);
 
-    await zk.sendMessage(dest, {
-      text: response,
-      contextInfo: {
-        externalAdReply: {
-          title: conf.BOT,
-          body: "Keep learning",
-          thumbnailUrl: conf.URL,
-          sourceUrl: "https://whatsapp.com/channel/0029Vaan9TF9Bb62l8wpoD47",
-          mediaType: 1,
-          showAdAttribution: true,
-        },
-      },
-    });
+  await zk.sendMessage(dest, {
+            text: response,
+            contextInfo: getContextInfo(conf.BOT, senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+        }, { quoted: ms });
   } catch (error) {
     console.error("Error generating AI response:", error);
     await repondre("Sorry, I couldn't process your request.");
@@ -57,7 +69,7 @@ const handleAiCommand = async (dest, zk, params, url, usageExample) => {
 keith({
   nomCom: "chat",
   aliases: ["chatbot", "chatai"],
-  reaction: '⚔️',
+  reaction: '🧑‍💻',
   categorie: "AI"
 }, async (dest, zk, params) => {
   handleAiCommand(dest, zk, params, "https://bk9.fun/ai/chataibot?q=", "Example usage: gpt How's the weather today?");
@@ -66,7 +78,7 @@ keith({
 keith({
   nomCom: "beltahmd",
   aliases: ["beltamd", "beltahbot"],
-  reaction: '⚔️',
+  reaction: '🛸',
   categorie: "AI"
 }, async (dest, zk, params) => {
   handleAiCommand(dest, zk, params, "https://bk9.fun/ai/BK93?BK9=you%20are%20zoro%20from%20one%20piece&q=", "Hello there, This is BELTAH-MD BOT, How may I help you with?");
@@ -114,18 +126,9 @@ keith({
     const response = await ai.generate(model, messages);
 
     await zk.sendMessage(dest, {
-      text: response,
-      contextInfo: {
-        externalAdReply: {
-          title: conf.BOT,
-          body: "keep learning wit BELTAH-MD",
-          thumbnailUrl: conf.URL,
-          sourceUrl: "https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F",
-          mediaType: 1,
-          showAdAttribution: true,
-        },
-      },
-    });
+            text: response,
+            contextInfo: getContextInfo(conf.BOT, senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+        }, { quoted: ms });
   } catch (error) {
     console.error("Error generating AI response:", error);
     await repondre("Sorry, I couldn't process your request.");
