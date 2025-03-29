@@ -1,8 +1,29 @@
-
 const { keith } = require('../keizzah/keith');
 const axios = require('axios');
 const wiki = require('wikipedia');
 const conf = require(__dirname + "/../set");
+const { repondre } = require(__dirname + "/../keizzah/context");
+
+// Common contextInfo configuration
+const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
+  mentionedJid: [userJid],
+  forwardingScore: 999,
+  isForwarded: true,
+  forwardedNewsletterMessageInfo: {
+    newsletterJid: "120363249464136503@newsletter",
+    newsletterName: "Beltah Tech Updates",
+    serverMessageId: Math.floor(100000 + Math.random() * 900000),
+  },
+  externalAdReply: {
+    showAdAttribution: true,
+    title: title || "𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘",
+    body: "POWERED BY BELTAH TECH TEAM",
+    thumbnailUrl: thumbnailUrl || 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg',
+    sourceUrl: conf.GURL || '',
+    mediaType: 1,
+    renderLargerThumbnail: false
+  }
+});
 
 keith({
   nomCom: "technews",
@@ -19,16 +40,7 @@ keith({
 
     await zk.sendMessage(dest, {
       text: news,
-      contextInfo: {
-        externalAdReply: {
-          title: "𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 TECH NEWS",
-          body: "keep Exploring The internet", 
-          thumbnailUrl: thumbnail, 
-          sourceUrl: 'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F', 
-          mediaType: 1,
-          showAdAttribution: true, 
-        },
-      },
+      contextInfo: getContextInfo("BELTAH-MD TECH NEWS", '', thumbnail)
     }, { quoted: ms });
 
   } catch (error) {
@@ -36,7 +48,6 @@ keith({
     await repondre("Sorry, there was an error retrieving the news. Please try again later.\n" + error);
   }
 });
-
 
 keith({
   nomCom: "bible",
@@ -48,16 +59,7 @@ keith({
   
   if (!reference) {
     return repondre("Please specify the book, chapter, and verse you want to read. Example: bible john 3:16", {
-      contextInfo: {
-        externalAdReply: {
-          title: "Bible Reference Required",
-          body: "Please provide a book, chapter, and verse.",
-          thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg", // Replace with a suitable thumbnail URL
-          sourceUrl: 'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F',
-          mediaType: 1,
-          showAdAttribution: true,
-        },
-      },
+      contextInfo: getContextInfo("Bible Reference Required", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
     });
   }
   
@@ -66,16 +68,7 @@ keith({
     
     if (!response.data) {
       return repondre("Invalid reference. Example: bible john 3:16", {
-        contextInfo: {
-          externalAdReply: {
-            title: "Invalid Bible Reference",
-            body: "ʙᴇʟᴛᴀʜ ᴍᴅ needs a valid book, chapter, and verse.",
-            thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg", // Replace with a suitable thumbnail URL
-            sourceUrl: 'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F',
-            mediaType: 1,
-            showAdAttribution: true,
-          },
-        },
+        contextInfo: getContextInfo("Invalid Bible Reference", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
       });
     }
     
@@ -91,36 +84,18 @@ keith({
 
 ⧭ *_LANGUAGE:_* ${data.translation_name}
 ╭────────────────◆
-> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ
+> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ
 ╰─────────────────◆ `;
     
     await zk.sendMessage(dest, {
       text: messageText,
-      contextInfo: {
-        externalAdReply: {
-          title: "𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 HOLY BIBLE",
-          body: `We're reading: ${data.reference}`,
-          mediaType: 1,
-          thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg", 
-          sourceUrl: 'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' ,
-          showAdAttribution: true, 
-        },
-      },
+      contextInfo: getContextInfo("𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 HOLY BIBLE", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
     }, { quoted: ms });
     
   } catch (error) {
     console.error("Error fetching Bible passage:", error);
     await repondre("An error occurred while fetching the Bible passage. Please try again later.", {
-      contextInfo: {
-        externalAdReply: {
-          title: "Error Fetching Bible Passage",
-          body: "Please try again later.",
-          thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg", // Replace with a suitable thumbnail URL
-          sourceUrl:  'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F',
-          mediaType: 1,
-          showAdAttribution: true,
-        },
-      },
+      contextInfo: getContextInfo("Error Fetching Bible Passage", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
     });
   }
 });
@@ -135,7 +110,7 @@ keith({
   const term = arg.join(" ");
 
   if (!term) {
-    return repondre("𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 requires a term to define.");
+    return repondre("BELTAH-MD requires a term to define.");
   }
 
   try {
@@ -151,16 +126,7 @@ keith({
 
       await zk.sendMessage(dest, {
         text: definitionMessage,
-        contextInfo: {
-          externalAdReply: {
-            title: "𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 DICTIONARY",
-            body: `Definition of ${term}`,
-            mediaType: 1,
-            thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg", 
-            sourceUrl: 'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F', 
-            showAdAttribution: true, 
-          },
-        },
+        contextInfo: getContextInfo("BELTAH-MD DICTIONARY", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
       }, { quoted: ms });
 
     } else {
@@ -187,7 +153,7 @@ keith({
 
   try {
     // Notify user that pairing is in progress
-    const replyText = "*𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 is generating your pairing code ✅...*";
+    const replyText = "*BELTAH-MD is generating your pairing code ✅...*";
     await repondre(replyText);
 
     // Prepare the API request
@@ -202,16 +168,7 @@ keith({
       const pairingCode = data.code;
       await zk.sendMessage(dest, {
         text: pairingCode,
-        contextInfo: {
-          externalAdReply: {
-            title: "𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗦𝗘𝗦𝗦𝗜𝗢𝗡𝗦",
-            body: "Here is your pairing code:",
-            mediaType: 1,
-            thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg", 
-            sourceUrl:  'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F',
-            showAdAttribution: true, 
-          },
-        },
+        contextInfo: getContextInfo("𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗦𝗘𝗦𝗦𝗜𝗢𝗡𝗦", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
       }, { quoted: ms });
 
       const secondReplyText = "Here is your pair code, copy and paste it to the notification above or link devices.";
@@ -225,6 +182,7 @@ keith({
     repondre(replyText);
   }
 });
+
 keith({
   nomCom: "session",
   aliases: ["session", "code", "paircode", "qrcode"],
@@ -240,7 +198,7 @@ keith({
 
   try {
     // Notify user that pairing is in progress
-    const replyText = "*𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 is generating your pairing code ✅...*";
+    const replyText = "*BELTAH-MD is generating your pairing code ✅...*";
     await repondre(replyText);
 
     // Prepare the API request
@@ -255,16 +213,7 @@ keith({
       const pairingCode = data.code;
       await zk.sendMessage(dest, {
         text: pairingCode,
-        contextInfo: {
-          externalAdReply: {
-            title: "𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗦𝗘𝗦𝗦𝗜𝗢𝗡𝗦",
-            body: "Here is your pairing code:",
-            mediaType: 1,
-            thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg", 
-            sourceUrl:  'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F',
-            showAdAttribution: true, 
-          },
-        },
+        contextInfo: getContextInfo("𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗦𝗘𝗦𝗦𝗜𝗢𝗡𝗦", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
       }, { quoted: ms });
 
       const secondReplyText = "Here is your pair code, copy and paste it to the notification above or link devices.";
@@ -302,7 +251,7 @@ keith({
     const thumb = data.image; // Assuming the API returns an 'image' property for the element thumbnail
 
     const formattedMessage = `
-*𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 Element Information:*
+*Element Information:*
 🚀 *Name:* ${data.name}
 🚀 *Symbol:* ${data.symbol}
 🚀 *Atomic Number:* ${data.atomic_number}
@@ -316,16 +265,7 @@ Regards ${conf.BOT} `;
 
     await zk.sendMessage(dest, {
       text: formattedMessage,
-      contextInfo: {
-        externalAdReply: {
-          title: "𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 ELEMENT INFORMATION",
-          body: "Here is the information you requested:",
-          mediaType: 1,
-          thumbnailUrl: thumb,
-          sourceUrl:  'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' ,
-          showAdAttribution: true, 
-        },
-      },
+      contextInfo: getContextInfo("𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 ELEMENT INFORMATION", '', thumb)
     }, { quoted: ms });
 
   } catch (error) {
@@ -376,16 +316,7 @@ keith({
 
     await zk.sendMessage(dest, {
       text: githubMessage,
-      contextInfo: {
-        externalAdReply: {
-          title: "𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 GITHUB USER INFO",
-          body: `Information about ${data.login}`,
-          mediaType: 1,
-          thumbnailUrl: thumb,
-          sourceUrl:  'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' ,
-          showAdAttribution: true,
-        },
-      },
+      contextInfo: getContextInfo("𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 GITHUB USER INFO", '', thumb)
     }, { quoted: ms });
 
   } catch (error) {
@@ -409,16 +340,7 @@ keith({
       text: `Your temporary email is: ${tempEmail}
 
 You can use this email for temporary purposes. I will notify you if you receive any emails.`,
-      contextInfo: {
-        externalAdReply: {
-          title: "Temporary Email Service",
-          body: "Create temporary emails quickly and easily for privacy and security.",
-          thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" ,
-          sourceUrl:  'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' ,
-          mediaType: 1,
-          showAdAttribution: true
-        }
-      }
+      contextInfo: getContextInfo("Temporary Email Service", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
     }, { quoted: messageQuote });
 
     // Function to check for new emails
@@ -436,16 +358,7 @@ You can use this email for temporary purposes. I will notify you if you receive 
 
             await zk.sendMessage(dest, {
               text: `You have received a new email!\n\nFrom: ${emailData.from}\nSubject: ${emailData.subject}\n\n${emailData.textBody}\nLinks found:\n${linksText}`,
-              contextInfo: {
-                externalAdReply: {
-                  title: "Temporary Email Notification",
-                  body: "You received a new email on your temporary inbox. Check it out now!",
-                  thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg",
-                  sourceUrl:  'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' ,
-                  mediaType: 1,
-                  showAdAttribution: true
-                }
-              }
+              contextInfo: getContextInfo("Temporary Email Notification", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
             }, { quoted: messageQuote });
           }
         }
@@ -462,16 +375,7 @@ You can use this email for temporary purposes. I will notify you if you receive 
       clearInterval(emailCheckInterval);
       zk.sendMessage(dest, {
         text: "Your temporary email session has ended. Please create a new temporary email if needed.",
-        contextInfo: {
-          externalAdReply: {
-            title: "Temporary Email Session Ended",
-            body: "Your temporary email session has ended. Need another one? Just ask!",
-            thumbnailUrl: conf.URL,
-            sourceUrl: conf.GURL,
-            mediaType: 1,
-            showAdAttribution: true
-          }
-        }
+        contextInfo: getContextInfo("Temporary Email Session Ended", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
       }, { quoted: messageQuote });
     }, 600000); // 10 minutes in milliseconds
 
@@ -479,19 +383,11 @@ You can use this email for temporary purposes. I will notify you if you receive 
     console.error("Error generating temporary email:", error.message);
     await zk.sendMessage(dest, {
       text: "Error generating temporary email. Please try again later.",
-      contextInfo: {
-        externalAdReply: {
-          title: "Temporary Email Error",
-          body: "There was an issue generating your temporary email. Please try again later.",
-          thumbnailUrl: conf.URL,
-          sourceUrl: conf.GURL,
-          mediaType: 1,
-          showAdAttribution: true
-        }
-      }
+      contextInfo: getContextInfo("Temporary Email Error", '', conf.URL)
     }, { quoted: messageQuote });
   }
 });
+
 keith({
   nomCom: "wiki",
   aliases: ["wikipedia", "wikipeda"],
@@ -529,4 +425,3 @@ keith({
     repondre(`Got 404. I did not find anything!`);
   }
 });
-
