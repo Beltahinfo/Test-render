@@ -21,6 +21,26 @@ function formatUptime(seconds) {
   return `*╭───────────────━⊷*\n*║0 ᴅᴀʏs*\n*║${hours} ʜᴏᴜʀs*\n*║${minutes} ᴍɪɴᴜᴛᴇs*\n*║${secondsLeft} sᴇᴄᴏɴᴅs*\n*╰───⊷*`;
 }
 
+// Common contextInfo configuration
+const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
+  mentionedJid: [userJid],
+  forwardingScore: 999,
+  isForwarded: true,
+  forwardedNewsletterMessageInfo: {
+    newsletterJid: "120363249464136503@newsletter",
+    newsletterName: "Beltah Tech Updates",
+    serverMessageId: Math.floor(100000 + Math.random() * 900000),
+  },
+  externalAdReply: {
+    showAdAttribution: true,
+    title: title || "𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘",
+    body: "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿",
+    thumbnailUrl: thumbnailUrl || 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg',
+    sourceUrl: settings.GURL || '',
+    mediaType: 1,
+    renderLargerThumbnail: false
+  }
+}); 
 // Function to show loading animation
 async function showLoadingAnimation(dest, zk) {
   const loadingSymbols = [
@@ -44,26 +64,6 @@ async function showLoadingAnimation(dest, zk) {
   }
 }
 
-// Common contextInfo configuration
-const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
-  mentionedJid: [userJid],
-  forwardingScore: 999,
-  isForwarded: true,
-  forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363249464136503@newsletter",
-    newsletterName: "Beltah Tech Updates",
-    serverMessageId: Math.floor(100000 + Math.random() * 900000),
-  },
-  externalAdReply: {
-    showAdAttribution: true,
-    title: title || "𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘",
-    body: "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿",
-    thumbnailUrl: thumbnailUrl || 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg',
-    sourceUrl: settings.GURL || '',
-    mediaType: 1,
-    renderLargerThumbnail: false
-  }
-});
 
 // Command to test the bot
 keith({
@@ -287,7 +287,7 @@ keith({
   // Send the ping results with the updated text and format
   await zk.sendMessage(dest, {
     text: `${formattedResults}`, 
-    contextInfo: getContextInfo(" *ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ* ", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
+    contextInfo: getContextInfo("🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ 🛸", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
   });
 
   console.log("Ping results sent successfully with new loading animation and formatted results!");
@@ -312,8 +312,8 @@ keith({
 
   // Send uptime information to the user
   await zk.sendMessage(dest, {
-    text: `╭───────────────━⊷\n║ *🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ ʀᴜɴᴛɪᴍᴇ 🛸*\n╰───────────────━⊷\n\n${formatUptime(botUptime)}`,
-    contextInfo: getContextInfo(" *📡ʙᴇʟᴛᴀʜ-ᴍᴅ ᴜᴘᴛɪᴍᴇ📡* ", '', conf.URL)
+    text: `╭───────────────━⊷\n║ *🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ ʀᴜɴᴛɪᴍᴇ 🛸*\n╰───────────────━⊷\n${formatUptime(botUptime)}`,
+    contextInfo: getContextInfo("📡ʙᴇʟᴛᴀʜ-ᴍᴅ ᴜᴘᴛɪᴍᴇ📡", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" )
   });
 
   console.log("Runtime results sent successfully!");
