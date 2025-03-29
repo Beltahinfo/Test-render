@@ -190,7 +190,7 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
       
        await client.sendMessage(message, {
       text: responseMessage + commandsList,
-      contextInfo: getContextInfo(message.sender)
+      contextInfo: getContextInfo(senderName)
     }, { quoted: ms });
     } catch (error) {
         console.error("Menu error: ", error);
