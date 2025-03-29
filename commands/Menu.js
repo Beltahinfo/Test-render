@@ -22,7 +22,7 @@ const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
   externalAdReply: {
     showAdAttribution: true,
     title: title || "𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘",
-    body: "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿",
+    body: "Fork and Star 🌟 Repo to deploy",
     thumbnailUrl: thumbnailUrl || 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg',
     sourceUrl: settings.GURL || '',
     mediaType: 1,
@@ -96,7 +96,7 @@ keith({
 > © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`;
 
             await client.sendMessage(message, {
-            text: beltah
+            text: beltah, 
             contextInfo: getContextInfo("𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
         }, { quoted: ms });
         } else {
@@ -146,7 +146,7 @@ keith({
 > © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`;
 
             await client.sendMessage(message, {
-            text: beltah
+            text: beltah, 
             contextInfo: getContextInfo("𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
         }, { quoted: ms });
         } else {
@@ -197,7 +197,7 @@ keith({
 > © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`;
 
             await client.sendMessage(message, {
-            text: beltah
+            text: beltah, 
             contextInfo: getContextInfo("𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
         }, { quoted: ms });
         } else {
