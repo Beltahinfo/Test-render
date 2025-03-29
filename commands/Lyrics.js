@@ -78,14 +78,6 @@ keith({
     const imageBuffer = Buffer.from(imageResponse.data, 'binary');
 
     // Send the message with the image and lyrics
-    await zk.sendMessage(
-      dest,
-      {
-        image: imageBuffer,
-        caption: caption
-      },
-      { quoted: ms }
-    );
 await zk.sendMessage(dest, {
         caption: caption, 
             contextInfo: getContextInfo("𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘", senderName, imageBuffer )
