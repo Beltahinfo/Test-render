@@ -4,9 +4,29 @@ const { format } = require(__dirname + "/../keizzah/mesfonctions");
 const os = require('os');
 const moment = require("moment-timezone");
 const settings = require(__dirname + "/../set");
+const { repondre } = require(__dirname + "/../keizzah/context");
 
 const readMore = String.fromCharCode(8206).repeat(4001);
 
+// Common contextInfo configuration
+const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
+  mentionedJid: [senderName],
+  forwardingScore: 999,
+  isForwarded: true,
+  forwardedNewsletterMessageInfo: {
+    newsletterJid: "120363249464136503@newsletter",
+    newsletterName: "Beltah Tech Updates",
+    serverMessageId: Math.floor(100000 + Math.random() * 900000),
+  },
+  externalAdReply: {
+    showAdAttribution: true,
+    title: "𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘" ,
+ body: "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿" ,
+    thumbnailUrl: 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg',
+    sourceUrl: conf.GURL || '',
+    mediaType: 1,
+    renderLargerThumbnail: false
+  }
 // Function to convert text to fancy uppercase font
 const toFancyUppercaseFont = (text) => {
     const fonts = {
@@ -169,17 +189,7 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
         const senderName = message.sender || message.from;
         await client.sendMessage(message, {
             text: responseMessage + commandsList,
-            contextInfo: {
-                mentionedJid: [senderName],
-                externalAdReply: {
-                    title: "𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘" ,
-                    body: "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿" ,
-                    thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" ,
-                    sourceUrl:'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' ,
-                    mediaType: 1,
-                    renderLargerThumbnail: true
-                }
-            }
+            
         });
     } catch (error) {
         console.error("Menu error: ", error);
