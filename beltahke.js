@@ -591,7 +591,7 @@ const emojis = ['👣', '🏗️', '✈️', '🌽', '🏸', '🛖', '🍁', '�
       return;
     }
 
-    const response = await axios.get('https://api.davidcyriltech.my.id/ai/gpt4', {
+    const response = await axios.get('https://apis-keith.vercel.app/ai/gpt?q=', {
       params: {
         text: texte
       }
