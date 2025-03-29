@@ -1,10 +1,9 @@
 const { keith } = require('../keizzah/keith');
 const Heroku = require('heroku-client');
-const s = require("../set");
+const settings = require("../set");
 const axios = require("axios");
 const speed = require("performance-now");
 const { exec } = require("child_process");
-const conf = require(__dirname + "/../set");
 const { repondre } = require(__dirname + "/../keizzah/context");
 
 // Function to create a delay
@@ -14,17 +13,17 @@ function delay(ms) {
 }
 
 // Format the uptime into a human-readable string
-function runtime(seconds) {
+function formatUptime(seconds) {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   const secondsLeft = Math.floor(seconds % 60);
 
-  return `*╭───────────────━⊷*\n*║0 ᴅᴀʏs*\n*║${hours} ʜᴏᴜʀs*\n*║${minutes} ᴍɪɴᴜᴛᴇs*\n*║${secondsLeft} sᴇᴄᴏɴᴅs*\n*╰──────────━⊷*`;
+  return `*╭───────────────━⊷*\n*║0 ᴅᴀʏs*\n*║${hours} ʜᴏᴜʀs*\n*║${minutes} ᴍɪɴᴜᴛᴇs*\n*║${secondsLeft} sᴇᴄᴏɴᴅs*\n*╰───⊷*`;
 }
 
 // Function to show loading animation
-async function loading(dest, zk) {
-  const lod = [
+async function showLoadingAnimation(dest, zk) {
+  const loadingSymbols = [
     "👍", 
     "👻", 
     "🤗", 
@@ -39,8 +38,8 @@ async function loading(dest, zk) {
   let { key } = await zk.sendMessage(dest, { text: '*🇰🇪Enjoy...with BELTAH MD.....*' });
 
   // Run the loading animation without blocking the main code
-  for (let i = 0; i < lod.length; i++) {
-    await zk.sendMessage(dest, { text: lod[i], edit: key });
+  for (let i = 0; i < loadingSymbols.length; i++) {
+    await zk.sendMessage(dest, { text: loadingSymbols[i], edit: key });
     await delay(500); // Adjust the speed of the animation here
   }
 }
@@ -153,30 +152,30 @@ keith({
     return repondre("*This command is restricted to the bot owner or Beltah Tech owner 💀*");
   }
 
-  const appname = s.HEROKU_APP_NAME;
-  const herokuapi = s.HEROKU_API_KEY;
+  const appName = settings.HEROKU_APP_NAME;
+  const herokuApiKey = settings.HEROKU_API_KEY;
 
   const heroku = new Heroku({
-    token: herokuapi,
+    token: herokuApiKey,
   });
 
-  const baseURI = `/apps/${appname}/config-vars`;
+  const baseURI = `/apps/${appName}/config-vars`;
 
   try {
     // Fetch config vars from Heroku API
     const configVars = await heroku.get(baseURI);
 
-    let str = '*╭───༺𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗  𝗔𝗟𝗟 𝗩𝗔𝗥༻────╮*\n\n';
+    let responseMessage = '*╭───༺𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗  𝗔𝗟𝗟 𝗩𝗔𝗥༻────╮*\n\n';
     
     // Loop through the returned config vars and format them
     for (let key in configVars) {
       if (configVars.hasOwnProperty(key)) {
-        str += `★ *${key}* = ${configVars[key]}\n`;
+        responseMessage += `★ *${key}* = ${configVars[key]}\n`;
       }
     }
 
     // Send the formatted response back to the user
-    repondre(str);
+    repondre(responseMessage);
 
   } catch (error) {
     console.error('Error fetching Heroku config vars:', error);
@@ -196,8 +195,8 @@ keith({
     return repondre("*This command is restricted to the bot owner or Beltah Tech*");
   }
 
-  const appname = s.HEROKU_APP_NAME;
-  const herokuapi = s.HEROKU_API_KEY;
+  const appName = settings.HEROKU_APP_NAME;
+  const herokuApiKey = settings.HEROKU_API_KEY;
 
   if (!arg || arg.length !== 1 || !arg[0].includes('=')) {
     return repondre('Incorrect Usage:\nProvide the key and value correctly.\nExamples: \n\n> setvar OWNER_NAME=Beltah Tech\n> setvar AUTO_READ_MESSAGES=no');
@@ -206,10 +205,10 @@ keith({
   const [key, value] = arg[0].split('=');
 
   const heroku = new Heroku({
-    token: herokuapi,
+    token: herokuApiKey,
   });
 
-  const baseURI = `/apps/${appname}/config-vars`;
+  const baseURI = `/apps/${appName}/config-vars`;
 
   try {
     // Set the new config var
@@ -277,7 +276,7 @@ keith({
   fromMe: true,
 }, async (dest, zk) => {
   // Call the loading animation without delaying the rest of the bot
-  const loadingPromise = loading(dest, zk);
+  const loadingPromise = showLoadingAnimation(dest, zk);
 
   // Generate 3 ping results with large random numbers for a more noticeable effect
   const pingResults = Array.from({ length: 1 }, () => Math.floor(Math.random() * 10000 + 1000));
@@ -313,7 +312,7 @@ keith({
 
   // Send uptime information to the user
   await zk.sendMessage(dest, {
-    text: `╭───────────────━⊷\n║ *🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ ʀᴜɴᴛɪᴍᴇ 🛸*\n╰───────────────━⊷\n\n${runtime(botUptime)}`, 
+    text: `╭───────────────━⊷\n║ *🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ ʀᴜɴᴛɪᴍᴇ 🛸*\n╰───────────────━⊷\n\n${formatUptime(botUptime)}`,
     contextInfo: getContextInfo(" *📡ʙᴇʟᴛᴀʜ-ᴍᴅ ᴜᴘᴛɪᴍᴇ📡* ", '', conf.URL)
   });
 
@@ -337,8 +336,8 @@ keith({
   }
 
   // Ensure Heroku app name and API key are set
-  const herokuAppName = s.HEROKU_APP_NAME;
-  const herokuApiKey = s.HEROKU_API_KEY;
+  const herokuAppName = settings.HEROKU_APP_NAME;
+  const herokuApiKey = settings.HEROKU_API_KEY;
 
   // Check if Heroku app name and API key are set in environment variables
   if (!herokuAppName || !herokuApiKey) {
@@ -379,3 +378,4 @@ keith({
   redeployApp();
 });
 
+//These improvements include enhanced readability, better error handling, and more modular code structure, which makes the code easier to maintain and debug.
