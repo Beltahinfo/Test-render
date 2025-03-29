@@ -6,7 +6,8 @@ const axios = require("axios");
 const speed = require("performance-now");
 const { exec } = require("child_process");
 const conf = require(__dirname + "/../set");
-// Function for delay simulation
+
+/*// Function for delay simulation
 function delay(ms) {
   console.log(`⏱️ delay for ${ms}ms`);
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -37,7 +38,43 @@ async function loading(dest, zk) {
     await zk.sendMessage(dest, { text: lod[i], edit: key });
     await delay(500); // Adjust the speed of the animation here
   }
+}*/
+// Function to create a delay
+function delay(ms) {
+  console.log(`⏱️ Delay for ${ms}ms`);
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
+// Format the uptime into a human-readable string
+function runtime(seconds) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secondsLeft = Math.floor(seconds % 60);
+
+  return `*╭───────────────━⊷*\n*║0 ᴅᴀʏs*\n*║${hours} ʜᴏᴜʀs*\n*║${minutes} ᴍɪɴᴜᴛᴇs*\n*║${secondsLeft} sᴇᴄᴏɴᴅs*\n*╰───────────────━⊷*`;
+}
+
+// Function to show loading animation
+async function loading(dest, zk) {
+  const lod = [
+    "👍", 
+    "👻", 
+    "🤗", 
+    "😌",
+    "🔥",
+    "😢", 
+    "✨", 
+    "🔞",
+    "🗿", 
+   "*ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ ᴏʀɪɢɪɴᴀᴛᴇᴅ ғʀᴏᴍ ᴛʜᴇ sᴀᴠᴇʀ*"
+  ];
+  let { key } = await zk.sendMessage(dest, { text: '*🇰🇪Enjoy...with BELTAH MD.....*' });
+
+  // Run the loading animation without blocking the main code
+  for (let i = 0; i < lod.length; i++) {
+    await zk.sendMessage(dest, { text: lod[i], edit: key });
+    await delay(500); // Adjust the speed of the animation here
+  }
+ } 
 
 keith({
   nomCom: "test",
@@ -110,7 +147,7 @@ keith({
 
   try {
     // Inform the user that the bot is restarting
-    await repondre("> *𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 is Restarting from the server...*");
+    await repondre("> *BELTAH-MD is Restarting from the server...*");
 
     // Function to create a delay
     const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -152,7 +189,7 @@ keith({
     // Fetch config vars from Heroku API
     const configVars = await heroku.get(baseURI);
 
-    let str = '*╭───༺𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗔𝗟𝗟 𝗩𝗔𝗥༻────╮*\n\n';
+    let str = '*╭───༺𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗  𝗔𝗟𝗟 𝗩𝗔𝗥༻────╮*\n\n';
     
     // Loop through the returned config vars and format them
     for (let key in configVars) {
@@ -186,7 +223,7 @@ keith({
   const herokuapi = s.HEROKU_API_KEY;
 
   if (!arg || arg.length !== 1 || !arg[0].includes('=')) {
-    return repondre('Incorrect Usage:\nProvide the key and value correctly.\nExample: setvar ANTICALL=yes');
+    return repondre('Incorrect Usage:\nProvide the key and value correctly.\nExamples: \n\n> setvar OWNER_NAME=Beltah Tech\n> setvar AUTO_READ_MESSAGES=no');
   }
 
   const [key, value] = arg[0].split('=');
@@ -269,15 +306,15 @@ keith(
     const pingResults = Array.from({ length: 1 }, () => Math.floor(Math.random() * 10000 + 1000));
 
     // Create larger font for ping results (using special characters for a bigger look)
-    const formattedResults = pingResults.map(ping => `𝗣𝗼𝗻𝗴 : ${ping} 𝐌/𝐒  `);
+    const formattedResults = pingResults.map(ping => `*📡 ᴘᴏɴɢ 📡*\n\n*${ping}...ᴍɪʟʟɪsᴇᴄᴏɴᴅs*\n> *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ*`);
 
     // Send the ping results with the updated text and format
     await zk.sendMessage(dest, {
-      text: " 👻🌟 𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗕𝗢𝗧 🌟👻", 
+      text:`${formattedResults}`, 
       contextInfo: {
         externalAdReply: {
-          title: "𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗦𝗣𝗘𝗘𝗗 𝗧𝗘𝗦𝗧" ,
-          body: `${formattedResults}` ,
+          title: " *ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ* " ,
+          body:" 👻ᴏʀɪɢɪɴᴀᴛᴇᴅ ғʀᴏᴍ ᴛʜᴇ sᴀᴠᴇʀ👻",
           thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" , // Replace with your bot profile photo URL
           sourceUrl:  'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' , // Your channel URL
           mediaType: 1,
@@ -303,7 +340,7 @@ keith({
   aliases: ['runtime', 'running'],
   desc: 'To check runtime',
   categorie: 'system', // Fixed the typo here (Categorie -> categorie)
-  reaction: '💢',
+  reaction: '⚠️',
   fromMe: true, // Removed quotes to make it a boolean
 }, async (dest, zk, commandeOptions) => {
   const { ms, arg, repondre } = commandeOptions;
@@ -313,11 +350,11 @@ keith({
 
   // Send uptime information to the user
   await zk.sendMessage(dest, {
-    text: `*𝗕𝗲𝗹𝘁𝗮𝗵 𝗨𝗽𝘁𝗶𝗺𝗲 : ${runtime(botUptime)}*`,
+    text: `╭───────────────━⊷\n║ *🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ ʀᴜɴᴛɪᴍᴇ 🛸*\n╰───────────────━⊷\n\n${runtime(botUptime)}\n> *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ*`,
     contextInfo: {
       externalAdReply: {
-        title: "𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗦𝗬𝗦𝗧𝗘𝗠 𝗦𝗘𝗧𝗧𝗜𝗡𝗚𝗦",
-        body: "𝗧𝗮𝗽 𝗵𝗲𝗿𝗲 𝘁𝗼 𝗳𝗼𝗹𝗹𝗼𝘄 𝗼𝘂𝗿 𝗰𝗵𝗮𝗻𝗻𝗲𝗹" , // Format the uptime before sending
+        title: " *📡ʙᴇʟᴛᴀʜ-ᴍᴅ ᴜᴘᴛɪᴍᴇ📡* ",
+        body: "ʙᴏᴛ ʀᴜɴɴɪɴɢ 24/7 ɴᴏɴ-sᴛᴏᴘ" , // Format the uptime before sending
         thumbnailUrl: conf.URL, // Replace with your bot profile photo URL
         sourceUrl: conf.GURL, // Your channel URL
         mediaType: 1,
@@ -379,7 +416,7 @@ keith({
       );
 
       // Notify the user about the update and redeployment
-      await repondre("*Your bot is getting updated, wait 2 minutes for the redeploy to finish!*\n\n *This will install the latest version of 𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗕𝗢𝗧.*");
+      await repondre("*Your bot is getting updated, wait 2 minutes for the redeploy to finish!*\n\n *This will install the latest version of ʙᴇʟᴛᴀʜ ʙᴏᴛ.*");
       console.log("Build details:", response.data);
     } catch (error) {
       // Handle any errors during the redeployment process
@@ -471,5 +508,3 @@ keith({
     sendResponse(`Error fetching data: ${error.message}`);
   }
 });
-
-
