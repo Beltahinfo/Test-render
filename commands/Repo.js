@@ -187,10 +187,11 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
 
     try {
         const senderName = message.sender || message.from;
-        await client.sendMessage(message, {
-            text: responseMessage + commandsList,
-            
-        });
+      
+       await client.sendMessage(message, {
+      text: responseMessage + commandsList,
+      contextInfo: getContextInfo(message.sender)
+    }, { quoted: ms });
     } catch (error) {
         console.error("Menu error: ", error);
         respond("🥵🥵 Menu error: " + error);
