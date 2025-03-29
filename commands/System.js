@@ -1,4 +1,3 @@
-
 const { keith } = require('../keizzah/keith');
 const Heroku = require('heroku-client');
 const s = require("../set");
@@ -6,51 +5,21 @@ const axios = require("axios");
 const speed = require("performance-now");
 const { exec } = require("child_process");
 const conf = require(__dirname + "/../set");
+const { repondre } = require(__dirname + "/../keizzah/context");
 
-/*// Function for delay simulation
-function delay(ms) {
-  console.log(`⏱️ delay for ${ms}ms`);
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-// Format the uptime into a human-readable string
-function runtime(seconds) {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const secondsLeft = Math.floor(seconds % 60);
-
-  return `${hours}h ${minutes}m ${secondsLeft}s`;
-}
-
-// New loading animation with different symbols and larger progress bar
-async function loading(dest, zk) {
-  const lod = [
-    "⬛⬛⬜⬜⬜⬜⬛⬛20%",
-    "⬛⬛⬛⬛⬜⬜⬜⬜40%",
-    "⬜⬜⬛⬛⬛⬛⬜⬜60%",
-    "⬜⬜⬜⬜⬛⬛⬛⬛80%",
-    "⬛⬛⬜⬜⬜⬜⬛⬛100%",
-    "*ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ ᴏʀɪɢɪɴᴀᴛᴇᴅ ғʀᴏᴍ ᴛʜᴇ sᴀᴠᴇʀ*"
-  ];
-
-  let { key } = await zk.sendMessage(dest, { text: 'BELTAH-MD speed test Loading!!! Please Wait' });
-
-  for (let i = 0; i < lod.length; i++) {
-    await zk.sendMessage(dest, { text: lod[i], edit: key });
-    await delay(500); // Adjust the speed of the animation here
-  }
-}*/
 // Function to create a delay
 function delay(ms) {
   console.log(`⏱️ Delay for ${ms}ms`);
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 // Format the uptime into a human-readable string
 function runtime(seconds) {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   const secondsLeft = Math.floor(seconds % 60);
 
-  return `*╭───────────────━⊷*\n*║0 ᴅᴀʏs*\n*║${hours} ʜᴏᴜʀs*\n*║${minutes} ᴍɪɴᴜᴛᴇs*\n*║${secondsLeft} sᴇᴄᴏɴᴅs*\n*╰───────────────━⊷*`;
+  return `*╭───────────────━⊷*\n*║0 ᴅᴀʏs*\n*║${hours} ʜᴏᴜʀs*\n*║${minutes} ᴍɪɴᴜᴛᴇs*\n*║${secondsLeft} sᴇᴄᴏɴᴅs*\n*╰──────────━⊷*`;
 }
 
 // Function to show loading animation
@@ -65,7 +34,7 @@ async function loading(dest, zk) {
     "✨", 
     "🔞",
     "🗿", 
-   "*ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ ᴏʀɪɢɪɴᴀᴛᴇᴅ ғʀᴏᴍ ᴛʜᴇ sᴀᴠᴇʀ*"
+    "*ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ ᴏʀɪɢɪɴᴀᴛᴇᴅ ғʀᴏᴍ ᴛʜᴇ sᴀᴠᴇʀ*"
   ];
   let { key } = await zk.sendMessage(dest, { text: '*🇰🇪Enjoy...with BELTAH MD.....*' });
 
@@ -74,8 +43,30 @@ async function loading(dest, zk) {
     await zk.sendMessage(dest, { text: lod[i], edit: key });
     await delay(500); // Adjust the speed of the animation here
   }
- } 
+}
 
+// Common contextInfo configuration
+const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
+  mentionedJid: [userJid],
+  forwardingScore: 999,
+  isForwarded: true,
+  forwardedNewsletterMessageInfo: {
+    newsletterJid: "120363249464136503@newsletter",
+    newsletterName: "Beltah Tech Updates",
+    serverMessageId: Math.floor(100000 + Math.random() * 900000),
+  },
+  externalAdReply: {
+    showAdAttribution: true,
+    title: title || "𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘",
+    body: "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿",
+    thumbnailUrl: thumbnailUrl || 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg',
+    sourceUrl: settings.GURL || '',
+    mediaType: 1,
+    renderLargerThumbnail: false
+  }
+});
+
+// Command to test the bot
 keith({
   nomCom: "test",
   aliases: ["alive", "testing"],
@@ -116,23 +107,14 @@ keith({
     ptt: true,  // Marking this as a "Push-to-Talk" message
     waveform: [100, 0, 100, 0, 100, 0, 100],
     fileName: 'shizo',
-    contextInfo: {
-      externalAdReply: {
-        title: '𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗕𝗢𝗧',
-        body: "𝗜 𝗔𝗠 𝗔𝗟𝗜𝗩𝗘" ,
-        thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" ,
-        sourceUrl:  'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' , // Corrected variable name
-        mediaType: 1,
-        renderLargerThumbnail: true,
-      },
-    },
+    contextInfo: getContextInfo('𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗕𝗢𝗧', '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
   };
 
   // Send the audio message with the context of the original message
   await zk.sendMessage(dest, audioMessage, { quoted: ms });
 });
 
-
+// Command to restart the bot
 keith({
   nomCom: 'restart',
   aliases: ['reboot'],
@@ -149,11 +131,8 @@ keith({
     // Inform the user that the bot is restarting
     await repondre("> *BELTAH-MD is Restarting from the server...*");
 
-    // Function to create a delay
-    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
     // Wait for 3 seconds before restarting
-    await sleep(3000);
+    await delay(3000);
 
     // Exit the process to restart the bot
     process.exit();
@@ -161,8 +140,6 @@ keith({
     console.error("Error during restart:", error);
   }
 });
-// thanks  chatgpt
-
 
 // Command to retrieve Heroku config vars
 keith({
@@ -250,6 +227,7 @@ keith({
   }
 });
 
+// Command to execute shell commands
 keith({
   nomCom: "shell",
   aliases: ["getcmd", "cmd"],
@@ -289,59 +267,44 @@ keith({
   });
 });
 
-keith(
-  {
-    nomCom: 'ping',
-    aliases: ['speed', 'latency'],
-    desc: 'To check bot response time',
-    categorie: 'system', // Fixed the typo here (Categorie -> categorie)
-    reaction: '👻',
-    fromMe: true, // Removed quotes to make it a boolean
-  },
-  async (dest, zk) => {
-    // Call the new loading animation without delaying the rest of the bot
-    const loadingPromise = loading(dest, zk);
+// Command to check bot response time (ping)
+keith({
+  nomCom: 'ping',
+  aliases: ['speed', 'latency'],
+  desc: 'To check bot response time',
+  categorie: 'system',
+  reaction: '👻',
+  fromMe: true,
+}, async (dest, zk) => {
+  // Call the loading animation without delaying the rest of the bot
+  const loadingPromise = loading(dest, zk);
 
-    // Generate 3 ping results with large random numbers for a more noticeable effect
-    const pingResults = Array.from({ length: 1 }, () => Math.floor(Math.random() * 10000 + 1000));
+  // Generate 3 ping results with large random numbers for a more noticeable effect
+  const pingResults = Array.from({ length: 1 }, () => Math.floor(Math.random() * 10000 + 1000));
 
-    // Create larger font for ping results (using special characters for a bigger look)
-    const formattedResults = pingResults.map(ping => `*📡 ᴘᴏɴɢ 📡*\n\n*${ping}...ᴍɪʟʟɪsᴇᴄᴏɴᴅs*\n> *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ*`);
+  // Create larger font for ping results (using special characters for a bigger look)
+  const formattedResults = pingResults.map(ping => `*📡 ᴘᴏɴɢ 📡*\n\n*${ping}...ᴍɪʟʟɪsᴇᴄᴏɴᴅs*\n> *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ*`);
 
-    // Send the ping results with the updated text and format
-    await zk.sendMessage(dest, {
-      text:`${formattedResults}`, 
-      contextInfo: {
-        externalAdReply: {
-          title: " *ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ* " ,
-          body:" 👻ᴏʀɪɢɪɴᴀᴛᴇᴅ ғʀᴏᴍ ᴛʜᴇ sᴀᴠᴇʀ👻",
-          thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" , // Replace with your bot profile photo URL
-          sourceUrl:  'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' , // Your channel URL
-          mediaType: 1,
-          showAdAttribution: true, // Verified badge
-        },
-      },
-    });
+  // Send the ping results with the updated text and format
+  await zk.sendMessage(dest, {
+    text: `${formattedResults}`, 
+    contextInfo: getContextInfo(" *ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ* ", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
+  });
 
-    console.log("Ping results sent successfully with new loading animation and formatted results!");
+  console.log("Ping results sent successfully with new loading animation and formatted results!");
 
-    // Ensure loading animation completes after the ping results
-    await loadingPromise;
-  }
-);
+  // Ensure loading animation completes after the ping results
+  await loadingPromise;
+});
 
-// React function if needed for further interaction
-function react(dest, zk, msg, reaction) {
-  zk.sendMessage(dest, { react: { text: reaction, key: msg.key } });
-}
-
+// Command to check bot uptime
 keith({
   nomCom: 'uptime',
   aliases: ['runtime', 'running'],
   desc: 'To check runtime',
-  categorie: 'system', // Fixed the typo here (Categorie -> categorie)
+  categorie: 'system',
   reaction: '⚠️',
-  fromMe: true, // Removed quotes to make it a boolean
+  fromMe: true,
 }, async (dest, zk, commandeOptions) => {
   const { ms, arg, repondre } = commandeOptions;
 
@@ -350,17 +313,8 @@ keith({
 
   // Send uptime information to the user
   await zk.sendMessage(dest, {
-    text: `╭───────────────━⊷\n║ *🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ ʀᴜɴᴛɪᴍᴇ 🛸*\n╰───────────────━⊷\n\n${runtime(botUptime)}\n> *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ*`,
-    contextInfo: {
-      externalAdReply: {
-        title: " *📡ʙᴇʟᴛᴀʜ-ᴍᴅ ᴜᴘᴛɪᴍᴇ📡* ",
-        body: "ʙᴏᴛ ʀᴜɴɴɪɴɢ 24/7 ɴᴏɴ-sᴛᴏᴘ" , // Format the uptime before sending
-        thumbnailUrl: conf.URL, // Replace with your bot profile photo URL
-        sourceUrl: conf.GURL, // Your channel URL
-        mediaType: 1,
-        showAdAttribution: true, // Verified badge
-      },
-    },
+    text: `╭───────────────━⊷\n║ *🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ ʀᴜɴᴛɪᴍᴇ 🛸*\n╰───────────────━⊷\n\n${runtime(botUptime)}`, 
+    contextInfo: getContextInfo(" *📡ʙᴇʟᴛᴀʜ-ᴍᴅ ᴜᴘᴛɪᴍᴇ📡* ", '', conf.URL)
   });
 
   console.log("Runtime results sent successfully!");
@@ -369,12 +323,7 @@ keith({
   await delay(ms); // Await the delay to simulate the loading animation
 });
 
-// React function to allow interaction after sending message
-function react(dest, zk, msg, reaction) {
-  zk.sendMessage(dest, { react: { text: reaction, key: msg.key } });
-}
-
-
+// Command to update and redeploy the bot
 keith({
   nomCom: 'update',
   aliases: ['redeploy', 'sync'],
@@ -430,81 +379,3 @@ keith({
   redeployApp();
 });
 
-keith({
-  nomCom: "fetch",
-  aliases: ["get", "find"],
-  categorie: "system",
-  reaction: '🛄',
-}, async (sender, zk, context) => {
-  const { repondre: sendResponse, arg: args } = context;
-  const urlInput = args.join(" ");
-
-  // Check if URL starts with http:// or https://
-  if (!/^https?:\/\//.test(urlInput)) {
-    return sendResponse("Start the *URL* with http:// or https://");
-  }
-
-  try {
-    const url = new URL(urlInput);
-    const fetchUrl = `${url.origin}${url.pathname}?${url.searchParams.toString()}`;
-    
-    // Fetch the URL content
-    const response = await axios.get(fetchUrl, { responseType: 'arraybuffer' });
-
-    // Check if the response is okay
-    if (response.status !== 200) {
-      return sendResponse(`Failed to fetch the URL. Status: ${response.status} ${response.statusText}`);
-    }
-
-    const contentLength = response.headers['content-length'];
-    if (contentLength && parseInt(contentLength) > 104857600) {
-      return sendResponse(`Content-Length exceeds the limit: ${contentLength}`);
-    }
-
-    const contentType = response.headers['content-type'];
-    console.log('Content-Type:', contentType);
-
-    // Fetch the response as a buffer
-    const buffer = Buffer.from(response.data);
-
-    // Handle different content types
-    if (/image\/.*/.test(contentType)) {
-      // Send image message
-      await zk.sendMessage(sender, {
-        image: { url: fetchUrl },
-        caption: `> > *${conf.BOT}*`
-      }, { quoted: context.ms });
-    } else if (/video\/.*/.test(contentType)) {
-      // Send video message
-      await zk.sendMessage(sender, {
-        video: { url: fetchUrl },
-        caption: `> > *${conf.BOT}*`
-      }, { quoted: context.ms });
-    } else if (/audio\/.*/.test(contentType)) {
-      // Send audio message
-      await zk.sendMessage(sender, {
-        audio: { url: fetchUrl },
-        caption: `> > *${conf.BOT}*`
-      }, { quoted: context.ms });
-    } else if (/text|json/.test(contentType)) {
-      try {
-        // Try parsing the content as JSON
-        const json = JSON.parse(buffer);
-        console.log("Parsed JSON:", json);
-        sendResponse(JSON.stringify(json, null, 10000)); // Limit response size to 10000 characters
-      } catch {
-        // If parsing fails, send the raw text response
-        sendResponse(buffer.toString().slice(0, 10000)); // Limit response size to 10000 characters
-      }
-    } else {
-      // Send other types of documents
-      await zk.sendMessage(sender, {
-        document: { url: fetchUrl },
-        caption: `> > *${conf.BOT}*`
-      }, { quoted: context.ms });
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error.message);
-    sendResponse(`Error fetching data: ${error.message}`);
-  }
-});
