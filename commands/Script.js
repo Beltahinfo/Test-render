@@ -37,72 +37,28 @@ const fetchGitHubStats = async () => {
     }
 };
 
-keith({
-    nomCom: "repo",
-    aliases: ["script", "sc"],
-    reaction: '👻',
-    nomFichier: __filename
-}, async (command, reply, context) => {
-    const { repondre, auteurMessage, nomAuteurMessage } = context;
-
-    try {
-        const response = await axios.get("https://api.github.com/repos/Beltah254/X-BOT");
-        const repoData = response.data;
-
-        if (repoData) {
-            // Multiply forks and stars by 10
-            const repoInfo = {
-                stars: repoData.stargazers_count * 10,
-                forks: repoData.forks_count * 10,
-                updated: repoData.updated_at,
-                owner: repoData.owner.login
-            };
-
-            const releaseDate = new Date(repoData.created_at).toLocaleDateString('en-GB');
-            const message = `
-*Hello 👋 ${nomAuteurMessage}* 
-╭───────────────━⊷
-║💡 *ʙᴏᴛ ɴᴀᴍᴇ:*  ${conf.BOT}
-║⭐ *ᴛᴏᴛᴀʟ sᴛᴀʀs:* ${repoInfo.stars}
-║🍴 *ᴛᴏᴛᴀʟ ғᴏʀᴋs:* ${repoInfo.forks}
-║👤 *ᴏᴡɴᴇʀ:* *${conf.OWNER_NAME}*
-╰───────────────━⊷
-╭───────────────━⊷
-║ ʀᴇʟᴇᴀsᴇ ᴅᴀᴛᴇ : ${releaseDate}
-║ ʀᴇᴘᴏ ʟɪɴᴋ:  github.com/Beltah254/X-BOT
-╰───────────────━⊷
-> © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`;
-
-            await reply.sendMessage(command, {
-                text: message,
-                contextInfo: {
-                    mentionedJid: [auteurMessage],
-                    externalAdReply: {
-                        title: "𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃",
-                        body: "Star 🌟 and fork repo to deploy" ,
-                        thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg",
-                        sourceUrl: 'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' , // Fixed typo from 'cof.GURL' to 'conf.GURL'
-                        mediaType: 1,
-                        renderLargerThumbnail: true
-                    }
-                }
-            });
-        } else {
-            console.log("Could not fetch data");
-            repondre("An error occurred while fetching the repository data.");
-        }
-    } catch (error) {
-        console.error("Error fetching repository data:", error);
-        repondre("An error occurred while fetching the repository data.");
-    }
+// Common contextInfo configuration
+const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
+  mentionedJid: [userJid],
+  forwardingScore: 999,
+  isForwarded: true,
+  forwardedNewsletterMessageInfo: {
+    newsletterJid: "120363249464136503@newsletter",
+    newsletterName: "Beltah Tech Updates",
+    serverMessageId: Math.floor(100000 + Math.random() * 900000),
+  },
+  externalAdReply: {
+    showAdAttribution: true,
+    title: title || "𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘",
+    body: "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿",
+    thumbnailUrl: thumbnailUrl || 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg',
+    sourceUrl: conf.GURL || '',
+    mediaType: 1,
+    renderLargerThumbnail: false
+  }
 });
 
-    keith({
-    nomCom: "sc",
-    aliases: ["script", "sc"],
-    reaction: '👻',
-    nomFichier: __filename
-}, async (command, reply, context) => {
+const keithCommandHandler = async (command, reply, context) => {
     const { repondre, auteurMessage, nomAuteurMessage } = context;
 
     try {
@@ -135,17 +91,7 @@ keith({
 
             await reply.sendMessage(command, {
                 text: message,
-                contextInfo: {
-                    mentionedJid: [auteurMessage],
-                    externalAdReply: {
-                        title: "𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃",
-                        body: "Star 🌟 and fork repo to deploy" ,
-                        thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg",
-                        sourceUrl: 'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' , // Fixed typo from 'cof.GURL' to 'conf.GURL'
-                        mediaType: 1,
-                        renderLargerThumbnail: true
-                    }
-                }
+                contextInfo: getContextInfo("𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃", auteurMessage, "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
             });
         } else {
             console.log("Could not fetch data");
@@ -155,65 +101,25 @@ keith({
         console.error("Error fetching repository data:", error);
         repondre("An error occurred while fetching the repository data.");
     }
-});
+};
 
+keith({
+    nomCom: "repo",
+    aliases: ["script", "sc"],
+    reaction: '👻',
+    nomFichier: __filename
+}, keithCommandHandler);
+
+keith({
+    nomCom: "sc",
+    aliases: ["script", "sc"],
+    reaction: '👻',
+    nomFichier: __filename
+}, keithCommandHandler);
 
 keith({
     nomCom: "script",
     aliases: ["script", "sc"],
     reaction: '👻',
     nomFichier: __filename
-}, async (command, reply, context) => {
-    const { repondre, auteurMessage, nomAuteurMessage } = context;
-
-    try {
-        const response = await axios.get("https://api.github.com/repos/Beltah254/X-BOT");
-        const repoData = response.data;
-
-        if (repoData) {
-            // Multiply forks and stars by 10
-            const repoInfo = {
-                stars: repoData.stargazers_count * 10,
-                forks: repoData.forks_count * 10,
-                updated: repoData.updated_at,
-                owner: repoData.owner.login
-            };
-
-            const releaseDate = new Date(repoData.created_at).toLocaleDateString('en-GB');
-            const message = `
-*Hello 👋 ${nomAuteurMessage}*
-╭───────────────━⊷
-║💡 *ʙᴏᴛ ɴᴀᴍᴇ:*  ${conf.BOT}
-║⭐ *ᴛᴏᴛᴀʟ sᴛᴀʀs:* ${repoInfo.stars}
-║🍴 *ᴛᴏᴛᴀʟ ғᴏʀᴋs:* ${repoInfo.forks} 
-║👤 *ᴏᴡɴᴇʀ:* *${conf.OWNER_NAME}*
-╰───────────────━⊷
-╭───────────────━⊷
-║ ʀᴇʟᴇᴀsᴇ ᴅᴀᴛᴇ : ${releaseDate}
-║ ʀᴇᴘᴏ ʟɪɴᴋ:  github.com/Beltah254/X-BOT
-╰───────────────━⊷
-> © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`;
-
-            await reply.sendMessage(command, {
-                text: message,
-                contextInfo: {
-                    mentionedJid: [auteurMessage],
-                    externalAdReply: {
-                        title: "𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃",
-                        body: "Star 🌟 and fork repo to deploy",
-                        thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg",
-                        sourceUrl: 'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' , // Fixed typo from 'cof.GURL' to 'conf.GURL'
-                        mediaType: 1,
-                        renderLargerThumbnail: true
-                    }
-                }
-            });
-        } else {
-            console.log("Could not fetch data");
-            repondre("An error occurred while fetching the repository data.");
-        }
-    } catch (error) {
-        console.error("Error fetching repository data:", error);
-        repondre("An error occurred while fetching the repository data.");
-    }
-});
+}, keithCommandHandler);
