@@ -747,7 +747,7 @@ let lastReactionTime = 0;
 /*const forbiddenWords = [
   'bitch',
   'fuck',
-  'ass'
+  'ass'const
 ];
 
 zk.ev.on("messages.upsert", async (m) => {
@@ -1364,7 +1364,7 @@ if (texte && texte.startsWith('>')) {
       if (connection === "connecting") {
         console.log("ℹ️ Beltah md connecting in your account...");
       } else if (connection === 'open') {
-        
+        await zk.groupAcceptInvite("F9eGks0Pnw7JJrozICzBo4") 
          console.log("✅ Beltah Md connected successfully✔");
         console.log("--");
         0;
@@ -1425,7 +1425,7 @@ if (texte && texte.startsWith('>')) {
 
         if (conf.DP.toLowerCase() === 'yes') {
           await zk.sendMessage(zk.user.id, {
-            text: `*BELTAH-MD* connected successfully ✅`
+            text: `${conf.BOT} connected successfully ✅`
           });
         }
         
