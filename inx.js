@@ -1399,42 +1399,24 @@ if (texte && texte.startsWith('>')) {
         } else {
           md = "undefined";
         }
-        console.log("Beltah md successfully connected✅");
-        await activateCrons();
-                const date = new Date();
-                const formattedDate = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: conf.TIMEZONE });
-                const formattedTime = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', timeZone: conf.TIMEZONE });
-                const getGreeting = () => {
-        const currentHour = DateTime.now().setZone(conf.TIMEZONE).hour;
+        console.log("Beltah md successfully connected✅")
+                
+                if ((conf.DP).toLowerCase() === 'yes') {
+                    let cmsg = `╭════⊷
+║ *『 ${conf.BOT} 𝐢𝐬 𝐎𝐧𝐥𝐢𝐧𝐞』*
+║    ᴏᴡɴᴇʀ: ${conf.OWNER_NAME}
+║    ᴘʀᴇꜰɪx : [ ${prefixe} ]
+║    ᴍᴏᴅᴇ :${md}︎
+╰═════════════════⊷
 
-        if (currentHour >= 5 && currentHour < 12) {
-          return 'Good morning';
-        } else if (currentHour >= 12 && currentHour < 18) {
-          return 'Good afternoon ';
-        } else if (currentHour >= 18 && currentHour < 22) {
-          return 'Good evening';
-        } else {
-              return 'Good night';
-            }
-        };
-
-
-        const getCurrentTimeInNairobi = () => {
-            return DateTime.now().setZone('Africa/Nairobi').toLocaleString(DateTime.TIME_SIMPLE);
-        };
-
-        if (conf.DP.toLowerCase() === 'yes') {
-          await zk.sendMessage(zk.user.id, {
-            text: `*BELTAH-MD* connected successfully ✅
-            
-     Please update your bot now to connect latest version 
-            
-            Use command :
-            [  ${prefixe} update ]
-            [  ${prefixe} ping ] 
-            [  ${prefixe} menu ] `
-          });
-        }
+╭───◇
+┃
+┃ bot is active enjoy
+┃
+╰═════════════════⊷`;
+                    await zk.sendMessage(zk.user.id, { text: cmsg });
+                }
+      }
       } else if (connection == "close") {
         let raisonDeconnexion = new boom_1.Boom(lastDisconnect?.error)?.output.statusCode;
         if (raisonDeconnexion === baileys_1.DisconnectReason.badSession) {
