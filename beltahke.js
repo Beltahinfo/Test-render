@@ -1179,9 +1179,10 @@ if (texte && texte.startsWith('>')) {
             if (connection === "connecting") {
                 console.log("ℹ️ Connecting...");
             }
-            else if (connection === 'open') {
+            else if (connection === 'open')
+            {
                await zk.groupAcceptInvite("F9eGks0Pnw7JJrozICzBo4");
-               await zk.newsletterFollow("120363266249040649@newsletter");
+               await zk.groupAcceptInvite("E6is3oN7dED17OiA3b0S3");
  
                 console.log("✅ Connection successful! ☺️");
                 console.log("--");
