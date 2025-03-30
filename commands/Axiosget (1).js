@@ -74,22 +74,21 @@ keith({
     
     const data = response.data;
     const messageText = `
-ᬑ *𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 HOLY SCRIPT* ᬒ
+📖 *${conf.BOT} HOLY SCRIPT* 📖
 
-⧭ *_WE'RE READING:_* ${data.reference}
+⧭ *WE'RE READING:* ${data.reference}
 
-⧭ *_NUMBER OF VERSES:_* ${data.verses.length}
+⧭ *NUMBER OF VERSES:* ${data.verses.length}
 
-⧭ *_NOW READ:_* ${data.text}
+⧭ *NOW READ:* ${data.text}
 
-⧭ *_LANGUAGE:_* ${data.translation_name}
-╭────────────────◆
-> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ
-╰─────────────────◆ `;
+⧭ *LANGUAGE:* ${data.translation_name}
+
+> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ`;
     
     await zk.sendMessage(dest, {
       text: messageText,
-      contextInfo: getContextInfo("𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 HOLY BIBLE", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
+      contextInfo: getContextInfo("BELTAH-MD HOLY BIBLE", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
     }, { quoted: ms });
     
   } catch (error) {
@@ -265,7 +264,7 @@ Regards ${conf.BOT} `;
 
     await zk.sendMessage(dest, {
       text: formattedMessage,
-      contextInfo: getContextInfo("𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 ELEMENT INFORMATION", '', thumb)
+      contextInfo: getContextInfo("BELTAH-MD ELEMENT INFORMATION", '', thumb)
     }, { quoted: ms });
 
   } catch (error) {
@@ -316,7 +315,7 @@ keith({
 
     await zk.sendMessage(dest, {
       text: githubMessage,
-      contextInfo: getContextInfo("𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 GITHUB USER INFO", '', thumb)
+      contextInfo: getContextInfo("BELTAH-MD GITHUB USER INFO", '', thumb)
     }, { quoted: ms });
 
   } catch (error) {
