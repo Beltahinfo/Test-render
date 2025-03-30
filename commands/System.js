@@ -18,7 +18,7 @@ function formatUptime(seconds) {
   const minutes = Math.floor((seconds % 3600) / 60);
   const secondsLeft = Math.floor(seconds % 60);
 
-  return `*╭───────────────━⊷*\n*║0 ᴅᴀʏs*\n*║${hours} ʜᴏᴜʀs*\n*║${minutes} ᴍɪɴᴜᴛᴇs*\n*║${secondsLeft} sᴇᴄᴏɴᴅs*\n*╰───⊷*`;
+  return `*╭───────────────━⊷*\n*║0 ᴅᴀʏs*\n*║${hours} ʜᴏᴜʀs*\n*║${minutes} ᴍɪɴᴜᴛᴇs*\n*║${secondsLeft} sᴇᴄᴏɴᴅs*\n*╰───────────━⊷*`;
 }
 
 // Common contextInfo configuration
@@ -44,18 +44,19 @@ const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
 // Function to show loading animation
 async function showLoadingAnimation(dest, zk) {
   const loadingSymbols = [
-    "👍", 
-    "👻", 
-    "🤗", 
-    "😌",
-    "🔥",
-    "😢", 
-    "✨", 
-    "🔞",
+    "😖", 
+    "😵‍💫", 
+    "😕", 
+    "😤",
+    "🤨",
+    "😡", 
+    "😠", 
+    "😬",
+    "🤬", 
     "🗿", 
-    "*ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ ᴏʀɪɢɪɴᴀᴛᴇᴅ ғʀᴏᴍ ᴛʜᴇ sᴀᴠᴇʀ*"
+    "*ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ*"
   ];
-  let { key } = await zk.sendMessage(dest, { text: '*🇰🇪Enjoy...with BELTAH MD.....*' });
+  let { key } = await zk.sendMessage(dest, { text: 'BELTAH-MD SPEED TEST' });
 
   // Run the loading animation without blocking the main code
   for (let i = 0; i < loadingSymbols.length; i++) {
@@ -282,12 +283,12 @@ keith({
   const pingResults = Array.from({ length: 1 }, () => Math.floor(Math.random() * 10000 + 1000));
 
   // Create larger font for ping results (using special characters for a bigger look)
-  const formattedResults = pingResults.map(ping => `*📡 ᴘᴏɴɢ 📡*\n\n*${ping}...ᴍɪʟʟɪsᴇᴄᴏɴᴅs*\n> *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ*`);
+  const formattedResults = pingResults.map(ping => `*📡 ᴘᴏɴɢ 📡*\n\n*${ping}...ᴍɪʟʟɪsᴇᴄᴏɴᴅs*\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ*`);
 
   // Send the ping results with the updated text and format
   await zk.sendMessage(dest, {
     text: `${formattedResults}`, 
-    contextInfo: getContextInfo("🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ 🛸", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
+    contextInfo: getContextInfo("🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ 🛸",'', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
   });
 
   console.log("Ping results sent successfully with new loading animation and formatted results!");
