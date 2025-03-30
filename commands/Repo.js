@@ -155,8 +155,7 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
 
     const randomQuote = getRandomQuote();
 
-    let responseMessage = `
- ${greeting}, *${nomAuteurMessage || "User"}*
+    let responseMessage = ` ${greeting}, *${nomAuteurMessage || "User"}*
  
 ╭━━━━❮  ${settings.BOT}  ❯━━━━╮ 
 ┃✰╭──────────────
@@ -229,8 +228,7 @@ keith({ nomCom: "list", aliases: ["liste", "helplist", "commandlist"], categorie
 
     const randomQuote = getRandomQuote();
 
-    let responseMessage = `
- ${greeting}, *${nomAuteurMessage || "User"}*
+    let responseMessage = `${greeting}, *${nomAuteurMessage || "User"}*
  
 ╭━━━ 〔 ${settings.BOT} 〕━━━┈⊷
 ┃╭──────────────
