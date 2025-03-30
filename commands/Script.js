@@ -4,7 +4,7 @@ const { format } = require(__dirname + "/../keizzah/mesfonctions");
 const os = require('os');
 const moment = require("moment-timezone");
 const conf = require(__dirname + "/../set");
-const { repondre } = require(__dirname + "/../keizzah/context");
+const { sendMessage, repondre } = require(__dirname + "/../keizzah/context");
 
 const readMore = String.fromCharCode(8206).repeat(4001);
 
@@ -89,7 +89,7 @@ const keithCommandHandler = async (command, reply, context) => {
 ╰───────────────━⊷
 > © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`;
 
-            await reply.sendMessage(command, {
+            await sendMessage(command, {
                 text: message,
                 contextInfo: getContextInfo("𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃", auteurMessage, "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
             });
