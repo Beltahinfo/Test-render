@@ -76,7 +76,7 @@ const keithCommandHandler = async (command, reply, context) => {
 
             const releaseDate = new Date(repoData.created_at).toLocaleDateString('en-GB');
             const message = `
-*Hello 👋 ${nomAuteurMessage}*
+ *Hello 👋 ${nomAuteurMessage}*
 ╭───────────────━⊷
 ║💡 *ʙᴏᴛ ɴᴀᴍᴇ:* ${conf.BOT}
 ║⭐ *ᴛᴏᴛᴀʟ sᴛᴀʀs:* ${repoInfo.stars}
@@ -85,7 +85,7 @@ const keithCommandHandler = async (command, reply, context) => {
 ╰───────────────━⊷
 ╭───────────────━⊷
 ║ ʀᴇʟᴇᴀsᴇ ᴅᴀᴛᴇ : ${releaseDate}
-║ ʀᴇᴘᴏ ʟɪɴᴋ:  github.com/Beltah254/X-BOT
+║ ʀᴇᴘᴏ ʟɪɴᴋ: github.com/Beltah254/X-BOT
 ╰───────────────━⊷
 > © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`;
 
