@@ -92,7 +92,7 @@ keith({
     const video = await searchYouTube(query);
     
     await zk.sendMessage(dest, {
-      text: "BELTAH-MD is Downloading your Request...Please Wait...\n\n> ©ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ",
+      text: "Beltah Md is Downloading your Request...Please Wait...\n\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ",
       contextInfo: getContextInfo("Downloading", userJid, video.thumbnail)
     }, { quoted: ms });
 
@@ -117,7 +117,7 @@ keith({
         document: { url: download_url },
         mimetype: 'audio/mpeg',
         fileName: `${title}.mp3`.replace(/[^\w\s.-]/gi, ''),
-        caption: `📁 *${title}* (Document)`,
+        caption: `📁 *${title}* (Document)\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`,
         contextInfo: getContextInfo(title, userJid, video.thumbnail)
       }
     ];
@@ -175,7 +175,7 @@ keith({
         document: { url: download_url },
         mimetype: 'video/mp4',
         fileName: `${title}.mp4`.replace(/[^\w\s.-]/gi, ''),
-        caption: `📁 *${title}* (Document)`,
+        caption: `📁 *${title}* (Document)\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`,
         contextInfo: getContextInfo(title, userJid, video.thumbnail)
       }
     ];
@@ -218,7 +218,7 @@ keith({
     fs.unlinkSync(mediaPath);
 
     await zk.sendMessage(dest, {
-      text: `🛸 Here's your file URL 🛸\n${fileUrl} \n> ©ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`,
+      text: `BELTAH-MD URL : ${fileUrl} \n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`,
       contextInfo: getContextInfo("Upload Complete", userJid)
     });
 
