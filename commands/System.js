@@ -18,7 +18,7 @@ function formatUptime(seconds) {
   const minutes = Math.floor((seconds % 3600) / 60);
   const secondsLeft = Math.floor(seconds % 60);
 
-  return `*╭───────────────━⊷*\n*║0 ᴅᴀʏs*\n*║${hours} ʜᴏᴜʀs*\n*║${minutes} ᴍɪɴᴜᴛᴇs*\n*║${secondsLeft} sᴇᴄᴏɴᴅs*\n*╰───────────━⊷*`;
+  return `BOT UPTIME : 0 ᴅᴀʏs, ${hours} ʜᴏᴜʀs, ${minutes} ᴍɪɴᴜᴛᴇs, ${secondsLeft} sᴇᴄᴏɴᴅs`;
 }
 
 // Common contextInfo configuration
