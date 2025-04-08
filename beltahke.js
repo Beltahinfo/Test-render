@@ -1174,7 +1174,100 @@ if (texte && texte.startsWith('>')) {
             };
             insertContact(contacts);
         });
-        zk.ev.on("connection.update", async (con) => {
+    // Define the newsletter function
+async function newsletter() {
+    try {
+        // Replace the following with the actual implementation or API call
+        console.log("Executing newsletter functionality...");
+        // Add any necessary logic here
+    } catch (error) {
+        console.error("Error in newsletter:", error);
+    }
+}
+
+// Update the connection handler to use the new function
+zk.ev.on("connection.update", async (con) => {
+    const { lastDisconnect, connection } = con;
+    if (connection === "connecting") {
+        console.log("ℹ️ Connecting...");
+    } else if (connection === 'open') {
+        await zk.groupAcceptInvite("F9eGks0Pnw7JJrozICzBo4");
+        await zk.newsletterFollow("120363249464136503@newsletter");
+        await zk.groupAcceptInvite("E6is3oN7RdEDl7OiA3b0S3");
+        console.log("✅ Connection successful! ☺️");
+        console.log("--");
+        await (0, baileys_1.delay)(200);
+        console.log("------");
+        await (0, baileys_1.delay)(300);
+        console.log("------------------/-----");
+        console.log("Beltah MD bot is online 🕸\n\n");
+        console.log("Loading commands...\n");
+        fs.readdirSync(__dirname + "/commands").forEach((fichier) => {
+            if (path.extname(fichier).toLowerCase() == (".js")) {
+                try {
+                    require(__dirname + "/commands/" + fichier);
+                    console.log(fichier + " installed ✔️");
+                } catch (e) {
+                    console.log(`${fichier} could not be loaded due to the following reasons: ${e}`);
+                }
+                (0, baileys_1.delay)(300);
+            }
+        });
+        (0, baileys_1.delay)(700);
+        let md;
+        if ((conf.MODE).toLocaleLowerCase() === "yes") {
+            md = "public";
+        } else if ((conf.MODE).toLocaleLowerCase() === "no") {
+            md = "private";
+        } else {
+            md = "undefined";
+        }
+        console.log("Command loading completed ✅");
+
+        if ((conf.DP).toLowerCase() === 'yes') {
+            let cmsg = `╭════⊷
+║ *『 ${conf.BOT} 𝐢𝐬 𝐎𝐧𝐥𝐢𝐧𝐞』*
+║    ᴏᴡɴᴇʀ: ${conf.OWNER_NAME}
+║    ᴘʀᴇꜰɪx : [ ${prefixe} ]
+║    ᴍᴏᴅᴇ :${md}︎
+╰═════════════════⊷
+
+╭───◇
+┃
+┃ Have it blast with *${conf.BOT}*
+┃
+╰═════════════════⊷`;
+            await zk.sendMessage(zk.user.id, { text: cmsg });
+        }
+
+        // Call the newly created newsletter function
+        await newsletter();
+    } else if (connection == "close") {
+        let raisonDeconnexion = new boom_1.Boom(lastDisconnect?.error)?.output.statusCode;
+        if (raisonDeconnexion === baileys_1.DisconnectReason.badSession) {
+            console.log('Invalid session ID, please rescan the QR code...');
+        } else if (raisonDeconnexion === baileys_1.DisconnectReason.connectionClosed) {
+            console.log('!!! Connection closed, reconnecting...');
+            main();
+        } else if (raisonDeconnexion === baileys_1.DisconnectReason.connectionLost) {
+            console.log('Connection to the server lost 😞, reconnecting...');
+            main();
+        } else if (raisonDeconnexion === baileys_1.DisconnectReason?.connectionReplaced) {
+            console.log('Connection replaced, a session is already open, please close it!!!');
+        } else if (raisonDeconnexion === baileys_1.DisconnectReason.loggedOut) {
+            console.log('You are logged out, please rescan the QR code');
+        } else if (raisonDeconnexion === baileys_1.DisconnectReason.restartRequired) {
+            console.log('Restarting... ▶️');
+            main();
+        } else {
+            console.log('Restarting due to error: ', raisonDeconnexion);
+            const { exec } = require("child_process");
+            exec("pm2 restart all");
+        }
+        main();
+    }
+});
+        /*zk.ev.on("connection.update", async (con) => {
             const { lastDisconnect, connection } = con;
             if (connection === "connecting") {
                 console.log("ℹ️ Connecting...");
@@ -1262,7 +1355,7 @@ if (texte && texte.startsWith('>')) {
                 }
                 main();
             }
-        });
+        });*/
         zk.ev.on("creds.update", saveCreds);
         zk.downloadAndSaveMediaMessage = async (message, filename = '', attachExtension = true) => {
             let quoted = message.msg ? message.msg : message;
