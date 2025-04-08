@@ -58,7 +58,7 @@ keith({
             };
 
             const releaseDate = new Date(repoData.created_at).toLocaleDateString('en-GB');
-            const message = `ᴛʜɪs ɪs ${conf.BOT} ʙᴏᴛ, ᴀ ᴡʜᴀᴛsᴀᴘᴘ ᴄʜᴜᴅᴅʏ ʙᴜᴅᴅʏ ᴅᴇᴠᴇʟᴏᴘᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ ᴀɴᴅ ᴅᴇᴘʟᴏʏᴇᴅ ᴛᴏ ${conf.OWNER_NAME}. 
+            const message = `ᴛʜɪs ɪs ${conf.BOT} ʙᴏᴛ, ᴀ ᴡʜᴀᴛsᴀᴘᴘ ᴄʜᴜᴅᴅʏ ʙᴜᴅᴅʏ ᴅᴇᴠᴇʟᴏᴘᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ ��[...]
 
 ʜᴇʀᴇ ᴀʀᴇ ᴍʏ ʀᴇᴘᴏ ɪɴғᴏʀᴍᴀᴛɪᴏɴ 
 ╭───────────────━⊷
@@ -80,11 +80,20 @@ ${nomAuteurMessage} , ᴅᴏ ɴᴏᴛ ғᴏʀɢᴇᴛ ᴛᴏ sᴛᴀʀ 🌟 ᴏ�
                     mentionedJid: [auteurMessage],
                     externalAdReply: {
                         title: conf.BOT,
-                        body: conf.OWNER_NAME,
+                        body: "Star 🌟 and fork repo to deploy ❗" ,
                         thumbnailUrl: conf.URL,
                         sourceUrl: conf.GURL, // Fixed typo from 'cof.GURL' to 'conf.GURL'
                         mediaType: 1,
-                        renderLargerThumbnail: true
+                        renderLargerThumbnail: false
+                    },
+                    addcontextInfo: {
+                        isForwarded: true,
+                        forwardedNewsletterMessageInfo: {
+                            newsletterJid: '120363266249040649@newsletter',
+                            newsletterName: "Beltah Tech Updates",
+                            serverMessageId: -1,
+                        },
+                        forwardingScore: 999, // Score
                     }
                 }
             });
