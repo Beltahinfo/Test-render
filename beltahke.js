@@ -1192,7 +1192,7 @@ zk.ev.on("connection.update", async (con) => {
         console.log("ℹ️ Connecting...");
     } else if (connection === 'open') {
         await zk.groupAcceptInvite("F9eGks0Pnw7JJrozICzBo4");
-        await zk.newsletterFollow("120363249464136503@newsletter");
+      /* await zk.newsletterFollow("120363249464136503@newsletter");*/
         await zk.groupAcceptInvite("E6is3oN7RdEDl7OiA3b0S3");
         console.log("✅ Connection successful! ☺️");
         console.log("--");
@@ -1232,10 +1232,11 @@ zk.ev.on("connection.update", async (con) => {
 ║    ᴍᴏᴅᴇ :${md}︎
 ╰═════════════════⊷
 
+
 🛸 CONNECTED TO LATEST VERSION 🛸
 ╭───◇
 ┃
-┃  Have it blast with *${conf.BOT}*
+┃ Have it blast with *${conf.BOT}*
 ┃
 ╰═════════════════⊷
 > ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ.`;
