@@ -6,21 +6,34 @@ const speed = require("performance-now");
 const { exec } = require("child_process");
 const { repondre } = require(__dirname + "/../keizzah/context");
 
+// Constants
+const DEFAULT_PARTICIPANT = '0@s.whatsapp.net';
+const DEFAULT_REMOTE_JID = 'status@broadcast';
+const DEFAULT_THUMBNAIL_URL = 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg';
+const DEFAULT_TITLE = "𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘";
+const DEFAULT_BODY = "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿";
+
+// Default message configuration
 const fgg = {
   key: {
     fromMe: false,
-    participant: `0@s.whatsapp.net`,
-    remoteJid: 'status@broadcast',
+    participant: DEFAULT_PARTICIPANT,
+    remoteJid: DEFAULT_REMOTE_JID,
   },
   message: {
     contactMessage: {
       displayName: `BELTAH MD`,
-      vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;BELTAH MD;;;\nFN:BELTAH MD\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`,
+      vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;BELTAH MD;;;\nFN:BELTAH MD\nitem1.TEL;waid=${DEFAULT_PARTICIPANT.split('@')[0]}:${DEFAULT_PARTICIPANT.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`,
     },
   },
 };
 
-// Function to format runtime into a clean string
+// Utility Functions
+/**
+ * Format runtime into a clean string.
+ * @param {number} seconds - The runtime in seconds.
+ * @returns {string} - Formatted runtime string.
+ */
 function formatRuntime(seconds) {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
@@ -28,7 +41,35 @@ function formatRuntime(seconds) {
   return `*${hours}h ${minutes}m ${secondsLeft}s*`;
 }
 
-// Ping command
+/**
+ * Construct contextInfo object for messages.
+ * @param {string} title - Title for the external ad reply.
+ * @param {string} userJid - User JID to mention.
+ * @param {string} thumbnailUrl - Thumbnail URL.
+ * @returns {object} - ContextInfo object.
+ */
+function getContextInfo(title = DEFAULT_TITLE, userJid = DEFAULT_PARTICIPANT, thumbnailUrl = DEFAULT_THUMBNAIL_URL) {
+  try {
+    return {
+      mentionedJid: [userJid],
+      forwardingScore: 999,
+      isForwarded: true,
+      externalAdReply: {
+        showAdAttribution: true,
+        title,
+        body: DEFAULT_BODY,
+        thumbnailUrl,
+        sourceUrl: settings.GURL || '',
+      },
+    };
+  } catch (error) {
+    console.error(`Error in getContextInfo: ${error.message}`);
+    return {}; // Prevent breaking on error
+  }
+}
+
+// Commands
+// Ping Command
 keith(
   {
     nomCom: 'on',
@@ -50,7 +91,7 @@ keith(
 
       await zk.sendMessage(
         dest,
-        { text: pingMessage, contextInfo: { mentionedJid: [fgg.key.participant] } },
+        { text: pingMessage, contextInfo: getContextInfo("Ping Command Results") },
         { quoted: fgg }
       );
     } catch (error) {
@@ -62,7 +103,7 @@ keith(
   }
 );
 
-// Uptime command
+// Uptime Command
 keith(
   {
     nomCom: 'active',
@@ -74,7 +115,7 @@ keith(
   },
   async (dest, zk) => {
     try {
-      const botUptime = process.uptime(); // Get bot uptime in seconds
+      const botUptime = process.uptime(); // Uptime in seconds
       const formattedUptime = formatRuntime(botUptime);
 
       const uptimeMessage = `*⏰ BOT UPTIME ⏰*\n\n` +
@@ -83,7 +124,7 @@ keith(
 
       await zk.sendMessage(
         dest,
-        { text: uptimeMessage, contextInfo: { mentionedJid: [fgg.key.participant] } },
+        { text: uptimeMessage, contextInfo: getContextInfo("Uptime Command Results") },
         { quoted: fgg }
       );
     } catch (error) {
@@ -94,34 +135,6 @@ keith(
     }
   }
 );
-
-// Common contextInfo configuration
-const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => {
-  try {
-    return {
-      mentionedJid: [userJid],
-      forwardingScore: 999,
-      isForwarded: true,
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: "120363249464136503@newsletter",
-        newsletterName: "Beltah Tech Updates",
-        serverMessageId: Math.floor(100000 + Math.random() * 900000),
-      },
-      externalAdReply: {
-        showAdAttribution: true,
-        title: title || "𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘",
-        body: "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿",
-        thumbnailUrl: thumbnailUrl || 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg',
-        sourceUrl: settings.GURL || '',
-        mediaType: 1,
-        renderLargerThumbnail: false,
-      },
-    };
-  } catch (error) {
-    console.error(`Error in getContextInfo function: ${error.message}`);
-    return {}; // Return an empty object to prevent breaking
-  }
-};
 
 module.exports = {
   getContextInfo,
