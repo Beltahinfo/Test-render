@@ -1,7 +1,7 @@
 "use strict";
 
 // Importing dependencies
-const { makeInMemoryStore, fetchLatestBaileysVersion, useMultiFileAuthState, delay, DisconnectReason } = require("@whiskeysockets/baileys");
+const { makeInMemoryStore, fetchLatestBaileysVersion, useMultiFileAuthState, delay, DisconnectReason, default: makeWASocket } = require("@whiskeysockets/baileys");
 const logger = require("@whiskeysockets/baileys/lib/Utils/logger").default.child({});
 const pino = require("pino");
 const axios = require('axios');
@@ -61,7 +61,7 @@ async function main() {
 
 // Function: Create socket options
 function makeSock({ version, state, store }) {
-  return baileys_1.default({
+  return makeWASocket({
     version,
     logger: pino({ level: "silent" }),
     browser: ['BELTAH-MD', "safari", "1.0.0"],
