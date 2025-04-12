@@ -1,7 +1,14 @@
 "use strict";
 
 // Importing dependencies
-const { makeInMemoryStore, fetchLatestBaileysVersion, useMultiFileAuthState, delay, DisconnectReason, default: makeWASocket } = require("@whiskeysockets/baileys");
+const { 
+  makeInMemoryStore, 
+  fetchLatestBaileysVersion, 
+  useMultiFileAuthState, 
+  delay, 
+  DisconnectReason, 
+  default: makeWASocket 
+} = require("@whiskeysockets/baileys");
 const logger = require("@whiskeysockets/baileys/lib/Utils/logger").default.child({});
 const pino = require("pino");
 const axios = require('axios');
@@ -67,7 +74,7 @@ function makeSock({ version, state, store }) {
     browser: ['BELTAH-MD', "safari", "1.0.0"],
     auth: {
       creds: state.creds,
-      keys: makeCacheableSignalKeyStore(state.keys, logger),
+      keys: state.keys, // Fixed to directly use state.keys
     },
     getMessage: async (key) => {
       if (store) {
