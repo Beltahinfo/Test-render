@@ -848,17 +848,73 @@ zk.ev.on('group-participants.update', async (group) => {
 
                 await activateCrons();
                 
-                if((conf.DP).toLowerCase() === 'yes') {     
+             // Existing imports and configurations remain unchanged...
 
-                let cmsg =`     ᴄᴏɴɴᴇᴄᴛᴇᴅ
-╭─────────────━┈⊷ 
-│💫 ᴘʀᴇғɪx: *[ ${prefixe} ]*
-│⭕ ᴍᴏᴅᴇ: *${md}*
-│🌐use . settings
-╰─────────────━┈⊷⁠⁠⁠⁠`;
-                await zk.sendMessage(zk.user.id, { text: cmsg });
-                }
+if (conf.DP && conf.DP.toLowerCase() === 'yes') { // Check conf.DP exists and is 'yes'
+    const now = new Date();
+    
+    // Use consistent formatting for the date and time
+    const options = {
+        timeZone: 'Africa/Nairobi', 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit'
+    };
+
+    const formattedDateTime = now.toLocaleString('en-US', options);
+
+    // Define the list of installed commands
+    const installedCommands = [
+        '.help', 
+        '.settings', 
+        '.start', 
+        '.stop', 
+        '.status', 
+        '.info', 
+        '.reboot', 
+        '.update'
+    ];
+
+    // Construct the bot message
+    const cmsg = `
+╭─────────────── *🤖 Beltah Bot Connected 🤖* ───────────────╮
+│
+│ 🌟 *Bot Owner:* ${conf.OWNER_NAME || 'Unknown'}
+│ 🗓️ *Date & Time:* ${formattedDateTime}
+│ 💫 *Prefix:* [ ${prefixe || 'N/A'} ]
+│ ⭕ *Mode:* ${(md || 'default').toUpperCase()}
+│ 🌐 *Use:* .settings for more options
+│
+│ 📜 *Installed Commands:*
+│ ${installedCommands.map(cmd => `│   - ${cmd}`).join('\n')}
+│
+╰───────────────────────────────────────────────────╯
+
+⚡ *Powered by Beltah Tech Team* ⚡
+    `;
+
+    // Send the bot message
+    try {
+        const sentMessage = await zk.sendMessage(zk.user.id, { text: cmsg });
+
+        // Schedule the message to be deleted after 1 minute (60,000 milliseconds)
+        setTimeout(async () => {
+            try {
+                await zk.deleteMessage(zk.user.id, sentMessage.key);
+            } catch (deleteError) {
+                console.error('Error deleting message:', deleteError);
             }
+        }, 60000); // 60 seconds
+    } catch (error) {
+        console.error('Error sending message:', error);
+    }
+}
+
+// Continue with the rest of the existing code...
             else if (connection == "close") {
                 let raisonDeconnexion = new boom_1.Boom(lastDisconnect?.error)?.output.statusCode;
                 if (raisonDeconnexion === baileys_1.DisconnectReason.badSession) {
