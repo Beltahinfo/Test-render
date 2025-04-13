@@ -6,8 +6,8 @@
   "scripts": {
     "test": "node ibrahim.js",
     "s": "node ibrahim.js",
-    "toshtech": "pm2 start ibrahim.js --attach",
-    "toshtech": "pm2 start ibrahim.js --attach",
+    "beltahinc": "pm2 start ibrahim.js --attach",
+    "beltahinc": "pm2 start ibrahim.js --attach",
     "c": "tsc"
   },
   "keywords": [
