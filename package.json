@@ -2,12 +2,12 @@
   "name": "Bmw-md",
   "version": "2.0.0",
   "description": "",
-  "main": "ibrahim.js",
+  "main": "salut.js",
   "scripts": {
-    "test": "node ibrahim.js",
-    "s": "node ibrahim.js",
-    "beltahinc": "pm2 start ibrahim.js --attach",
-    "beltahinc": "pm2 start ibrahim.js --attach",
+    "test": "node salut.js",
+    "s": "node salut.js",
+    "beltahinc": "pm2 start salut.js --attach",
+    "beltahinc": "pm2 start salut.js --attach",
     "c": "tsc"
   },
   "keywords": [
