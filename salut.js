@@ -32,6 +32,20 @@ async function setupSession() {
   }
 }
 
+async function listCommands() {
+  const commandsDir = path.join(__dirname, "commands");
+  const commandFiles = fs.readdirSync(commandsDir);
+  const commands = [];
+
+  for (const file of commandFiles) {
+    if (file.endsWith(".js")) {
+      commands.push(file.replace(".js", ""));
+    }
+  }
+
+  return commands;
+}
+
 async function main() {
   await setupSession();
 
@@ -63,6 +77,23 @@ async function main() {
       logger.info("Connecting...");
     } else if (connection === "open") {
       logger.info("Connected successfully!");
+
+      // Notify about bot connection
+      await sock.sendMessage(zk.user.id, {
+        text: "Beltah md bot is now connected! 🎉"
+      });
+
+      // Notify about command installation
+      const commands = await listCommands();
+      const commandListText = commands.length > 0
+        ? `The following commands have been successfully installed:\n- ${commands.join("\n- ")}`
+        : "No commands found in the './commands' directory.";
+
+      await sock.sendMessage(zk.user.id, {
+        text: commandListText
+      });
+
+      logger.info("Commands have been listed and sent.");
     } else if (connection === "close") {
       const reason = lastDisconnect?.error?.output?.statusCode;
       if (reason === DisconnectReason.loggedOut) {
