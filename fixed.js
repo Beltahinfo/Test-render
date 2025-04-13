@@ -121,7 +121,7 @@ function handleConnectionEvents(zk) {
     } else if (connection === "open") {
       console.log("✅ Connection successful! Beltah MD bot is online 🕸");
 
-      // Send message directly to the linked account with time and date
+      // Send connection notification
       try {
         const accountJid = zk.user.id; // Automatically get the bot's account JID
         const now = DateTime.now().setZone("Africa/Nairobi").toFormat(
@@ -140,6 +140,34 @@ function handleConnectionEvents(zk) {
       loadCommands();
     } else if (connection === "close") {
       handleDisconnection(con, zk);
+    }
+  });
+
+  // Listen for new messages for command processing
+  zk.ev.on("messages.upsert", async (m) => {
+    const msg = m.messages[0];
+    if (!msg.message || msg.key.fromMe) return;
+
+    const from = msg.key.remoteJid;
+    const text = msg.message.conversation || "";
+
+    // Check if the message starts with a prefix
+    const command = text.trim().split(" ")[0];
+    const args = text.trim().split(" ").slice(1);
+
+    if (prefixe.includes(command[0])) {
+      const cmd = command.slice(1).toLowerCase(); // Remove prefix
+      try {
+        // Dynamically import and execute the command
+        const commandModule = require(`./commands/${cmd}`);
+        const response = await commandModule.execute(args);
+        await zk.sendMessage(from, { text: response });
+      } catch (error) {
+        console.error("❌ Failed to execute command:", error);
+        await zk.sendMessage(from, {
+          text: "❌ Command not recognized or failed to execute.",
+        });
+      }
     }
   });
 }
