@@ -1,13 +1,13 @@
 {
-  "name": "Bmw-md",
+  "name": "Beltah-md",
   "version": "2.0.0",
   "description": "",
-  "main": "salut.js",
+  "main": "xmd.js",
   "scripts": {
-    "test": "node salut.js",
-    "s": "node salut.js",
-    "beltahinc": "pm2 start salut.js --attach",
-    "beltahinc": "pm2 start salut.js --attach",
+    "test": "node xmd.js",
+    "s": "node xmd.js",
+    "beltahinc": "pm2 start xmd.js --attach",
+    "beltahinc": "pm2 start xmd.js --attach",
     "c": "tsc"
   },
   "keywords": [
