@@ -66,7 +66,7 @@ async function main() {
     if (connection === "connecting") {
       logger.info("Connecting...");
     } else if (connection === "open") {
-      logger.info("Connected successfully!");
+      logger.info("Sessions Connected successfully!");
     } else if (connection === "close") {
       const reason = lastDisconnect?.error?.output?.statusCode;
       if (reason === DisconnectReason.loggedOut) {
@@ -77,29 +77,8 @@ async function main() {
       }
     }
   });
-  
-async function main() {
-  const store = makeInMemoryStore({
-    logger: pino({ level: "silent" }),
-  });
 
- /* const { state, saveCreds } = await useMultiFileAuthState(
-    path.join(__dirname, "auth")
-  );
-  const { version } = await fetchLatestBaileysVersion();
-
-  const zk = makeWASocket({
-    version,
-    logger: pino({ level: "silent" }),
-    printQRInTerminal: true,
-    auth: state,
-    browser: ["BELTAH-MD", "Safari", "1.0.0"],
-    markOnlineOnConnect: false,
-    syncFullHistory: true,
-    generateHighQualityLinkPreview: true,
-  });*/
-
-  zk.ev.on("messages.upsert", async (msg) => {
+  sock.ev.on("messages.upsert", async (msg) => {
     const ms = msg.messages[0];
     const origineMessage = ms.key.remoteJid;
     const auteurMessage = ms.key.participant || origineMessage;
@@ -115,7 +94,7 @@ async function main() {
       .includes(auteurMessage);
 
     function repondre(mes) {
-      zk.sendMessage(origineMessage, { text: mes }, { quoted: ms });
+      sock.sendMessage(origineMessage, { text: mes }, { quoted: ms });
     }
 
     console.log("\t [][]...{Beltah-Md}...[][]");
@@ -137,13 +116,13 @@ async function main() {
 
     const etat = conf.ETAT;
     if (etat == 1) {
-      await zk.sendPresenceUpdate("available", origineMessage);
+      await sock.sendPresenceUpdate("available", origineMessage);
     } else if (etat == 2) {
-      await zk.sendPresenceUpdate("composing", origineMessage);
+      await sock.sendPresenceUpdate("composing", origineMessage);
     } else if (etat == 3) {
-      await zk.sendPresenceUpdate("recording", origineMessage);
+      await sock.sendPresenceUpdate("recording", origineMessage);
     } else {
-      await zk.sendPresenceUpdate("unavailable", origineMessage);
+      await sock.sendPresenceUpdate("unavailable", origineMessage);
     }
 
     function groupeAdmin(membreGroupe) {
@@ -158,7 +137,7 @@ async function main() {
     }
 
     const mbre = ms.key.remoteJid.endsWith("@g.us")
-      ? await zk.groupMetadata(origineMessage).then(({ participants }) => participants)
+      ? await sock.groupMetadata(origineMessage).then(({ participants }) => participants)
       : "";
     let admins = ms.key.remoteJid.endsWith("@g.us") ? groupeAdmin(mbre) : "";
     const verifAdmin = ms.key.remoteJid.endsWith("@g.us")
