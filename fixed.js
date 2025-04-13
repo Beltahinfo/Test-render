@@ -1,34 +1,52 @@
 "use strict";
 
 // Importing dependencies
-const { 
-  makeInMemoryStore, 
-  fetchLatestBaileysVersion, 
-  useMultiFileAuthState, 
-  delay, 
-  DisconnectReason, 
-  default: makeWASocket 
+const {
+  makeInMemoryStore,
+  fetchLatestBaileysVersion,
+  useMultiFileAuthState,
+  delay,
+  DisconnectReason,
+  default: makeWASocket,
 } = require("@whiskeysockets/baileys");
-const logger = require("@whiskeysockets/baileys/lib/Utils/logger").default.child({});
+const logger = require("@whiskeysockets/baileys/lib/Utils/logger").default.child(
+  {}
+);
 const pino = require("pino");
-const axios = require('axios');
-const { DateTime } = require('luxon');
+const axios = require("axios");
+const { DateTime } = require("luxon");
 const { Boom } = require("@hapi/boom");
 const fs = require("fs-extra");
 const path = require("path");
-const FileType = require('file-type');
-const { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter');
+const FileType = require("file-type");
+const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter");
 const conf = require("./set");
-const { verifierEtatJid, recupererActionJid } = require("./bdd/antilien");
-const { atbverifierEtatJid, atbrecupererActionJid } = require("./bdd/antibot");
+const {
+  verifierEtatJid,
+  recupererActionJid,
+} = require("./bdd/antilien");
+const {
+  atbverifierEtatJid,
+  atbrecupererActionJid,
+} = require("./bdd/antibot");
 const { isUserBanned, addUserToBanList, removeUserFromBanList } = require("./bdd/banUser");
-const { addGroupToBanList, isGroupBanned, removeGroupFromBanList } = require("./bdd/banGroup");
-const { isGroupOnlyAdmin, addGroupToOnlyAdminList, removeGroupFromOnlyAdminList } = require("./bdd/onlyAdmin");
+const {
+  addGroupToBanList,
+  isGroupBanned,
+  removeGroupFromBanList,
+} = require("./bdd/banGroup");
+const {
+  isGroupOnlyAdmin,
+  addGroupToOnlyAdminList,
+  removeGroupFromOnlyAdminList,
+} = require("./bdd/onlyAdmin");
 const { reagir } = require(__dirname + "/keizzah/app");
-require('dotenv').config({ path: "./config.env" });
+const express = require("express");
+const bodyParser = require("body-parser");
+require("dotenv").config({ path: "./config.env" });
 
 // Logger configuration
-logger.level = 'silent';
+logger.level = "silent";
 
 // Configurations
 let session = conf.session.replace(/BELTAH-MD;;;=>/g, "");
@@ -39,7 +57,7 @@ async function authentification() {
   try {
     const authPath = __dirname + "/auth/creds.json";
     if (!fs.existsSync(authPath)) {
-      console.log("Connected successfully...");
+      console.log("Sessions Connected successfully...");
       await fs.writeFileSync(authPath, atob(session), "utf8");
     } else if (fs.existsSync(authPath) && session !== "zokk") {
       await fs.writeFileSync(authPath, atob(session), "utf8");
@@ -71,17 +89,17 @@ function makeSock({ version, state, store }) {
   return makeWASocket({
     version,
     logger: pino({ level: "silent" }),
-    browser: ['BELTAH-MD', "safari", "1.0.0"],
+    browser: ["BELTAH-MD", "safari", "1.0.0"],
     auth: {
       creds: state.creds,
-      keys: state.keys, // Fixed to directly use state.keys
+      keys: state.keys,
     },
     getMessage: async (key) => {
       if (store) {
         const msg = await store.loadMessage(key.remoteJid, key.id, undefined);
         return msg.message || undefined;
       }
-      return { conversation: 'An Error Occurred, Repeat Command!' };
+      return { conversation: "An Error Occurred, Repeat Command!" };
     },
   });
 }
@@ -102,6 +120,23 @@ function handleConnectionEvents(zk) {
       console.log("ℹ️ Connecting...");
     } else if (connection === "open") {
       console.log("✅ Connection successful! Beltah MD bot is online 🕸");
+
+      // Send message directly to the linked account with time and date
+      try {
+        const accountJid = zk.user.id; // Automatically get the bot's account JID
+        const now = DateTime.now().setZone("Africa/Nairobi").toFormat(
+          "yyyy-MM-dd HH:mm:ss"
+        ); // Get current Nairobi time
+        const message = `✅ Beltah MD bot is connected successfully and ready to use! \n\n📅 Date: ${
+          now.split(" ")[0]
+        } \n🕒 Time: ${now.split(" ")[1]} Africa/Nairobi Time`;
+
+        await zk.sendMessage(accountJid, { text: message });
+        console.log("✅ Notification sent to the account.");
+      } catch (err) {
+        console.error("❌ Failed to send notification:", err);
+      }
+
       loadCommands();
     } else if (connection === "close") {
       handleDisconnection(con, zk);
@@ -169,6 +204,51 @@ function watchFileReload() {
     require(file);
   });
 }
+
+// Webhook server
+const app = express();
+app.use(bodyParser.json());
+
+// Webhook endpoint to receive GitHub events
+app.post("/webhook", async (req, res) => {
+  try {
+    const event = req.headers["x-github-event"];
+    const payload = req.body;
+
+    if (event === "push") {
+      const repoName = payload.repository.name;
+      const pusher = payload.pusher.name;
+      const commits = payload.commits
+        .map((commit) => `- ${commit.message} (${commit.id.slice(0, 7)})`)
+        .join("\n");
+      const now = DateTime.now().setZone("Africa/Nairobi").toFormat(
+        "yyyy-MM-dd HH:mm:ss"
+      );
+
+      const message = `🚀 Repository Update Notification\n\n📂 Repo: ${repoName}\n👤 Pusher: ${pusher}\n📅 Date: ${
+        now.split(" ")[0]
+      }\n🕒 Time: ${
+        now.split(" ")[1]
+      } Africa/Nairobi Time\n\n🔄 Recent Commits:\n${commits}`;
+
+      // Send the notification
+      const zk = makeWASocket(); // Ensure the bot is connected
+      await zk.sendMessage(zk.user.id, { text: message });
+      console.log("✅ Notification sent for repository update.");
+    }
+
+    res.status(200).send("Event received");
+  } catch (error) {
+    console.error("❌ Failed to handle webhook event:", error);
+    res.status(500).send("Error handling event");
+  }
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Webhook server running on port ${PORT}`);
+});
 
 // Launch the bot
 authentification();
