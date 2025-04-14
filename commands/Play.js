@@ -108,20 +108,20 @@ keith({
 
     // Provide options for users to reply and choose the format
     await zk.sendMessage(dest, {
-      text: `🎵 *${title}*\n\nReply to this message with:\n\n1️⃣ "Audio" to get the result as an audio file.\n2️⃣ "Document" to get the result as a downloadable document.`,
+      text: `🎵 *${title}*\n\nReply to this message with:\n\n1️⃣ "1" to get the result as an audio file.\n2️⃣ "2" to get the result as a downloadable document.`,
       contextInfo: getContextInfo(title, userJid, video.thumbnail)
     }, { quoted: ms });
 
     // Handle user reply
     zk.on('message-reply', async (replyMessage) => {
-      if (replyMessage.body.toLowerCase() === 'audio') {
+      if (replyMessage.body.toLowerCase() === '1') {
         await zk.sendMessage(dest, {
           audio: { url: download_url },
           mimetype: 'audio/mp4',
           caption: `🎵 *${title}*`,
           contextInfo: getContextInfo(title, userJid, video.thumbnail)
         }, { quoted: replyMessage });
-      } else if (replyMessage.body.toLowerCase() === 'document') {
+      } else if (replyMessage.body.toLowerCase() === '2') {
         await zk.sendMessage(dest, {
           document: { url: download_url },
           mimetype: 'audio/mpeg',
