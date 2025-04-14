@@ -50,21 +50,22 @@ keith({ nomCom: "menu", aliases: ["menu", "help"], categorie: "SYSTEM" }, async 
     const currentTime = moment();
     const formattedTime = currentTime.format("HH:mm:ss");
     const formattedDate = currentTime.format("DD/MM/YYYY");
+    const forwardedIndicator = message.isForwarded ? "🔁 Forwarded Many Times" : "";
 
     const greeting = currentTime.hour() < 12 ? "Good Morning 🌄" : currentTime.hour() < 17 ? "Good Afternoon 🌃" : "Good Evening ⛅";
 
     const header = `
-${greeting}, *${nomAuteurMessage || "User"}*
-
-╭━━━━❮  ${settings.BOT}  ❯━━━━╮
-┃ *Owner:* ${settings.OWNER_NAME}
-┃ *Prefix:* ${settings.PREFIXE}
-┃ *Mode:* ${mode}
-┃ *Time:* ${formattedTime}
-┃ *Date:* ${formattedDate}
-┃ *Uptime:* ${formatUptime(process.uptime())}
-╰━━━━━━━━━━━━━━━━━━━━━╯
-`;
+╭━━━━━━━❮ *${settings.BOT} MENU* ❯━━━━━━━╮
+┃ ${greeting}, *${nomAuteurMessage || "User"}* ${forwardedIndicator}
+┃ 
+┃ 📅 *Date:* ${formattedDate}
+┃ ⏰ *Time:* ${formattedTime}
+┃ ⚙️ *Mode:* ${mode}
+┃ ⏱️ *Uptime:* ${formatUptime(process.uptime())}
+┃ 👤 *Owner:* ${settings.OWNER_NAME}
+┃ 🔑 *Prefix:* ${settings.PREFIXE}
+╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯
+    `;
 
     // Generate category list
     const categoryList = Object.keys(categorizedCommands).sort().map((category, index) => {
@@ -72,8 +73,8 @@ ${greeting}, *${nomAuteurMessage || "User"}*
     }).join('\n');
 
     const instructions = `
-Reply with the category number to view its commands.
-`;
+📌 *Instructions:* Reply with the category number to view its commands.
+    `;
 
     const fullMenu = `${header}\n${categoryList}\n${instructions}`;
 
@@ -83,8 +84,8 @@ Reply with the category number to view its commands.
             contextInfo: {
                 mentionedJid: [message.sender],
                 externalAdReply: {
-                    title: "BELTAH-MD Menu",
-                    body: "Select a category by replying with its number",
+                    title: "BELTAH-MD MENU",
+                    body: "Select a category by replying with its number.",
                     thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg",
                     sourceUrl: settings.GURL
                 }
@@ -98,9 +99,9 @@ Reply with the category number to view its commands.
                 const selectedCategory = Object.keys(categorizedCommands).sort()[userReply - 1];
                 const commandsList = categorizedCommands[selectedCategory].map(cmd => `• ${cmd}`).join('\n');
                 const replyMessage = `
-You selected *${toFancyUppercaseFont(selectedCategory)}*
-Here are the commands in this category:
+*🗂️ CATEGORY:* ${toFancyUppercaseFont(selectedCategory)}
 
+Here are the commands in this category:
 ${commandsList}
 
 Use the prefix *${settings.PREFIXE}* before any command.
@@ -108,12 +109,12 @@ Use the prefix *${settings.PREFIXE}* before any command.
 
                 await client.sendMessage(response, { text: replyMessage }, { quoted: ms });
             } else {
-                await client.sendMessage(response, { text: "Invalid selection. Please reply with a valid category number." }, { quoted: ms });
+                await client.sendMessage(response, { text: "❌ Invalid selection. Please reply with a valid category number." }, { quoted: ms });
             }
         });
 
     } catch (error) {
         console.error("Menu error: ", error);
-        respond("Error displaying menu: " + error);
+        respond("❌ Error displaying menu: " + error);
     }
 });
