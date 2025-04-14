@@ -90,6 +90,28 @@ Reply with the category number to view its commands.
                 }
             }
         }, { quoted: ms });
+
+        // Wait for user reply
+        client.onMessage(async (response) => {
+            const userReply = parseInt(response.body.trim(), 10);
+            if (!isNaN(userReply) && userReply >= 1 && userReply <= Object.keys(categorizedCommands).length) {
+                const selectedCategory = Object.keys(categorizedCommands).sort()[userReply - 1];
+                const commandsList = categorizedCommands[selectedCategory].map(cmd => `• ${cmd}`).join('\n');
+                const replyMessage = `
+You selected *${toFancyUppercaseFont(selectedCategory)}*
+Here are the commands in this category:
+
+${commandsList}
+
+Use the prefix *${settings.PREFIXE}* before any command.
+                `;
+
+                await client.sendMessage(response, { text: replyMessage }, { quoted: ms });
+            } else {
+                await client.sendMessage(response, { text: "Invalid selection. Please reply with a valid category number." }, { quoted: ms });
+            }
+        });
+
     } catch (error) {
         console.error("Menu error: ", error);
         respond("Error displaying menu: " + error);
