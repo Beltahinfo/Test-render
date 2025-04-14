@@ -52,7 +52,26 @@ const fetchGitHubStats = async () => {
         return { forks: 0, stars: 0, totalUsers: 0 };
     }
 };
-
+// Common contextInfo configuration
+ const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
+     mentionedJid: [userJid],
+     forwardingScore: 999,
+     isForwarded: true,
+     forwardedNewsletterMessageInfo: {
+         newsletterJid: "120363249464136503@newsletter",
+         newsletterName: "Beltah Tech Updates",
+         serverMessageId: Math.floor(100000 + Math.random() * 900000),
+     },
+     externalAdReply: {
+         showAdAttribution: true,
+         title: title || "BELTAH-MD BOT",
+         body: "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿",
+         thumbnailUrl: thumbnailUrl || 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg',
+         sourceUrl: settings.GURL || '',
+         mediaType: 1,
+         renderLargerThumbnail: false
+     }
+ });
 // Random quotes array
 const quotes = [
     "Dream big, work hard.",
@@ -168,19 +187,9 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
     try {
         const senderName = message.sender || message.from;
         await client.sendMessage(message, {
-            text: responseMessage + commandsList,
-            contextInfo: {
-                mentionedJid: [senderName],
-                externalAdReply: {
-                    title: "𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘" ,
-                    body: "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿" ,
-                    thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" ,
-                    sourceUrl:'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' ,
-                    mediaType: 1,
-                    renderLargerThumbnail: true
-                }
-            }
-        });
+             text: responseMessage + commandsList,
+             contextInfo: getContextInfo("BELTAH-MD MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+         }, { quoted: ms });
     } catch (error) {
         console.error("Menu error: ", error);
         respond("🥵🥵 Menu error: " + error);
@@ -255,19 +264,9 @@ keith({ nomCom: "list", aliases: ["liste", "helplist", "commandlist"], categorie
     try {
         const senderName = message.sender || message.from;
         await client.sendMessage(message, {
-            text: responseMessage + commandsList,
-            contextInfo: {
-                mentionedJid: [senderName],
-                externalAdReply: {
-                    title: "𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃" ,
-                    body: "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ" ,
-                    thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" ,
-                    sourceUrl:'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' ,
-                    mediaType: 1,
-                    renderLargerThumbnail: true
-                }
-            }
-        });
+             text: responseMessage + commandsList,
+             contextInfo: getContextInfo("BELTAH-MD MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+         }, { quoted: ms });
     } catch (error) {
         console.error("Menu error: ", error);
         respond("🥵🥵 Menu error: " + error);
@@ -342,19 +341,9 @@ keith({ nomCom: "allcmd", aliases: ["liste", "helplist", "commandlist"], categor
     try {
         const senderName = message.sender || message.from;
         await client.sendMessage(message, {
-            text: responseMessage + commandsList,
-            contextInfo: {
-                mentionedJid: [senderName],
-                externalAdReply: {
-                    title: "𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃" ,
-                    body: "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ" ,
-                    thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" ,
-                    sourceUrl:'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' ,
-                    mediaType: 1,
-                    renderLargerThumbnail: true
-                }
-            }
-        });
+             text: responseMessage + commandsList,
+             contextInfo: getContextInfo("BELTAH-MD MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+         }, { quoted: ms });
     } catch (error) {
         console.error("Menu error: ", error);
         respond("🥵🥵 Menu error: " + error);
@@ -431,19 +420,9 @@ keith({ nomCom: "help", aliases: ["liste", "helplist", "commandlist"], categorie
     try {
         const senderName = message.sender || message.from;
         await client.sendMessage(message, {
-            text: responseMessage + commandsList,
-            contextInfo: {
-                mentionedJid: [senderName],
-                externalAdReply: {
-                    title: "𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃" ,
-                    body: "ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ" ,
-                    thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" ,
-                    sourceUrl:'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' ,
-                    mediaType: 1,
-                    renderLargerThumbnail: true
-                }
-            }
-        });
+             text: responseMessage + commandsList,
+             contextInfo: getContextInfo("BELTAH-MD MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+         }, { quoted: ms });
     } catch (error) {
         console.error("Menu error: ", error);
         respond("🥵🥵 Menu error: " + error);
