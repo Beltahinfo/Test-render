@@ -271,15 +271,26 @@ if (conf.AUTO_LIKE_STATUS === "yes") {
     });
 }
 
-    //handle autobio
-if (conf.AUTOBIO === 'yes') {
+ // Handle AutoBio update
+if (conf.AUTOBIO?.toLowerCase() === 'yes') {
+    const updateInterval = 10 * 1000; // Update interval in milliseconds (10 seconds)
+    const timeZone = 'Africa/Nairobi';
+
     setInterval(() => {
-      const date = new Date();
-      zk.updateProfileStatus(
-        `👻 ${conf.BOT} 👻 || 𝐃𝐚𝐭𝐞: ${date.toLocaleString('en-US' , { timeZone: 'Africa/Nairobi' })} || 𝐃𝐚𝐲: ${date.toLocaleString('en-US', { weekday: 'long', timeZone: 'Africa/Nairobi' })}.`
-      );
-    }, 10 * 1000);
-  }
+        const currentDate = new Date();
+
+        // Extract and format date and time separately
+        const formattedDate = currentDate.toLocaleDateString('en-US', { timeZone });
+        const formattedTime = currentDate.toLocaleTimeString('en-US', { timeZone });
+        const formattedDay = currentDate.toLocaleString('en-US', { weekday: 'long', timeZone });
+
+        // Update profile status
+        const statusMessage = `👻 ${conf.BOT} 👻 || 𝐃𝐚𝐭𝐞: ${formattedDate} || 𝐓𝐢𝐦𝐞: ${formattedTime} || 𝐃𝐚𝐲: ${formattedDay}.`;
+        zk.updateProfileStatus(statusMessage);
+    }, updateInterval);
+
+    console.log(`AutoBio feature is enabled. Profile status will update every ${updateInterval / 1000} seconds.`);
+      }
     
  let repliedContacts = new Set();
 
