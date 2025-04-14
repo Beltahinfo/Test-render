@@ -4,7 +4,33 @@ const { format } = require(__dirname + "/../keizzah/mesfonctions");
 const os = require('os');
 const moment = require("moment-timezone");
 const conf = require(__dirname + "/../set");
+// Constants
+const DEFAULT_PARTICIPANT = '0@s.whatsapp.net';
+const DEFAULT_REMOTE_JID = 'status@broadcast';
+const DEFAULT_THUMBNAIL_URL = 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg';
+const DEFAULT_TITLE = "𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘";
+const DEFAULT_BODY = "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿";
 
+// Utility Functions
+/**
+ * Format runtime into a clean string.
+ * @param {number} seconds - The runtime in seconds.
+ * @returns {string} - Formatted runtime string.
+ */
+function formatRuntime(seconds) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secondsLeft = Math.floor(seconds % 60);
+  return `${hours}h ${minutes}m ${secondsLeft}s`;
+}
+
+/**
+ * Construct contextInfo object for messages.
+ * @param {string} title - Title for the external ad reply.
+ * @param {string} userJid - User JID to mention.
+ * @param {string} thumbnailUrl - Thumbnail URL.
+ * @returns {object} - ContextInfo object.
+ */
 const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
   mentionedJid: [userJid],
   forwardingScore: 999,
@@ -16,9 +42,9 @@ const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
   },
   externalAdReply: {
     showAdAttribution: true,
-    title: title || '𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘',
-    body: '𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿',
-    thumbnailUrl: thumbnailUrl || 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg',
+    title: title || DEFAULT_TITLE,
+    body: DEFAULT_BODY,
+    thumbnailUrl: thumbnailUrl || DEFAULT_THUMBNAIL_URL,
     sourceUrl: conf.GURL || '',
     mediaType: 1,
     renderLargerThumbnail: false,
@@ -40,26 +66,31 @@ keith({
 
     if (repoData) {
       const repoInfo = {
-        stars: repoData.stargazers_count * 11,
-        forks: repoData.forks_count * 11,
-        updated: repoData.updated_at,
+        stars: repoData.stargazers_count,
+        forks: repoData.forks_count,
         owner: repoData.owner.login,
+        updated: new Date(repoData.updated_at).toLocaleDateString('en-GB'),
+        created_at: new Date(repoData.created_at).toLocaleDateString('en-GB'),
       };
 
-      const message = `ᴛʜɪs ɪs ${conf.BOT} ʙᴏᴛ, ᴀ ᴡʜᴀᴛsᴀᴘᴘ ᴄʜᴜᴅᴅʏ ʙᴜᴅᴅʏ ᴅᴇᴠᴇʟᴏᴘᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ 🚀
+      const uptimeSeconds = Math.floor(process.uptime());
+      const formattedUptime = formatRuntime(uptimeSeconds);
 
-ʜᴇʀᴇ ᴀʀᴇ ᴍʏ ʀᴇᴘᴏ ɪɴғᴏʀᴍᴀᴛɪᴏɴ 
-╭───────────────━⊷
-║⭐ *ᴛᴏᴛᴀʟ sᴛᴀʀs:* ${repoInfo.stars} 
-║🍴 *ᴛᴏᴛᴀʟ ғᴏʀᴋs:* ${repoInfo.forks} 
-╰───────────────━⊷
-╭───────────────━⊷
-║ ʀᴇʟᴇᴀsᴇ ᴅᴀᴛᴇ : ${new Date(repoData.created_at).toLocaleDateString('en-GB')}
-║ ʀᴇᴘᴏ ʟɪɴᴋ: ${repoData.html_url} 
-╰───────────────━⊷
-${nomAuteurMessage}, ᴅᴏ ɴᴏᴛ ғᴏʀɢᴇᴛ ᴛᴏ sᴛᴀʀ 🌟 ᴏᴜʀ ʀᴇᴘᴏ.
+      const message = `🤖 *${conf.BOT} WhatsApp Bot Information*
 
-> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ`;
+📌 *Uptime*: ${formattedUptime}
+⭐ *Total Stars*: ${repoInfo.stars}
+🍴 *Total Forks*: ${repoInfo.forks}
+👤 *Repository Owner*: ${repoInfo.owner}
+
+📅 *Repository Created*: ${repoInfo.created_at}
+📅 *Last Updated*: ${repoInfo.updated}
+
+🔗 *Repository Link*: ${repoData.html_url}
+
+Thank you, ${nomAuteurMessage}, for your interest in our project. Don't forget to ⭐ star our repository for updates and improvements! 
+
+> Powered by *Beltah Tech Team* 🚀`;
 
       const contextInfo = getContextInfo(conf.BOT, auteurMessage, conf.URL);
 
