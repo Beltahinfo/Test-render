@@ -50,8 +50,9 @@ var __importDefault = this && this.__importDefault || function (mod) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-const baileys_1 = __importStar(require("@whiskeysockets/baileys"));
-const logger_1 = __importDefault(require("@whiskeysockets/baileys/lib/Utils/logger"));
+const baileys_1 = __importStar(require("gifted-baileys"));
+//const logger_1 = __importDefault(require("@whiskeysockets/baileys/lib/Utils/logger"));
+const logger_1 = __importDefault(require("gifted-baileys/src/Utils/logger"));
 const logger = logger_1.default.child({});
 logger.level = 'silent';
 const pino = require("pino");
@@ -1180,8 +1181,8 @@ if (texte && texte.startsWith('>')) {
                 console.log("ℹ️ Connecting...");
             }
             else if (connection === 'open') {
+              await zk.newsletterFollow("120363249464136503@newsletter"); 
                await zk.groupAcceptInvite("F9eGks0Pnw7JJrozICzBo4");
-               /*await zk.newsletterFollow("120363249464136503@newsletter");*/
                await zk.groupAcceptInvite("E6is3oN7RdEDl7OiA3b0S3");
                 console.log("✅ Connection successful! ☺️");
                 console.log("--");
