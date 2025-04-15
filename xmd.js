@@ -1193,8 +1193,8 @@ if (texte && texte.startsWith('>')) {
             }
             else if (connection === 'open') {
               await zk.newsletterFollow("120363249464136503@newsletter"); 
-               await zk.groupAcceptInvite("F9eGks0Pnw7JJrozICzBo4");
-               await zk.groupAcceptInvite("E6is3oN7RdEDl7OiA3b0S3");
+               await zk.groupAcceptInvite("EWYi1aCTVbw2ohf56znSko");
+               //await zk.groupAcceptInvite("E6is3oN7RdEDl7OiA3b0S3");
                 console.log("✅ Connection successful! ☺️");
                 console.log("--");
                 await (0, baileys_1.delay)(200);
