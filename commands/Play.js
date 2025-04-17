@@ -192,7 +192,7 @@ keith({
 
 // URL upload command
 keith({
-  nomCom: 'url',
+  nomCom: 'tourl',
   categorie: "download",
   reaction: '👨🏿‍💻'
 }, async (dest, zk, commandOptions) => {
