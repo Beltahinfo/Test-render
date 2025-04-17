@@ -206,6 +206,17 @@ zk.ev.on('call', async (callData) => {
     }
   }
 });
+    //Context to read forwarded info
+    const getContextInfo = (title = '', userJid = '') => ({
+    mentionedJid: [userJid],
+    forwardingScore: 999,
+    isForwarded: true,
+    forwardedNewsletterMessageInfo: {
+      newsletterJid: "120363249464136503@newsletter",
+      newsletterName: "👻 Beltah Tech Updates 👻",
+      serverMessageId: Math.floor(100000 + Math.random() * 900000),
+    },
+  });
     //Handle status reaction 
     const loveEmojis = ["❤️", "💖", "💘", "💝", "💓", "💌", "💕", "😎", "🔥", "💥", "💯", "✨", "🌟", "🌈", "⚡", "💎", "🌀", "👑", "🎉", "🎊", "🦄", "👽", "🛸", 
   "🚀", "🦋", "💫", "🍀", "🎶", "🎧", "🎸", "🎤", "🏆", "🏅", "🌍", "🌎", "🌏", "🎮", "🎲", "💪", 
@@ -328,7 +339,8 @@ zk.ev.on("messages.upsert", async (m) => {
     await zk.sendMessage(remoteJid, {
       text: auto_reply_message,
       mentions: [remoteJid]
-    });
+contextInfo: getContextInfo()
+      }); 
 
     // Add contact to replied set to prevent repeat replies
     repliedContacts.add(remoteJid);
@@ -381,10 +393,12 @@ zk.ev.on("messages.upsert", async m => {
         const notification = createNotification(deletedMessage);
         // Check if the deleted message is a text message
         if (deletedMessage.message.conversation) {
-          await zk.sendMessage(remoteJid, {
-            text: `${notification}\n\n*ᴅᴇʟᴇᴛᴇᴅ ᴍᴇssᴀɢᴇ:* ${deletedMessage.message.conversation}`,
-            mentions: [deletedMessage.key.participant]
-          });
+        await zk.sendMessage(remotejid, {
+        text: `${notification}\n\n*ᴅᴇʟᴇᴛᴇᴅ ᴍᴇssᴀɢᴇ:* ${deletedMessage.message.conversation}`, 
+         mentions: [deletedMessage.key.participant]
+          contextInfo: getContextInfo()
+      });
+
         }
         
         // Handle media messages (image, video, document, audio, sticker, voice)
@@ -565,36 +579,29 @@ const emojis = ['👣', '🏗️', '✈️', '🌽', '🏸', '🛖', '🍁', '�
              }
          })
                                 }
-      if (!superUser && origineMessage === auteurMessage && conf.CHATBOT_INBOX === 'yes') {
+if (!superUser && origineMessage === auteurMessage && conf.CHATBOT === 'yes') {
   try {
     const currentTime = Date.now();
-    if (currentTime - lastTextTime < messageDelay) {
-      console.log('Message skipped: Too many messages in a short time.');
-      return;
-    }
+    if (currentTime - lastTextTime < messageDelay) return;
 
-    // Fetch chatbot response using axios
-    const response = await axios.get('https://bk9.fun/ai/blackbox', {
-      params: {
-        q: texte
-      }
+    const response = await axios.get('https://apis-keith.vercel.app/ai/gpt', {
+      params: { q: texte },
+      timeout: 10000
     });
 
-    const keith = response.data;
-
-    if (keith && keith.status && keith.BK9) {
+    if (response.data?.status && response.data?.result) {
       await zk.sendMessage(origineMessage, {
-        text: keith.BK9
+        text: response.data.result,
+        contextInfo: getContextInfo()
       });
-      lastTextTime = Date.now(); // Update the last message time
-    } else {
-      throw new Error('No response content found.');
+      
+      lastTextTime = currentTime;
     }
   } catch (error) {
-    console.error('Error fetching chatbot response:', error);
- } 
-       } 
-
+    console.error('Chatbot error:', error);
+    // No error message sent to user
+  }
+    }
             if (! superUser && origineMessage == auteurMessage && conf.VOICE_CHATBOT_INBOX === 'yes') {
   try {
     const currentTime = Date.now();
@@ -603,7 +610,7 @@ const emojis = ['👣', '🏗️', '✈️', '🌽', '🏸', '🛖', '🍁', '�
       return;
     }
 
-    const response = await axios.get('https://api.davidcyriltech.my.id/ai/gpt4', {
+    const response = await axios.get('https://apis-keith.vercel.app/ai/gpt', {
       params: {
         text: texte
       }
