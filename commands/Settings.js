@@ -761,7 +761,7 @@ keith({
   }
 
   const settingsOptions = [
-    { nom: "ADM", choix: ['yes', "no"] },
+    { nom: "ANTIDELETE", choix: ['yes', "no"] },
     { nom: "ANTICALL", choix: ['yes', 'no'] },
     { nom: "AUTO_REACT", choix: ['yes', "no"] },
     { nom: "AUTO_VIEW_STATUS", choix: ['yes', "no"] },
@@ -769,12 +769,14 @@ keith({
     { nom: "PM_PERMIT", choix: ['yes', "no"] },
     { nom: 'MODE', choix: ["public", "private"] },
     { nom: "STARTING_MESSAGE", choix: ['on', "off"] },
-    { nom: "AUTO_READ_MESSAGES", choix: ['on', "off"] },
+    { nom: "AUTO_BIO", choix: ['on', "off"] },
+    { nom: "STARTING_MESSAGE", choix: ['on', "off"] },
+    { nom: "AUTO_LIKE_STATUS", choix: ['on', "off"] },
     { nom: 'PRESENCE', choix: ["online", "typing", 'recording'] },
-    { nom: "CHAT_BOT", choix: ['on', 'off'] }
+    { nom: "CHATBOT", choix: ['on', 'off'] }
   ];
 
-  let settingsMenu = "╭──────༺♡༻──────╮\n𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 Settings\n╰──────༺♡༻──────╯\n\n";
+  let settingsMenu = "╭──────༺♡༻──────╮\nBeltah Tech Settings\n╰──────༺♡༻──────╯\n\n";
   settingsOptions.forEach((option, index) => {
     settingsMenu += `${index + 1}- *${option.nom}*\n`;
   });
@@ -794,7 +796,7 @@ keith({
   });
 
   const selectedOption = settingsOptions[userChoice.message.extendedTextMessage.text - 1];
-  let settingsDetail = `╭──────༺♡༻──────╮\n ʙᴇʟᴛᴀʜ ᴍᴅsettings\n╰──────༺♡༻──────╯\n\n`;
+  let settingsDetail = `╭──────༺♡༻──────╮\n BELTAH-MD SETTINGS\n╰──────༺♡༻──────╯\n\n`;
   settingsDetail += `*Variable Name* : ${selectedOption.nom}\n`;
   settingsDetail += `*Description* : ${getDescriptionFromEnv(selectedOption.nom)}\n\n`;
   settingsDetail += "┌────── ⋆⋅☆⋅⋆ ──────┐\n\n";
