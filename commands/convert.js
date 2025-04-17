@@ -1,7 +1,7 @@
 const { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter');
 const { keith } = require("../keizzah/keith");
 const traduire = require("../keizzah/traduction");
-const { downloadMediaMessage,downloadContentFromMessage } =  require('@whiskeysockets/baileys');
+const { downloadMediaMessage,downloadContentFromMessage } =  require('gifted-baileys');
 const fs =require("fs-extra") ;
 const axios = require('axios');  
 const FormData = require('form-data');
