@@ -338,7 +338,7 @@ zk.ev.on("messages.upsert", async (m) => {
   if (conf.GREET === "yes" && !repliedContacts.has(remoteJid) && !ms.key.fromMe && !remoteJid.includes("@g.us")) {
     await zk.sendMessage(remoteJid, {
       text: auto_reply_message,
-      mentions: [remoteJid]
+      mentions: [remoteJid], 
 contextInfo: getContextInfo()
       }); 
 
@@ -395,7 +395,7 @@ zk.ev.on("messages.upsert", async m => {
         if (deletedMessage.message.conversation) {
         await zk.sendMessage(remotejid, {
         text: `${notification}\n\n*ᴅᴇʟᴇᴛᴇᴅ ᴍᴇssᴀɢᴇ:* ${deletedMessage.message.conversation}`, 
-         mentions: [deletedMessage.key.participant]
+         mentions: [deletedMessage.key.participant], 
           contextInfo: getContextInfo()
       });
 
@@ -663,18 +663,8 @@ if (texte && texte.startsWith('>')) {
 
     await zk.sendMessage(origineMessage, {
       text: menuText,
-      contextInfo: {
-        externalAdReply: {
-          title: "𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃" ,
-          body: "POWERED BY BELTAH HACKING TEAM",
-          sourceUrl: "https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F" ,
-          thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" || conf.BOT_MENU_LINK,
-          mediaType: 1,
-          showAdAttribution: true,
-          renderLargerThumbnail: false
-        }
-      }
-    });
+      contextInfo: getContextInfo()
+      });
     return; 
   }
 
