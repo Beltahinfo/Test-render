@@ -11,7 +11,7 @@ const fs = require("fs-extra");
 const conf = require("../set");
 const { default: axios } = require('axios');
 //const { uploadImageToImgur } = require('../france/imgur');
-const {getBinaryNodeChild, getBinaryNodeChildren} = require('@whiskeysockets/baileys').default;
+const {getBinaryNodeChild, getBinaryNodeChildren} = require('gifted-baileys').default;
 
 keith({
   nomCom: "vcf",
@@ -65,7 +65,7 @@ keith({
           mediaUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" ,
           mediaType: 1,
           thumbnailUrl: "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg",
-          title: "𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃",
+          title: "BELTAH-MD BOT",
           body: "ʏᴏᴜ ᴄᴀɴ ɴᴏᴡ ɪᴍᴘᴏʀᴛ ᴛᴏ ʏᴏᴜʀ ᴅᴇᴠɪᴄᴇ",
           sourceUrl:  'https://whatsapp.com/channel/0029VaRHDBKKmCPKp9B2uH2F' , // Using configured source URL
           showAdAttribution: true
