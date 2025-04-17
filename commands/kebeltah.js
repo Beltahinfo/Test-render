@@ -70,7 +70,7 @@ const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
 });
 
 // Menu logic
-keith({ nomCom: "commands", aliases: ["help", "deli"], categorie: "SYSTEM" }, async (message, client, config) => {
+keith({ nomCom: "menuu", aliases: ["help", "commands"], categorie: "SYSTEM" }, async (message, client, config) => {
     const { ms, respond, prefix, nomAuteurMessage } = config;
     const commands = require(__dirname + "/../keizzah/keith").cm;
     const categorizedCommands = {};
@@ -130,7 +130,7 @@ Welcome to *${settings.BOT}*, your all-in-one automation solution. Below is the 
         await client.sendMessage(message, {
             text: responseMessage + commandsList,
             contextInfo: getContextInfo("BELTAH-MD MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
-        }, { quoted: fgg }); // Use fgg as the quoted message
+        }, { quoted: ms });
     } catch (error) {
         console.error("Menu error: ", error);
         respond("An error occurred while generating the menu. Please try again later.");
