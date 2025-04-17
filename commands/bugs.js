@@ -7,7 +7,7 @@ const path = require("path");
 const {
     generateWAMessageFromContent,
     proto
-} = require("@whiskeysockets/baileys");
+} = require("gifted-baileys");
 
 // bug database
 const { bugtext1 } = require("../keizzah/bugs/bugtext1");
