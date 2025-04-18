@@ -1,6 +1,6 @@
 const { keith } = require("../keizzah/keith");
 const { generateProfilePicture } = require("../keizzah/dl/Function");
-const { S_WHATSAPP_NET } = require('@whiskeysockets/baileys');
+const { S_WHATSAPP_NET } = require('gifted-baileys');
 const fs = require("fs");
 
 keith({
