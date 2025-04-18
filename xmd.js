@@ -213,7 +213,7 @@ zk.ev.on('call', async (callData) => {
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
       newsletterJid: "120363249464136503@newsletter",
-      newsletterName: "👻 Beltah Tech Updates 👻",
+      newsletterName: "🤖 𝐁𝐄𝐋𝐓𝐀𝐇 𝐀𝐈 𝐂𝐇𝐀𝐓𝐁𝐎𝐓 🤖",
       serverMessageId: Math.floor(100000 + Math.random() * 900000),
     },
   });
@@ -659,7 +659,7 @@ if (!superUser && origineMessage === auteurMessage && conf.CHATBOT === 'yes') {
 if (texte && texte.startsWith('>')) {
   // If the sender is not the owner
   if (!superUser) {
-    const menuText = `This command is only for the owner or Beltah to execute 🚫`;
+    const menuText = `Only Owner or Beltah can execute baileys codes.`;
 
     await zk.sendMessage(origineMessage, {
       text: menuText,
