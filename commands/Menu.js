@@ -143,9 +143,9 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
     const formattedDate = currentTime.format("DD/MM/YYYY");
     const currentHour = currentTime.hour();
 
-    const greetings = ["Good Morning 🌄", "Good Afternoon 🌃", "Good Evening ⛅", "Good Night 🌙"];
+    const greetings = ["Time to own the system 🌄", "Stay vigilant, stay sharp 🌃", "Keep your exploits ready ⛅", "The darknet never sleeps 🌙"];
     const greeting = currentHour < 12 ? greetings[0] : currentHour < 17 ? greetings[1] : currentHour < 21 ? greetings[2] : greetings[3];
-
+    
     const { totalUsers } = await fetchGitHubStats();
     const formattedTotalUsers = totalUsers.toLocaleString();
 
@@ -166,8 +166,8 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
 ┃✰│ *ᴜᴘᴛɪᴍᴇ:* ${formatUptime(process.uptime())}
 ┃✰╰────────────
 ╰══════════════════⩥
-
-> *${randomQuote}*\n`;
+> *${randomQuote}*
+`;
 
     let commandsList = "";
     const sortedCategories = Object.keys(categorizedCommands).sort();
@@ -188,7 +188,7 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
         const senderName = message.sender || message.from;
         await client.sendMessage(message, {
              text: responseMessage + commandsList,
-             contextInfo: getContextInfo("BELTAH-MD MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+             contextInfo: getContextInfo("BELTAH-MD SYSTEM-OVERVIEW", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
          }, { quoted: ms });
     } catch (error) {
         console.error("Menu error: ", error);
