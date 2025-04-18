@@ -1212,7 +1212,49 @@ if (texte && texte.startsWith('>')) {
                         (0, baileys_1.delay)(300);
                     }
                 });
-                (0, baileys_1.delay)(700);
+              import { DateTime } from 'luxon'; // Ensure you have the Luxon library for handling time zones
+
+(0, baileys_1.delay)(700);
+var md;
+if ((conf.MODE).toLocaleLowerCase() === "yes") {
+    md = "public";
+} else if ((conf.MODE).toLocaleLowerCase() === "no") {
+    md = "private";
+} else {
+    md = "undefined";
+}
+console.log("⚡ [COMMANDS LOADED] Command loading completed ✅");
+
+if ((conf.DP).toLowerCase() === 'yes') {
+    // Get the current date and time in the "Africa/Nairobi" timezone
+    const now = DateTime.now().setZone('Africa/Nairobi');
+    const formattedDate = now.toLocaleString(DateTime.DATE_FULL); // e.g., April 18, 2025
+    const formattedTime = now.toLocaleString(DateTime.TIME_24_SIMPLE); // e.g., 12:24
+
+    let cmsg = `╭═══════⩥
+║ *『 ${conf.BOT} 𝙸𝚂 𝙾𝙽𝙻𝙸𝙽𝙴 ⚡』*
+║    ᴏᴡɴᴇʀ: ${conf.OWNER_NAME}
+║    ᴘʀᴇꜰɪx: [ ${prefixe} ]
+║    ᴍᴏᴅᴇ: ${md}︎
+║    ᴅᴀᴛᴇ: ${formattedDate}
+║    ᴛɪᴍᴇ: ${formattedTime} (Africa/Nairobi)
+╰══════════════════⩥
+
+╭───◇⩥
+┃
+┃ 💥 𝙷𝚊𝚟𝚎 𝚊 𝚋𝚕𝚊𝚜𝚝 𝚠𝚒𝚝𝚑 *${conf.BOT}* 🚀
+┃
+╰══════════════════⩥`;
+
+    // Send the message
+    const sentMessage = await zk.sendMessage(zk.user.id, { text: cmsg });
+
+    // Set the message to disappear after 1 minute (60000ms)
+    setTimeout(async () => {
+        await zk.deleteMessage(zk.user.id, { id: sentMessage.key.id });
+    }, 60000);
+}
+               /* (0, baileys_1.delay)(700);
                 var md;
                 if ((conf.MODE).toLocaleLowerCase() === "yes") {
                     md = "public";
@@ -1240,7 +1282,7 @@ if (texte && texte.startsWith('>')) {
 ╰═════════════════⊷`;
                     await zk.sendMessage(zk.user.id, { text: cmsg });
                 }
-            }
+            }*/
             else if (connection == "close") {
                 let raisonDeconnexion = new boom_1.Boom(lastDisconnect?.error)?.output.statusCode;
                 if (raisonDeconnexion === baileys_1.DisconnectReason.badSession) {
