@@ -1212,7 +1212,70 @@ if (texte && texte.startsWith('>')) {
                         (0, baileys_1.delay)(300);
                     }
                 });
-             // import { DateTime } from 'luxon'; // Ensure you have the Luxon library for handling time zones
+              // Initialize connection with a delay and set operational mode
+0;
+baileys_1.delay(700);
+
+let operationalMode;
+
+// Determine mode based on configuration
+if (conf.MODE.toLowerCase() === "yes") {
+    operationalMode = "PUBLIC";
+} else if (conf.MODE.toLowerCase() === "no") {
+    operationalMode = "PRIVATE";
+} else {
+    operationalMode = "UNDEFINED";
+}
+
+// Log successful connection
+console.log("⚙️ [SYSTEM-LOG]: Beltah MD successfully linked to the matrix ✅");
+
+// Activate all cron processes
+await activateCrons();
+
+// Hacker-style greeting generator based on Nairobi timezone
+const getGreeting = () => {
+    const currentHour = DateTime.now().setZone('Africa/Nairobi').hour;
+
+    if (currentHour >= 5 && currentHour < 12) {
+        return 'Good morning 🌄, Operative!';
+    } else if (currentHour >= 12 && currentHour < 18) {
+        return 'Good afternoon ☀️, Operative!';
+    } else if (currentHour >= 18 && currentHour < 22) {
+        return 'Good evening 🌆, Operative!';
+    } else {
+        return 'Good night 😴, Operative!';
+    }
+};
+
+// Get current time formatted for Nairobi timezone
+const getCurrentTimeInNairobi = () => {
+    return DateTime.now()
+        .setZone('Africa/Nairobi')
+        .toLocaleString(DateTime.TIME_SIMPLE);
+};
+
+// Send an operational status message if DP mode is enabled
+if (conf.DP.toLowerCase() === 'yes') {
+    await zk.sendMessage(zk.user.id, {
+        text: `*👾 SYSTEM ONLINE 👾*
+╭═══════⩥
+║ *『𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 𝐎𝐏𝐄𝐑𝐀𝐓𝐈𝐍𝐆』*
+║   Developer : *Beltah Tech Inc.*
+║   Prefix : [  ${prefixe}  ]
+║   Mode : ${operationalMode} mode
+║   Total Commands : ${evt.cm.length}
+╰══════════════════⩥
+
+╭───◇⩥
+┃
+┃ *Thanks for deploying*                      
+┃  ${conf.BOT}
+┃  Stay sharp, stay secure.
+╰══════════════════⩥ `
+    });
+}
+            /*// import { DateTime } from 'luxon'; // Ensure you have the Luxon library for handling time zones
 
 (0, baileys_1.delay)(700);
 var md;
@@ -1252,7 +1315,7 @@ if ((conf.DP).toLowerCase() === 'yes') {
         await zk.deleteMessage(zk.user.id, { id: sentMessage.key.id });
     }, 60000);
 }
-               /* (0, baileys_1.delay)(700);
+                (0, baileys_1.delay)(700);
                 var md;
                 if ((conf.MODE).toLocaleLowerCase() === "yes") {
                     md = "public";
