@@ -322,8 +322,92 @@ keith({
   // Ensure loading animation completes after sending the uptime message
   await delay(ms); // Await the delay to simulate the loading animation
 });
-
 // Command to update and redeploy the bot
+keith({
+  nomCom: 'update',
+  aliases: ['redeploy', 'sync'],
+  categorie: "system",
+}, async (chatId, zk, context) => {
+  const { repondre, superUser } = context;
+
+  // Ensure the command is issued by the owner
+  if (!superUser) {
+    return repondre("*❌ Access Denied: This operation is restricted to the bot owner or Beltah Tech.*");
+  }
+
+  // Retrieve Heroku app name and API key from settings
+  const herokuAppName = settings.HEROKU_APP_NAME;
+  const herokuApiKey = settings.HEROKU_API_KEY;
+
+  // Validate Heroku configuration
+  if (!herokuAppName || !herokuApiKey) {
+    await repondre(
+      "*❌ Configuration Missing:*\n\n" +
+      "🛠️ Ensure that `HEROKU_APP_NAME` and `HEROKU_API_KEY` are properly set in the environment variables."
+    );
+    return;
+  }
+
+  // Centralized redeployment logic
+  async function redeployApp() {
+    const herokuUrl = `https://api.heroku.com/apps/${herokuAppName}/builds`;
+    const sourceBlobUrl = "https://github.com/Beltahinfo/Beltah-xmd/tarball/main";
+
+    try {
+      // Notify the user about the redeployment start
+      await repondre(
+        "*⚙️ INITIATED: Deploying updates to BELTAH-MD...*\n\n" +
+        "```Loading payload...``` 🔗\n" +
+        "```Injecting binaries...``` 💾\n" +
+        "```Establishing secure uplink with Heroku...``` 🌐\n\n" +
+        "*🛸 SYSTEM ONLINE:* Deployment in progress. ETA ~5 minutes.\n\n" +
+        "```RESETTING SYSTEM INTEGRITY...``` 🔄\n" +
+        "```UPGRADING INFRASTRUCTURE...``` 🛠️\n\n" +
+        "*Stay Tuned, Operator. The system shall evolve...*"
+      );
+
+      // Trigger the Heroku build via API
+      const response = await axios.post(
+        herokuUrl,
+        { source_blob: { url: sourceBlobUrl } },
+        {
+          headers: {
+            Authorization: `Bearer ${herokuApiKey}`,
+            Accept: "application/vnd.heroku+json; version=3",
+          },
+        }
+      );
+
+      // Notify the user about successful deployment initiation
+      console.log("Heroku Build Details:", response.data);
+    } catch (error) {
+      // Handle and log errors during the redeployment process
+      const errorMessage = error.response?.data?.message || error.message || "Unknown error occurred.";
+      await repondre(
+        `*❌ DEPLOYMENT FAILED:*\n\n` +
+        "```Execution halted.``` 🚨\n" +
+        `**Error:** ${errorMessage}\n\n` +
+        "*🛠️ Debugging required: Verify Heroku API key and app name.*"
+      );
+      console.error("Error triggering Heroku redeploy:", errorMessage);
+    }
+  }
+
+  // Execute the redeployment process
+  try {
+    await redeployApp();
+  } catch (error) {
+    console.error("Unexpected error during redeployment:", error.message);
+    await repondre(
+      "*❌ CRITICAL ERROR:*\n\n" +
+      "```System malfunction detected.``` 🔥\n" +
+      "```Reverting operations...``` ⏳\n\n" +
+      "*Operator, please retry the deployment after resolving the issue.*"
+    );
+  }
+});
+
+/*// Command to update and redeploy the bot
 keith({
   nomCom: 'update',
   aliases: ['redeploy', 'sync'],
@@ -367,7 +451,7 @@ keith({
       // Notify the user about the update and redeployment
       await repondre("*BELTAH-MD Syncing updates, wait 5 minutes for the redeploy to finish!*\n\n *This will install the latest version of ʙᴇʟᴛᴀʜ ʙᴏᴛ.*");
       console.log("Build details:", response.data);
-    } catch (error) {
+    } catch (error) 
       // Handle any errors during the redeployment process
       const errorMessage = error.response?.data || error.message;
       await repondre(`*Failed to update and redeploy. ${errorMessage} Please check if you have set the Heroku API key and Heroku app name correctly.*`);
@@ -377,6 +461,6 @@ keith({
 
   // Trigger the redeployment function
   redeployApp();
-});
+});*/
 
 //These improvements include enhanced readability, better error handling, and more modular code structure, which makes the code easier to maintain and debug.
