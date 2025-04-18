@@ -1212,7 +1212,7 @@ if (texte && texte.startsWith('>')) {
                         (0, baileys_1.delay)(300);
                     }
                 });
-              import { DateTime } from 'luxon'; // Ensure you have the Luxon library for handling time zones
+             // import { DateTime } from 'luxon'; // Ensure you have the Luxon library for handling time zones
 
 (0, baileys_1.delay)(700);
 var md;
@@ -1227,17 +1227,15 @@ console.log("⚡ [COMMANDS LOADED] Command loading completed ✅");
 
 if ((conf.DP).toLowerCase() === 'yes') {
     // Get the current date and time in the "Africa/Nairobi" timezone
-    const now = DateTime.now().setZone('Africa/Nairobi');
-    const formattedDate = now.toLocaleString(DateTime.DATE_FULL); // e.g., April 18, 2025
-    const formattedTime = now.toLocaleString(DateTime.TIME_24_SIMPLE); // e.g., 12:24
+    //const now = DateTime.now().setZone('Africa/Nairobi');
+    //const formattedDate = now.toLocaleString(DateTime.DATE_FULL); // e.g., April 18, 2025
+  //  const formattedTime = now.toLocaleString(DateTime.TIME_24_SIMPLE); // e.g., 12:24
 
     let cmsg = `╭═══════⩥
 ║ *『 ${conf.BOT} 𝙸𝚂 𝙾𝙽𝙻𝙸𝙽𝙴 ⚡』*
 ║    ᴏᴡɴᴇʀ: ${conf.OWNER_NAME}
 ║    ᴘʀᴇꜰɪx: [ ${prefixe} ]
 ║    ᴍᴏᴅᴇ: ${md}︎
-║    ᴅᴀᴛᴇ: ${formattedDate}
-║    ᴛɪᴍᴇ: ${formattedTime} (Africa/Nairobi)
 ╰══════════════════⩥
 
 ╭───◇⩥
