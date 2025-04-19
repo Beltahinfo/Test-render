@@ -112,11 +112,11 @@ Thank you, ${nomAuteurMessage}, for your interest in our project. Don't forget t
 
 > Powered by *Beltah Tech Team* 🚀`;
 
-      const contextInfo = getContextInfo(conf.BOT, auteurMessage, conf.URL);
+     // const contextInfo = getContextInfo(conf.BOT, auteurMessage, conf.URL);
 
       await reply.sendMessage(command, {
         text: message,
-        contextInfo
+        contextInfo: getContextInfo("BELTAH-MD REPOSITORY-OVERVIEW", auteurMessage, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
          }, { quoted: fgg });
     } else {
       repondre('An error occurred while fetching the repository data.');
