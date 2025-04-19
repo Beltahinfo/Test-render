@@ -61,7 +61,7 @@ repondre: async (zk, dest, ms, text, options = {}) => {
     await zk.sendMessage(dest, {
       text: text,
       contextInfo: contextInfo
-    }, { quoted: fgg }); 
+    }, { quoted: ms }); 
   },
 
 
@@ -74,6 +74,6 @@ repondre: async (zk, dest, ms, text, options = {}) => {
     await zk.sendMessage(dest, {
       ...options,
       contextInfo: contextInfo
-    }, { quoted: fgg }); 
+    }, { quoted: ms }); 
   }
 };
