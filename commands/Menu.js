@@ -222,7 +222,7 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
         await client.sendMessage(message, {
              text: responseMessage + commandsList,
              contextInfo: getContextInfo("BELTAH-MD SYSTEM-OVERVIEW", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
-         }, { quoted: ms });
+         }, { quoted: fgg });
     } catch (error) {
         console.error("Menu error: ", error);
         respond("🥵🥵 Menu error: " + error);
@@ -299,7 +299,7 @@ keith({ nomCom: "list", aliases: ["liste", "helplist", "commandlist"], categorie
         await client.sendMessage(message, {
              text: responseMessage + commandsList,
              contextInfo: getContextInfo("BELTAH-MD MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
-         }, { quoted: ms });
+         }, { quoted: fgg });
     } catch (error) {
         console.error("Menu error: ", error);
         respond("🥵🥵 Menu error: " + error);
@@ -376,7 +376,7 @@ keith({ nomCom: "allcmd", aliases: ["liste", "helplist", "commandlist"], categor
         await client.sendMessage(message, {
              text: responseMessage + commandsList,
              contextInfo: getContextInfo("BELTAH-MD MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
-         }, { quoted: ms });
+         }, { quoted: fgg });
     } catch (error) {
         console.error("Menu error: ", error);
         respond("🥵🥵 Menu error: " + error);
@@ -455,7 +455,7 @@ keith({ nomCom: "help", aliases: ["liste", "helplist", "commandlist"], categorie
         await client.sendMessage(message, {
              text: responseMessage + commandsList,
              contextInfo: getContextInfo("BELTAH-MD MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
-         }, { quoted: ms });
+         }, { quoted: fgg });
     } catch (error) {
         console.error("Menu error: ", error);
         respond("🥵🥵 Menu error: " + error);
