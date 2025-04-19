@@ -68,7 +68,7 @@ const fgg = {
   },
   message: {
     contactMessage: {
-      displayName: `BELTAH MD`,
+      displayName: `Beltah Tech Info`,
       vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;BELTAH MD;;;\nFN:BELTAH MD\nitem1.TEL;waid=${DEFAULT_PARTICIPANT.split('@')[0]}:${DEFAULT_PARTICIPANT.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`,
     },
   },
