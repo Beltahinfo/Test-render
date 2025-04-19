@@ -11,6 +11,21 @@ const DEFAULT_THUMBNAIL_URL = 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg
 const DEFAULT_TITLE = "𝗕𝗘𝗟𝗧𝗔𝗛 𝗠𝗨𝗟𝗧𝗜 𝗗𝗘𝗩𝗜𝗖𝗘";
 const DEFAULT_BODY = "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿";
 
+// Default message configuration
+const fgg = {
+  key: {
+    fromMe: false,
+    participant: DEFAULT_PARTICIPANT,
+    remoteJid: DEFAULT_REMOTE_JID,
+  },
+  message: {
+    contactMessage: {
+      displayName: `BELTAH MD`,
+      vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;BELTAH MD;;;\nFN:BELTAH MD\nitem1.TEL;waid=${DEFAULT_PARTICIPANT.split('@')[0]}:${DEFAULT_PARTICIPANT.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`,
+    },
+  },
+};
+
 // Utility Functions
 /**
  * Format runtime into a clean string.
@@ -21,7 +36,7 @@ function formatRuntime(seconds) {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   const secondsLeft = Math.floor(seconds % 60);
-  return `${hours}h ${minutes}m ${secondsLeft}s`;
+  return `*${hours}h ${minutes}m ${secondsLeft}s*`;
 }
 
 /**
@@ -31,26 +46,30 @@ function formatRuntime(seconds) {
  * @param {string} thumbnailUrl - Thumbnail URL.
  * @returns {object} - ContextInfo object.
  */
-const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
-  mentionedJid: [userJid],
-  forwardingScore: 999,
-  isForwarded: true,
-  forwardedNewsletterMessageInfo: {
-    newsletterJid: '120363249464136503@newsletter',
-    newsletterName: 'Beltah Tech Updates',
-    serverMessageId: Math.floor(100000 + Math.random() * 900000),
-  },
-  externalAdReply: {
-    showAdAttribution: true,
-    title: title || DEFAULT_TITLE,
-    body: DEFAULT_BODY,
-    thumbnailUrl: thumbnailUrl || DEFAULT_THUMBNAIL_URL,
-    sourceUrl: conf.GURL || '',
-    mediaType: 1,
-    renderLargerThumbnail: false,
-  },
-});
-
+function getContextInfo(title = DEFAULT_TITLE, userJid = DEFAULT_PARTICIPANT, thumbnailUrl = DEFAULT_THUMBNAIL_URL) {
+  try {
+    return {
+      mentionedJid: [userJid],
+      forwardingScore: 999,
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+         newsletterJid: "120363249464136503@newsletter",
+         newsletterName: "🤖 𝐁𝐄𝐋𝐓𝐀𝐇 𝐀𝐈 𝐂𝐇𝐀𝐓𝐁𝐎𝐓 🤖",
+         serverMessageId: Math.floor(100000 + Math.random() * 900000),
+     },
+      externalAdReply: {
+        showAdAttribution: true,
+        title,
+        body: DEFAULT_BODY,
+        thumbnailUrl,
+        sourceUrl: settings.GURL || '',
+      },
+    };
+  } catch (error) {
+    console.error(`Error in getContextInfo: ${error.message}`);
+    return {}; // Prevent breaking on error
+  }
+        }
 // Example usage within the existing context
 keith({
   nomCom: 'repo',
@@ -87,6 +106,7 @@ keith({
 📅 *Last Updated*: ${repoInfo.updated}
 
 🔗 *Repository Link*: ${repoData.html_url}
+✅ *Session ID*: https://bel-tah-md-codes.onrender.com
 
 Thank you, ${nomAuteurMessage}, for your interest in our project. Don't forget to ⭐ star our repository for updates and improvements! 
 
