@@ -1,13 +1,13 @@
 const axios = require("axios");
 const { keith } = require(__dirname + "/../keizzah/keith");
 const { format } = require(__dirname + "/../keizzah/mesfonctions");
-const os = require("os");
+const os = require('os');
 const moment = require("moment-timezone");
 const settings = require(__dirname + "/../set");
 
 const readMore = String.fromCharCode(8206).repeat(4001);
 
-// Utility functions
+// Function to convert text to fancy uppercase font
 const toFancyUppercaseFont = (text) => {
     const fonts = {
         'A': '𝐀', 'B': '𝐁', 'C': '𝐂', 'D': '𝐃', 'E': '𝐄', 'F': '𝐅', 'G': '𝐆', 'H': '𝐇', 'I': '𝐈', 'J': '𝐉', 'K': '𝐊', 'L': '𝐋', 'M': '𝐌',
@@ -16,6 +16,7 @@ const toFancyUppercaseFont = (text) => {
     return text.split('').map(char => fonts[char] || char).join('');
 };
 
+// Function to convert text to fancy lowercase font
 const toFancyLowercaseFont = (text) => {
     const fonts = {
         'a': 'ᴀ', 'b': 'ʙ', 'c': 'ᴄ', 'd': 'ᴅ', 'e': 'ᴇ', 'f': 'ғ', 'g': 'ɢ', 'h': 'ʜ', 'i': 'ɪ', 'j': 'ᴊ', 'k': 'ᴋ', 'l': 'ʟ', 'm': 'ᴍ',
@@ -51,123 +52,382 @@ const fetchGitHubStats = async () => {
         return { forks: 0, stars: 0, totalUsers: 0 };
     }
 };
+// Common contextInfo configuration
+ const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
+     mentionedJid: [userJid],
+     forwardingScore: 999,
+     isForwarded: true,
+     businessMessageForwardInfo: {
+            businessOwnerJid: "120363249464136503@newsletter", 
+           }, 
+     forwardedNewsletterMessageInfo: {
+         newsletterJid: "120363249464136503@newsletter",
+         newsletterName: "🤖 𝐁𝐄𝐋𝐓𝐀𝐇 𝐀𝐈 𝐂𝐇𝐀𝐓𝐁𝐎𝐓 🤖",
+         serverMessageId: Math.floor(100000 + Math.random() * 900000),
+     },
+     externalAdReply: {
+         showAdAttribution: true,
+         title: title || "BELTAH-MD BOT",
+         body: "YOUR ALL WHATSAPP SOLUTION BOT",
+         thumbnailUrl: thumbnailUrl || 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg',
+         sourceUrl: settings.GURL || '',
+         mediaType: 1,
+         renderLargerThumbnail: false
+     }
+ });
+// Random quotes array
+const quotes = [
+    "Dream big, work hard.",
+    "Stay humble, hustle hard.",
+    "Believe in yourself.",
+    "Success is earned, not given.",
+    "Actions speak louder than words.",
+    "The best is yet to come.",
+    "Keep pushing forward.",
+    "Do more than just exist.",
+    "Progress, not perfection.",
+    "Stay positive, work hard.",
+    "Be the change you seek.",
+    "Never stop learning.",
+    "Chase your dreams.",
+    "Be your own hero.",
+    "Life is what you make of it.",
+    "Do it with passion or not at all.",
+    "You are stronger than you think.",
+    "Create your own path.",
+    "Make today count.",
+    "Embrace the journey.",
+    "The best way out is always through.",
+    "Strive for progress, not perfection.",
+    "Don't wish for it, work for it.",
+    "Live, laugh, love.",
+    "Keep going, you're getting there.",
+    "Don’t stop until you’re proud.",
+    "Success is a journey, not a destination.",
+    "Take the risk or lose the chance.",
+    "It’s never too late.",
+    "Believe you can and you're halfway there.",
+    "Small steps lead to big changes.",
+    "Happiness depends on ourselves.",
+    "Take chances, make mistakes.",
+    "Be a voice, not an echo.",
+    "The sky is the limit.",
+    "You miss 100% of the shots you don’t take.",
+    "Start where you are, use what you have.",
+    "The future belongs to those who believe.",
+    "Don’t count the days, make the days count.",
+    "Success is not the key to happiness. Happiness is the key to success."
+];
 
-// Definitions for context and messaging
-const NEWS_LETTER_JID = "120363249464136503@newsletter"; // Replace with your real one
-const BOT_NAME = "👻 Beltah Tech Updates 👻";
-const DEFAULT_THUMBNAIL = "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg";
+// Function to get a random quote
+const getRandomQuote = () => {
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    return quotes[randomIndex];
+};
 
-const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
-    contextInfo: {
-        mentionedJid: [userJid],
-        forwardingScore: 999,
-        isForwarded: true,
-        businessMessageForwardInfo: {
-            businessOwnerJid: NEWS_LETTER_JID,
-        },
-        forwardedNewsletterMessageInfo: {
-            newsletterJid: NEWS_LETTER_JID,
-            newsletterName: BOT_NAME,
-            serverMessageId: Math.floor(100000 + Math.random() * 900000)
-        },
-        externalAdReply: {
-            title: title || BOT_NAME,
-            body: "Premium WhatsApp Bot Solution",
-            thumbnailUrl: thumbnailUrl || DEFAULT_THUMBNAIL,
-            mediaType: 1,
-            mediaUrl: "https://wa.me/254114141192", // link to bot or business
-            showAdAttribution: true,
-            renderLargerThumbnail: false
+keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie: "SYSTEM" }, async (message, client, config) => {
+    const { ms, respond, prefix, nomAuteurMessage } = config;
+    const commands = require(__dirname + "/../keizzah/keith").cm;
+    const categorizedCommands = {};
+    const mode = settings.MODE.toLowerCase() !== "public" ? "Private" : "Public";
+
+    // Organize commands into categories
+    commands.forEach(command => {
+        const category = command.categorie.toUpperCase();
+        if (!categorizedCommands[category]) {
+            categorizedCommands[category] = [];
         }
+        categorizedCommands[category].push(command.nomCom);
+    });
+
+    moment.tz.setDefault("Africa/Nairobi");
+    const currentTime = moment();
+    const formattedTime = currentTime.format("HH:mm:ss");
+    const formattedDate = currentTime.format("DD/MM/YYYY");
+    const currentHour = currentTime.hour();
+
+    const greetings = ["Time to own the system 🌄", "Stay vigilant, stay sharp 🌃", "Keep your exploits ready ⛅", "The darknet never sleeps 🌙"];
+    const greeting = currentHour < 12 ? greetings[0] : currentHour < 17 ? greetings[1] : currentHour < 21 ? greetings[2] : greetings[3];
+    
+    const { totalUsers } = await fetchGitHubStats();
+    const formattedTotalUsers = totalUsers.toLocaleString();
+
+    const randomQuote = getRandomQuote();
+
+    let responseMessage = `
+ ${greeting}, *${nomAuteurMessage || "User"}*
+ 
+╭━━━━❮  ${settings.BOT}  ❯━━━━╮ 
+┃✰╭────────────
+┃✰│ *ʙᴏᴛ ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
+┃✰│ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
+┃✰│ *ᴛɪᴍᴇ:* ${formattedTime}
+┃✰│ *ᴄᴏᴍᴍᴀɴᴅꜱ:* ${commands.length} 
+┃✰│ *ᴅᴀᴛᴇ:* ${formattedDate}
+┃✰│ *ᴍᴏᴅᴇ:* ${mode}
+┃✰│ *ʀᴀᴍ:* ${format(os.totalmem() - os.freemem())}/${format(os.totalmem())}
+┃✰│ *ᴜᴘᴛɪᴍᴇ:* ${formatUptime(process.uptime())}
+┃✰╰────────────
+╰══════════════════⩥
+> *${randomQuote}*
+`;
+
+    let commandsList = "";
+    const sortedCategories = Object.keys(categorizedCommands).sort();
+    let commandIndex = 1;
+
+    for (const category of sortedCategories) {
+        commandsList += `\n*╭━━❮ ${toFancyUppercaseFont(category)} ❯━━╮*\n┃✰╭────────────`;
+        const sortedCommands = categorizedCommands[category].sort();
+        for (const command of sortedCommands) {
+            commandsList += `\n┃✰ ${toFancyLowercaseFont(command)}`;
+        }
+        commandsList += "\n┃✰╰────────────\n╰══════════════════⩥";
+    }
+
+    commandsList += readMore + "\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ\n";
+
+    try {
+        const senderName = message.sender || message.from;
+        await client.sendMessage(message, {
+             text: responseMessage + commandsList,
+             contextInfo: getContextInfo("BELTAH-MD SYSTEM-OVERVIEW", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+         }, { quoted: ms });
+    } catch (error) {
+        console.error("Menu error: ", error);
+        respond("🥵🥵 Menu error: " + error);
     }
 });
 
-// Random quotes
-const quotes = [
-    "Dream big, work hard.", "Stay humble, hustle hard.", "Believe in yourself.",
-    "Success is earned, not given.", "Actions speak louder than words.",
-    "The best is yet to come.", "Keep pushing forward.", "Do more than just exist.",
-    "Progress, not perfection.", "Stay positive, work hard.", "Be the change you seek."
-];
+keith({ nomCom: "list", aliases: ["liste", "helplist", "commandlist"], categorie: "SYSTEM" }, async (message, client, config) => {
+    const { ms, respond, prefix, nomAuteurMessage } = config;
+    const commands = require(__dirname + "/../keizzah/keith").cm;
+    const categorizedCommands = {};
+    const mode = settings.MODE.toLowerCase() !== "public" ? "Private" : "Public";
 
-const getRandomQuote = () => quotes[Math.floor(Math.random() * quotes.length)];
+    // Organize commands into categories
+    commands.forEach(command => {
+        const category = command.categorie.toUpperCase();
+        if (!categorizedCommands[category]) {
+            categorizedCommands[category] = [];
+        }
+        categorizedCommands[category].push(command.nomCom);
+    });
 
-// Main menu command
-keith(
-    {
-        nomCom: "menu",
-        aliases: ["liste", "helplist", "commandlist"],
-        categorie: "SYSTEM",
-    },
-    async (message, client, config) => {
-        const { ms, respond, prefix, nomAuteurMessage } = config;
-        const commands = require(__dirname + "/../keizzah/keith").cm;
-        const categorizedCommands = {};
-        const mode = settings.MODE.toLowerCase() !== "public" ? "Private" : "Public";
+    moment.tz.setDefault("Africa/Nairobi");
+    const currentTime = moment();
+    const formattedTime = currentTime.format("HH:mm:ss");
+    const formattedDate = currentTime.format("DD/MM/YYYY");
+    const currentHour = currentTime.hour();
 
-        // Organize commands into categories
-        commands.forEach(command => {
-            const category = command.categorie.toUpperCase();
-            if (!categorizedCommands[category]) {
-                categorizedCommands[category] = [];
-            }
-            categorizedCommands[category].push(command.nomCom);
-        });
+    const greetings = ["Good Morning 🌄", "Good Afternoon 🌃", "Good Evening ⛅", "Good Night 🌙"];
+    const greeting = currentHour < 12 ? greetings[0] : currentHour < 17 ? greetings[1] : currentHour < 21 ? greetings[2] : greetings[3];
 
-        moment.tz.setDefault("Africa/Nairobi");
-        const currentTime = moment();
-        const formattedTime = currentTime.format("HH:mm:ss");
-        const formattedDate = currentTime.format("DD/MM/YYYY");
-        const currentHour = currentTime.hour();
+    const { totalUsers } = await fetchGitHubStats();
+    const formattedTotalUsers = totalUsers.toLocaleString();
 
-        const greetings = ["Time to own the system 🌄", "Stay vigilant, stay sharp 🌃", "Keep your exploits ready ⛅", "The darknet never sleeps 🌙"];
-        const greeting = currentHour < 12 ? greetings[0] : currentHour < 17 ? greetings[1] : currentHour < 21 ? greetings[2] : greetings[3];
+    const randomQuote = getRandomQuote();
 
-        const { totalUsers } = await fetchGitHubStats();
-        const formattedTotalUsers = totalUsers.toLocaleString();
-        const randomQuote = getRandomQuote();
-
-        let responseMessage = `
+    let responseMessage = `
  ${greeting}, *${nomAuteurMessage || "User"}*
-  
- ╭━━━━❮  ${settings.BOT}  ❯━━━━╮ 
- ┃✰╭────────────
- ┃✰│ *ʙᴏᴛ ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
- ┃✰│ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
- ┃✰│ *ᴛɪᴍᴇ:* ${formattedTime}
- ┃✰│ *ᴄᴏᴍᴍᴀɴᴅꜱ:* ${commands.length} 
- ┃✰│ *ᴅᴀᴛᴇ:* ${formattedDate}
- ┃✰│ *ᴍᴏᴅᴇ:* ${mode}
- ┃✰│ *ʀᴀᴍ:* ${format(os.totalmem() - os.freemem())}/${format(os.totalmem())}
- ┃✰│ *ᴜᴘᴛɪᴍᴇ:* ${formatUptime(process.uptime())}
- ┃✰╰────────────
- ╰══════════════════⩥
- > *${randomQuote}*
+ 
+╭━━━ 〔 ${settings.BOT} 〕━━━┈⊷
+┃╭──────────────
+┃│▸ *ʙᴏᴛ ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
+┃│▸ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
+┃│▸ *ᴛɪᴍᴇ:* ${formattedTime}
+┃│▸ *ᴄᴏᴍᴍᴀɴᴅꜱ:* ${commands.length} 
+┃│▸ *ᴅᴀᴛᴇ:* ${formattedDate}
+┃│▸ *ᴍᴏᴅᴇ:* ${mode}
+┃│▸ *ᴛɪᴍᴇ ᴢᴏɴᴇ:* Africa/Nairobi
+┃│▸ *ᴛᴏᴛᴀʟ ᴜsᴇʀs:* ${formattedTotalUsers} users
+┃│▸ *ʀᴀᴍ:* ${format(os.totalmem() - os.freemem())}/${format(os.totalmem())}
+┃│▸ *ᴜᴘᴛɪᴍᴇ:* ${formatUptime(process.uptime())}
+┃╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+> *${randomQuote}*
+
 `;
 
-        let commandsList = "";
-        const sortedCategories = Object.keys(categorizedCommands).sort();
+    let commandsList = "*𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒*\n";
+    const sortedCategories = Object.keys(categorizedCommands).sort();
+    let commandIndex = 1;
 
-        for (const category of sortedCategories) {
-            commandsList += `\n*╭━━❮ ${toFancyUppercaseFont(category)} ❯━━╮*\n┃✰╭────────────`;
-            const sortedCommands = categorizedCommands[category].sort();
-            for (const command of sortedCommands) {
-                commandsList += `\n┃✰ ${toFancyLowercaseFont(command)}`;
-            }
-            commandsList += "\n┃✰╰────────────\n╰══════════════════⩥";
+    for (const category of sortedCategories) {
+        commandsList += `\n*╭─────「 ${toFancyUppercaseFont(category)} 」──┈⊷*\n│◦│╭───────────────`;
+        const sortedCommands = categorizedCommands[category].sort();
+        for (const command of sortedCommands) {
+            commandsList += `\n│◦│ ${commandIndex++}. ${toFancyLowercaseFont(command)}`;
         }
-
-        commandsList += readMore + "\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ\n";
-
-        try {
-            const senderName = message.sender || message.from;
-            await client.sendMessage(message, {
-                 text: responseMessage + commandsList,
-                 contextInfo: getContextInfo("BELTAH-MD SYSTEM-OVERVIEW", senderName, DEFAULT_THUMBNAIL)
-             }, { quoted: ms });
-        } catch (error) {
-            console.error("Menu error: ", error);
-            respond("🥵🥵 Menu error: " + error);
-        }
+        commandsList += "\n│◦╰─────────────\n╰──────────────┈⊷\n";
     }
-);
+
+    commandsList += readMore + "\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ\n";
+
+    try {
+        const senderName = message.sender || message.from;
+        await client.sendMessage(message, {
+             text: responseMessage + commandsList,
+             contextInfo: getContextInfo("BELTAH-MD MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+         }, { quoted: ms });
+    } catch (error) {
+        console.error("Menu error: ", error);
+        respond("🥵🥵 Menu error: " + error);
+    }
+});
+
+keith({ nomCom: "allcmd", aliases: ["liste", "helplist", "commandlist"], categorie: "SYSTEM" }, async (message, client, config) => {
+    const { ms, respond, prefix, nomAuteurMessage } = config;
+    const commands = require(__dirname + "/../keizzah/keith").cm;
+    const categorizedCommands = {};
+    const mode = settings.MODE.toLowerCase() !== "public" ? "Private" : "Public";
+
+    // Organize commands into categories
+    commands.forEach(command => {
+        const category = command.categorie.toUpperCase();
+        if (!categorizedCommands[category]) {
+            categorizedCommands[category] = [];
+        }
+        categorizedCommands[category].push(command.nomCom);
+    });
+
+    moment.tz.setDefault("Africa/Nairobi");
+    const currentTime = moment();
+    const formattedTime = currentTime.format("HH:mm:ss");
+    const formattedDate = currentTime.format("DD/MM/YYYY");
+    const currentHour = currentTime.hour();
+
+    const greetings = ["Good Morning 🌄", "Good Afternoon 🌃", "Good Evening ⛅", "Good Night 🌙"];
+    const greeting = currentHour < 12 ? greetings[0] : currentHour < 17 ? greetings[1] : currentHour < 21 ? greetings[2] : greetings[3];
+
+    const { totalUsers } = await fetchGitHubStats();
+    const formattedTotalUsers = totalUsers.toLocaleString();
+
+    const randomQuote = getRandomQuote();
+
+    let responseMessage = `
+ ${greeting}, *${nomAuteurMessage || "User"}*
+ 
+╭━━━ 〔 ${settings.BOT} 〕━━━┈⊷
+┃╭──────────────
+┃│▸ *ʙᴏᴛ ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
+┃│▸ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
+┃│▸ *ᴛɪᴍᴇ:* ${formattedTime}
+┃│▸ *ᴄᴏᴍᴍᴀɴᴅꜱ:* ${commands.length} 
+┃│▸ *ᴅᴀᴛᴇ:* ${formattedDate}
+┃│▸ *ᴍᴏᴅᴇ:* ${mode}
+┃│▸ *ᴛɪᴍᴇ ᴢᴏɴᴇ:* Africa/Nairobi
+┃│▸ *ᴛᴏᴛᴀʟ ᴜsᴇʀs:* ${formattedTotalUsers} users
+┃│▸ *ʀᴀᴍ:* ${format(os.totalmem() - os.freemem())}/${format(os.totalmem())}
+┃│▸ *ᴜᴘᴛɪᴍᴇ:* ${formatUptime(process.uptime())}
+┃╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+> *${randomQuote}*
+
+`;
+
+    let commandsList = "*𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒*\n";
+    const sortedCategories = Object.keys(categorizedCommands).sort();
+    let commandIndex = 1;
+
+    for (const category of sortedCategories) {
+        commandsList += `\n*╭─────「 ${toFancyUppercaseFont(category)} 」──┈⊷*\n│◦│╭───────────────`;
+        const sortedCommands = categorizedCommands[category].sort();
+        for (const command of sortedCommands) {
+            commandsList += `\n│◦│ ${commandIndex++}. ${toFancyLowercaseFont(command)}`;
+        }
+        commandsList += "\n│◦╰─────────────\n╰──────────────┈⊷\n";
+    }
+
+    commandsList += readMore + "\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ\n";
+
+    try {
+        const senderName = message.sender || message.from;
+        await client.sendMessage(message, {
+             text: responseMessage + commandsList,
+             contextInfo: getContextInfo("BELTAH-MD MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+         }, { quoted: ms });
+    } catch (error) {
+        console.error("Menu error: ", error);
+        respond("🥵🥵 Menu error: " + error);
+    }
+});
+
+keith({ nomCom: "help", aliases: ["liste", "helplist", "commandlist"], categorie: "SYSTEM" }, async (message, client, config) => {
+    const { ms, respond, prefix, nomAuteurMessage } = config;
+    const commands = require(__dirname + "/../keizzah/keith").cm;
+    const categorizedCommands = {};
+    const mode = settings.MODE.toLowerCase() !== "public" ? "Private" : "Public";
+
+    // Organize commands into categories
+    commands.forEach(command => {
+        const category = command.categorie.toUpperCase();
+        if (!categorizedCommands[category]) {
+            categorizedCommands[category] = [];
+        }
+        categorizedCommands[category].push(command.nomCom);
+    });
+
+    moment.tz.setDefault("Africa/Nairobi");
+    const currentTime = moment();
+    const formattedTime = currentTime.format("HH:mm:ss");
+    const formattedDate = currentTime.format("DD/MM/YYYY");
+    const currentHour = currentTime.hour();
+
+    const greetings = ["Good Morning 🌄", "Good Afternoon 🌃", "Good Evening ⛅", "Good Night 🌙"];
+    const greeting = currentHour < 12 ? greetings[0] : currentHour < 17 ? greetings[1] : currentHour < 21 ? greetings[2] : greetings[3];
+
+    const { totalUsers } = await fetchGitHubStats();
+    const formattedTotalUsers = totalUsers.toLocaleString();
+
+    const randomQuote = getRandomQuote();
+
+    let responseMessage = `
+ ${greeting}, *${nomAuteurMessage || "User"}*
+ 
+╭━━━ 〔 ${settings.BOT} 〕━━━┈⊷
+┃╭──────────────
+┃│▸ *ʙᴏᴛ ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
+┃│▸ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
+┃│▸ *ᴛɪᴍᴇ:* ${formattedTime}
+┃│▸ *ᴄᴏᴍᴍᴀɴᴅꜱ:* ${commands.length} 
+┃│▸ *ᴅᴀᴛᴇ:* ${formattedDate}
+┃│▸ *ᴍᴏᴅᴇ:* ${mode}
+┃│▸ *ᴛɪᴍᴇ ᴢᴏɴᴇ:* Africa/Nairobi
+┃│▸ *ᴛᴏᴛᴀʟ ᴜsᴇʀs:* ${formattedTotalUsers} users
+┃│▸ *ʀᴀᴍ:* ${format(os.totalmem() - os.freemem())}/${format(os.totalmem())}
+┃│▸ *ᴜᴘᴛɪᴍᴇ:* ${formatUptime(process.uptime())}
+┃╰──────────────
+╰━━━━━━━━━━━━━━━┈⊷
+*${randomQuote}*
+
+> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ
+
+`;
+
+    let commandsList = "*𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒*\n";
+    const sortedCategories = Object.keys(categorizedCommands).sort();
+    let commandIndex = 1;
+
+    for (const category of sortedCategories) {
+        commandsList += `\n*╭─────「 ${toFancyUppercaseFont(category)} 」──┈⊷*\n│◦│╭───────────────`;
+        const sortedCommands = categorizedCommands[category].sort();
+        for (const command of sortedCommands) {
+            commandsList += `\n│◦│ ${commandIndex++}. ${toFancyLowercaseFont(command)}`;
+        }
+        commandsList += "\n│◦╰─────────────\n╰──────────────┈⊷\n";
+    }
+
+    commandsList += readMore + "\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ\n";
+
+    try {
+        const senderName = message.sender || message.from;
+        await client.sendMessage(message, {
+             text: responseMessage + commandsList,
+             contextInfo: getContextInfo("BELTAH-MD MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+         }, { quoted: ms });
+    } catch (error) {
+        console.error("Menu error: ", error);
+        respond("🥵🥵 Menu error: " + error);
+    }
+});
