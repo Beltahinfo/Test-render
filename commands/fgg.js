@@ -115,7 +115,7 @@ keith({
           results[i].url
         ),
         ...fgg, // Use fgg for the default message configuration
-      }, { quoted: ms });
+      }, { quoted: fgg });
     }
   }
 });
