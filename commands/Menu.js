@@ -52,7 +52,37 @@ const fetchGitHubStats = async () => {
         return { forks: 0, stars: 0, totalUsers: 0 };
     }
 };
-// Common contextInfo configuration
+//Common context configurations by Beltah Tech 
+const NEWS_LETTER_JID = "120363249464136503@newsletter"; // Replace with your real one
+const BOT_NAME = "👻 Beltah Tech Updates 👻";
+const DEFAULT_THUMBNAIL = "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg";
+
+const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({ 
+    contextInfo: {
+        mentionedJid: [userJid], // Tag user if needed
+        forwardingScore: 999,
+        isForwarded: true,
+        businessMessageForwardInfo: {
+            businessOwnerJid: NEWS_LETTER_JID, // Helps add verified feel
+        },
+        forwardedNewsletterMessageInfo: {
+            newsletterJid: NEWS_LETTER_JID,
+            newsletterName: options.newsletterName || BOT_NAME,
+            serverMessageId: Math.floor(100000 + Math.random() * 900000)
+        },
+        externalAdReply: {
+            title: options.title || BOT_NAME,
+            body: options.body || "Premium WhatsApp Bot Solution",
+            thumbnailUrl: options.thumbnail || DEFAULT_THUMBNAIL,
+            mediaType: 1,
+            mediaUrl: options.mediaUrl || undefined,
+            sourceUrl: options.sourceUrl || "https://wa.me/254114141192", // link to bot or business
+            showAdAttribution: true,
+            renderLargerThumbnail: false 
+        }
+    }
+});
+/*// Common contextInfo configuration
  const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
      mentionedJid: [userJid],
      forwardingScore: 999,
@@ -71,7 +101,7 @@ const fetchGitHubStats = async () => {
          mediaType: 1,
          renderLargerThumbnail: false
      }
- });
+ });*/
 // Random quotes array
 const quotes = [
     "Dream big, work hard.",
