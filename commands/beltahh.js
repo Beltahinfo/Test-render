@@ -116,8 +116,8 @@ Thank you, ${nomAuteurMessage}, for your interest in our project. Don't forget t
 
       await reply.sendMessage(command, {
         text: message,
-        contextInfo,
-      });
+        contextInfo
+      }, { quoted: fgg }); 
     } else {
       repondre('An error occurred while fetching the repository data.');
     }
