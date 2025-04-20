@@ -4,33 +4,19 @@ const wiki = require('wikipedia');
 const conf = require(__dirname + "/../set");
 const { repondre } = require(__dirname + "/../keizzah/context");
 
-// Common contextInfo configuration
-const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
-  mentionedJid: [userJid],
-  forwardingScore: 999,
-  isForwarded: true,
-  forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363249464136503@newsletter",
-    newsletterName: "Beltah Tech Updates",
-    serverMessageId: Math.floor(100000 + Math.random() * 900000),
-  },
-  externalAdReply: {
-    showAdAttribution: true,
-    title: title || "🤖 𝐁𝐄𝐋𝐓𝐀𝐇 𝐀𝐈 𝐂𝐇𝐀𝐓𝐁𝐎𝐓 🤖",
-    body: "Compiling The Universal Contents On WhatsApp",
-    thumbnailUrl: thumbnailUrl || 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg',
-    sourceUrl: conf.GURL || '',
-    mediaType: 1,
-    renderLargerThumbnail: false
-  }
-});
+// Constants
+const DEFAULT_PARTICIPANT = '0@s.whatsapp.net';
+const DEFAULT_REMOTE_JID = 'status@broadcast';
+const DEFAULT_THUMBNAIL_URL = 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg';
+const DEFAULT_TITLE = "BELTAH TECH BOT";
+const DEFAULT_BODY = "Your AI Assistant Chuddy Buddy";
 
 // Default message configuration
 const fgg = {
   key: {
     fromMe: false,
-    participant: '0@s.whatsapp.net',
-    remoteJid: 'status@broadcast',
+    participant: DEFAULT_PARTICIPANT,
+    remoteJid: DEFAULT_REMOTE_JID,
   },
   message: {
     contactMessage: {
@@ -39,6 +25,38 @@ const fgg = {
     },
   },
 };
+
+/**
+ * Construct contextInfo object for messages.
+ * @param {string} title - Title for the external ad reply.
+ * @param {string} userJid - User JID to mention.
+ * @param {string} thumbnailUrl - Thumbnail URL.
+ * @returns {object} - ContextInfo object.
+ */
+function getContextInfo(title = DEFAULT_TITLE, userJid = DEFAULT_PARTICIPANT, thumbnailUrl = DEFAULT_THUMBNAIL_URL) {
+  try {
+    return {
+      mentionedJid: [userJid],
+      forwardingScore: 999,
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+         newsletterJid: "120363249464136503@newsletter",
+         newsletterName: "🤖 𝐁𝐄𝐋𝐓𝐀𝐇 𝐀𝐈 𝐂𝐇𝐀𝐓𝐁𝐎𝐓 🤖",
+         serverMessageId: Math.floor(100000 + Math.random() * 900000),
+     },
+      externalAdReply: {
+        showAdAttribution: true,
+        title,
+        body: DEFAULT_BODY,
+        thumbnailUrl,
+        sourceUrl: settings.GURL || 'https://wa.me/254114141192',
+      },
+    };
+  } catch (error) {
+    console.error(`Error in getContextInfo: ${error.message}`);
+    return {}; // Prevent breaking on error
+  }
+      }
 
 //commands 
 keith({
@@ -56,8 +74,8 @@ keith({
 
     await zk.sendMessage(dest, {
       text: news,
-      contextInfo: getContextInfo("BELTAH-MD TECH NEWS", '', thumbnail)
-    }, { quoted: fgg });
+    contextInfo: getContextInfo("BELTAH-MD TECH NEWS", '' , thumbnail)
+         }, { quoted: fgg });
 
   } catch (error) {
     console.error("Error fetching tech news:", error);
