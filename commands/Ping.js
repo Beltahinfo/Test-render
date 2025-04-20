@@ -67,9 +67,9 @@ function getContextInfo(title = DEFAULT_TITLE, userJid = DEFAULT_PARTICIPANT, th
       isForwarded: true,
       externalAdReply: {
         showAdAttribution: true,
-        title,
+        title : DEFAULT_TITLE ,
         body: DEFAULT_BODY,
-        thumbnailUrl,
+        thumbnailUrl : DEFAULT_THUMBNAIL_URL,
         sourceUrl: settings.GURL || '',
       },
     };
@@ -104,8 +104,9 @@ keith({
     ptt: true,
     waveform: [100, 0, 100, 0, 100, 0, 100],
     fileName: 'shizo',
-    contextInfo: getContextInfo('𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗕𝗢𝗧'),
-  };
+    
+  contextInfo: getContextInfo("BELTAH-MD LIVE TEST", '' , 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+         }, { quoted: fgg });
 
   await zk.sendMessage(dest, audioMessage, { quoted: commandeOptions.ms });
 });
@@ -124,7 +125,7 @@ keith({
   const botUptime = process.uptime(); // Get the bot uptime in seconds
   await zk.sendMessage(dest, {
     text: `*🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ ʀᴜɴᴛɪᴍᴇ 🛸*\n\n${formatUptime(botUptime)}`,
-    contextInfo: getContextInfo("📡ʙᴇʟᴛᴀʜ-ᴍᴅ ᴜᴘᴛɪᴍᴇ📡"),
+    contextInfo: getContextInfo("📡ʙᴇʟᴛᴀʜ-ᴍᴅ ᴜᴘᴛɪᴍᴇ📡", '', 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg'),
   }, { quoted: fgg });
 
   console.log("Runtime results sent successfully!");
@@ -145,7 +146,7 @@ keith({
   const formattedResults = pingResults.map(ping => `*📡 ᴘᴏɴɢ 📡*\n\n*${ping}...ᴍɪʟʟɪsᴇᴄᴏɴᴅs*\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ*`);
   await zk.sendMessage(dest, {
     text: `${formattedResults}`,
-    contextInfo: getContextInfo("🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ 🛸"),
+    contextInfo: getContextInfo("🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ 🛸", '', 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg'),
   }, { quoted: fgg });
 
   console.log("Ping results sent successfully!");
