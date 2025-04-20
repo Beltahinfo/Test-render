@@ -67,15 +67,6 @@ const handleAiCommand = async (dest, zk, params, url, usageExample) => {
 
 // Keith command handlers
 keith({
-  nomCom: "chat",
-  aliases: ["chatbot", "chatai"],
-  reaction: '🧑‍💻',
-  categorie: "AI"
-}, async (dest, zk, params) => {
-  handleAiCommand(dest, zk, params, "https://bk9.fun/ai/chataibot?q=", "Example usage: gpt How's the weather today?");
-});
-
-keith({
   nomCom: "beltahmd",
   aliases: ["beltamd", "beltahbot"],
   reaction: '🛸',
