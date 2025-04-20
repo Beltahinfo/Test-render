@@ -10,7 +10,60 @@ const { repondre } = require(__dirname + "/../keizzah/context");
 const catbox = new Catbox();
 
 // Common contextInfo configuration
-const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
+// Constants
+const DEFAULT_PARTICIPANT = '0@s.whatsapp.net';
+const DEFAULT_REMOTE_JID = 'status@broadcast';
+const DEFAULT_THUMBNAIL_URL = 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg';
+const DEFAULT_TITLE = "BELTAH-MD MENU";
+const DEFAULT_BODY = "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿";
+
+// Default message configuration
+const fgg = {
+  key: {
+    fromMe: false,
+    participant: DEFAULT_PARTICIPANT,
+    remoteJid: DEFAULT_REMOTE_JID,
+  },
+  message: {
+    contactMessage: {
+      displayName: `Beltah Tech Info`,
+      vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;BELTAH MD;;;\nFN:BELTAH MD\nitem1.TEL;waid=${DEFAULT_PARTICIPANT.split('@')[0]}:${DEFAULT_PARTICIPANT.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`,
+    },
+  },
+};
+
+/**
+ * Construct contextInfo object for messages.
+ * @param {string} title - Title for the external ad reply.
+ * @param {string} userJid - User JID to mention.
+ * @param {string} thumbnailUrl - Thumbnail URL.
+ * @returns {object} - ContextInfo object.
+ */
+function getContextInfo(title = DEFAULT_TITLE, userJid = DEFAULT_PARTICIPANT, thumbnailUrl = DEFAULT_THUMBNAIL_URL) {
+  try {
+    return {
+      mentionedJid: [userJid],
+      forwardingScore: 999,
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+         newsletterJid: "120363249464136503@newsletter",
+         newsletterName: "🤖 𝐁𝐄𝐋𝐓𝐀𝐇 𝐀𝐈 𝐂𝐇𝐀𝐓𝐁𝐎𝐓 🤖",
+         serverMessageId: Math.floor(100000 + Math.random() * 900000),
+     },
+      externalAdReply: {
+        showAdAttribution: true,
+        title : conf.BOT || 'BELTAH-MD DOWNLOADS', 
+        body: DEFAULT_BODY,
+        thumbnailUrl: thumbnailUrl || conf.URL || '', 
+        sourceUrl: conf.GURL || 'https://wa.me/254114141192',
+      },
+    };
+  } catch (error) {
+    console.error(`Error in getContextInfo: ${error.message}`);
+    return {}; // Prevent breaking on error
+  }
+}
+/*const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
   mentionedJid: [userJid],
   forwardingScore: 999,
   isForwarded: true,
@@ -28,7 +81,7 @@ const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
     mediaType: 1,
     renderLargerThumbnail: false
   }
-});
+});*/
 
 // Function to upload a file to Catbox and return the URL
 async function uploadToCatbox(filePath) {
@@ -93,8 +146,8 @@ keith({
     
     await zk.sendMessage(dest, {
       text: "BELTAH-MD Downloading audio... This may take a moment...",
-      contextInfo: getContextInfo("Downloading", userJid, video.thumbnail)
-    }, { quoted: ms });
+      contextInfo: getContextInfo("Downloading Requested Audio", userJid, video.thumbnail)
+    }, { quoted: fgg });
 
     const apis = [
       `https://api.davidcyriltech.my.id/download/ytmp3?url=${encodeURIComponent(video.url)}`,
@@ -152,7 +205,7 @@ keith({
     await zk.sendMessage(dest, {
       text: "⬇️ Downloading video... This may take a moment...",
       contextInfo: getContextInfo("Downloading", userJid, video.thumbnail)
-    }, { quoted: ms });
+    }, { quoted: fgg });
 
     const apis = [
       `https://api.davidcyriltech.my.id/download/ytmp4?url=${encodeURIComponent(video.url)}`,
