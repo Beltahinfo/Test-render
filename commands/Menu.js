@@ -57,7 +57,7 @@ const DEFAULT_PARTICIPANT = '0@s.whatsapp.net';
 const DEFAULT_REMOTE_JID = 'status@broadcast';
 const DEFAULT_THUMBNAIL_URL = 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg';
 const DEFAULT_TITLE = "BELTAH-MD MENU";
-const DEFAULT_BODY = "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿";
+const DEFAULT_BODY = "Your AI Assistant Chuddy Buddy";
 
 // Default message configuration
 const fgg = {
@@ -187,8 +187,8 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
     let responseMessage = `
  ${greeting}, *${nomAuteurMessage || "User"}*
  
-╭━━━━❮  ${settings.BOT}  ❯━━━━╮ 
-┃✰╭────────────
+╭━❮  ${settings.BOT}  ❯━╮ 
+┃✰╭────────
 ┃✰│ *ʙᴏᴛ ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
 ┃✰│ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
 ┃✰│ *ᴛɪᴍᴇ:* ${formattedTime}
@@ -197,8 +197,8 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
 ┃✰│ *ᴍᴏᴅᴇ:* ${mode}
 ┃✰│ *ʀᴀᴍ:* ${format(os.totalmem() - os.freemem())}/${format(os.totalmem())}
 ┃✰│ *ᴜᴘᴛɪᴍᴇ:* ${formatUptime(process.uptime())}
-┃✰╰────────────
-╰══════════════════⩥
+┃✰╰────────
+╰═════════════⩥
 > *${randomQuote}*
 `;
 
@@ -207,15 +207,34 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
     let commandIndex = 1;
 
     for (const category of sortedCategories) {
-        commandsList += `\n*╭━━❮ ${toFancyUppercaseFont(category)} ❯━━╮*\n┃✰╭────────────`;
+        commandsList += `\n*╭❮ ${toFancyUppercaseFont(category)} ❯━╮*\n┃✰╭───────`;
         const sortedCommands = categorizedCommands[category].sort();
         for (const command of sortedCommands) {
             commandsList += `\n┃✰ ${toFancyLowercaseFont(command)}`;
         }
-        commandsList += "\n┃✰╰────────────\n╰══════════════════⩥";
+        commandsList += "\n┃✰╰─────\n╰═══════════⩥";
     }
 
     commandsList += readMore + "\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ\n";
+    
+    try {
+        const senderName = message.sender || message.from;
+
+        // Send a loading message or typing indicator
+        const loadingMessage = await client.sendMessage(message, {
+            text: "⏳ Loading *BELTAH-MD* menu, please wait a Moment...",
+    contextInfo: getContextInfo("BELTAH-MD COMPILING MENU LIST", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+         }, { quoted: fgg });
+    } catch (error) {
+        console.error("Loading error: ", error);
+        respond("🥵🥵 Loading error: " + error);
+    }
+
+        // Wait for a short delay (e.g., 2 seconds) to simulate loading
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        // Delete the loading message (if supported by the client)
+        await client.deleteMessage(message, loadingMessage); 
 
     try {
         const senderName = message.sender || message.from;
