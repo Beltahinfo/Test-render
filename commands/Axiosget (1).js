@@ -49,7 +49,7 @@ function getContextInfo(title = DEFAULT_TITLE, userJid = DEFAULT_PARTICIPANT, th
         title,
         body: DEFAULT_BODY,
         thumbnailUrl,
-        sourceUrl: conf.GURL || 'https://wa.me/254114141192',
+        sourceUrl: conf.GURL || '',
       },
     };
   } catch (error) {
