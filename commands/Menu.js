@@ -219,22 +219,10 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
     try {
     const senderName = message.sender || message.from;
 
-    // Send a loading message or typing indicator
-    const loadingMessage = await client.sendMessage(message, {
-        text: "⏳ Loading *BELTAH-MD* menu, please wait a Moment...",
-        contextInfo: getContextInfo("BELTAH-MD COMPILING MENU LIST", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
-    }, { quoted: fgg });
-
-    // Wait for a short delay (e.g., 3 seconds)
-    await new Promise(resolve => setTimeout(resolve, 3000));
-
-    // Delete the loading message using its key
-    await client.deleteMessage(loadingMessage.key);
-
     // Send the menu message
     await client.sendMessage(message, {
         text: responseMessage + commandsList,
-        contextInfo: getContextInfo("BELTAH-MD SYSTEM-OVERVIEW", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+        contextInfo: getContextInfo("MAIN MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
     }, { quoted: fgg });
 
 } catch (error) {
