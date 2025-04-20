@@ -4,7 +4,7 @@ const wiki = require('wikipedia');
 const conf = require(__dirname + "/../set");
 const { repondre } = require(__dirname + "/../keizzah/context");
 
-// Common contextInfo configuration
+/*// Common contextInfo configuration
 const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
   mentionedJid: [userJid],
   forwardingScore: 999,
@@ -23,7 +23,60 @@ const getContextInfo = (title = '', userJid = '', thumbnailUrl = '') => ({
     mediaType: 1,
     renderLargerThumbnail: false
   }
-});
+});*/
+// Constants
+const DEFAULT_PARTICIPANT = '0@s.whatsapp.net';
+const DEFAULT_REMOTE_JID = 'status@broadcast';
+const DEFAULT_THUMBNAIL_URL = 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg';
+const DEFAULT_TITLE = "BELTAH MULTI DEVICE";
+const DEFAULT_BODY = "𝗜𝘁 𝗶𝘀 𝗻𝗼𝘁 𝘆𝗲𝘁 𝘂𝗻𝘁𝗶𝗹 𝗶𝘁 𝗶𝘀 𝗱𝗼𝗻𝗲🗿";
+
+// Default message configuration
+const fgg = {
+  key: {
+    fromMe: false,
+    participant: DEFAULT_PARTICIPANT,
+    remoteJid: DEFAULT_REMOTE_JID,
+  },
+  message: {
+    contactMessage: {
+      displayName: `Beltah Tech Info`,
+      vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;BELTAH MD;;;\nFN:BELTAH MD\nitem1.TEL;waid=${DEFAULT_PARTICIPANT.split('@')[0]}:${DEFAULT_PARTICIPANT.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`,
+    },
+  },
+};
+
+/**
+ * Construct contextInfo object for messages.
+ * @param {string} title - Title for the external ad reply.
+ * @param {string} userJid - User JID to mention.
+ * @param {string} thumbnailUrl - Thumbnail URL.
+ * @returns {object} - ContextInfo object.
+ */
+function getContextInfo(title = DEFAULT_TITLE, userJid = DEFAULT_PARTICIPANT, thumbnailUrl = DEFAULT_THUMBNAIL_URL) {
+  try {
+    return {
+      mentionedJid: [userJid],
+      forwardingScore: 999,
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+         newsletterJid: "120363249464136503@newsletter",
+         newsletterName: "🤖 𝐁𝐄𝐋𝐓𝐀𝐇 𝐀𝐈 𝐂𝐇𝐀𝐓𝐁𝐎𝐓 🤖",
+         serverMessageId: Math.floor(100000 + Math.random() * 900000),
+     },
+      externalAdReply: {
+        showAdAttribution: true,
+        title,
+        body: DEFAULT_BODY,
+        thumbnailUrl: thumbnailUrl || 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg', 
+        sourceUrl: settings.GURL || 'https://wa.me/254114141192',
+      },
+    };
+  } catch (error) {
+    console.error(`Error in getContextInfo: ${error.message}`);
+    return {}; // Prevent breaking on error
+  }
+  }
 
 keith({
   nomCom: "technews",
@@ -41,7 +94,7 @@ keith({
     await zk.sendMessage(dest, {
       text: news,
       contextInfo: getContextInfo("BELTAH-MD TECH NEWS", '', thumbnail)
-    }, { quoted: ms });
+    }, { quoted: fgg });
 
   } catch (error) {
     console.error("Error fetching tech news:", error);
@@ -60,7 +113,7 @@ keith({
   if (!reference) {
     return repondre("Please specify the book, chapter, and verse you want to read. Example: bible john 3:16", {
       contextInfo: getContextInfo("Bible Reference Required", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
-    });
+     }, { quoted: fgg }); 
   }
   
   try {
@@ -69,7 +122,7 @@ keith({
     if (!response.data) {
       return repondre("Invalid reference. Example: bible john 3:16", {
         contextInfo: getContextInfo("Invalid Bible Reference", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
-      });
+      }, { quoted: fgg });
     }
     
     const data = response.data;
@@ -89,7 +142,7 @@ keith({
     await zk.sendMessage(dest, {
       text: messageText,
       contextInfo: getContextInfo("BELTAH-MD HOLY BIBLE", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
-    }, { quoted: ms });
+    }, { quoted: fgg });
     
   } catch (error) {
     console.error("Error fetching Bible passage:", error);
@@ -126,7 +179,7 @@ keith({
       await zk.sendMessage(dest, {
         text: definitionMessage,
         contextInfo: getContextInfo("BELTAH-MD DICTIONARY", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
-      }, { quoted: ms });
+      }, { quoted: fgg });
 
     } else {
       return repondre(`No result found for "${term}".`);
@@ -168,7 +221,7 @@ keith({
       await zk.sendMessage(dest, {
         text: pairingCode,
         contextInfo: getContextInfo("𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗦𝗘𝗦𝗦𝗜𝗢𝗡𝗦", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
-      }, { quoted: ms });
+      }, { quoted: fgg });
 
       const secondReplyText = "Here is your pair code, copy and paste it to the notification above or link devices.";
       await repondre(secondReplyText);
@@ -213,7 +266,7 @@ keith({
       await zk.sendMessage(dest, {
         text: pairingCode,
         contextInfo: getContextInfo("𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗦𝗘𝗦𝗦𝗜𝗢𝗡𝗦", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
-      }, { quoted: ms });
+      }, { quoted: fgg });
 
       const secondReplyText = "Here is your pair code, copy and paste it to the notification above or link devices.";
       await repondre(secondReplyText);
@@ -265,7 +318,7 @@ Regards ${conf.BOT} `;
     await zk.sendMessage(dest, {
       text: formattedMessage,
       contextInfo: getContextInfo("BELTAH-MD ELEMENT INFORMATION", '', thumb)
-    }, { quoted: ms });
+    }, { quoted: fgg });
 
   } catch (error) {
     console.error("Error fetching the element data:", error);
@@ -316,7 +369,7 @@ keith({
     await zk.sendMessage(dest, {
       text: githubMessage,
       contextInfo: getContextInfo("BELTAH-MD GITHUB USER INFO", '', thumb)
-    }, { quoted: ms });
+    }, { quoted: fgg });
 
   } catch (error) {
     console.error("Error fetching GitHub user data:", error);
