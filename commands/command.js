@@ -77,7 +77,7 @@ function getContextInfo(title = DEFAULT_TITLE, userJid = DEFAULT_PARTICIPANT, th
 // Ping Command
 keith(
   {
-    nomCom: 'on',
+    nomCom: 'ping',
     aliases: ['speed', 'latency'],
     desc: 'To check bot response time',
     categorie: 'system',
@@ -92,7 +92,7 @@ keith(
 
       const pingMessage = `*📡 PING RESULTS 📡*\n\n` +
                           `*🌐 Latency:* ${latency}ms\n` +
-                          `*⚡ Powered by BELTAH Tech Team*`;
+                          `> *⚡ Powered by Beltah Tech Team*`;
 
       await zk.sendMessage(
         dest,
@@ -111,7 +111,7 @@ keith(
 // Uptime Command
 keith(
   {
-    nomCom: 'active',
+    nomCom: 'uptime',
     aliases: ['runtime', 'running'],
     desc: 'To check runtime',
     categorie: 'system',
@@ -125,7 +125,7 @@ keith(
 
       const uptimeMessage = `*⏰ BOT UPTIME ⏰*\n\n` +
                             `*🛸 Uptime:* ${formattedUptime}\n` +
-                            `*⚡ Powered by BELTAH Tech Team*`;
+                            `> *⚡ Powered by Beltah Tech Team*`;
 
       await zk.sendMessage(
         dest,
