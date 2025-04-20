@@ -217,18 +217,16 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
 
     commandsList += readMore + "\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ\n";
     try {
-    const senderName = message.sender || message.from;
-
-    // Send the menu message
-    await client.sendMessage(message, {
-        text: responseMessage + commandsList,
-        contextInfo: getContextInfo("MAIN MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
-    }, { quoted: fgg });
-
-} catch (error) {
-    console.error("Error: ", error);
-    respond("🥵🥵 Error: " + error);
-}
+        const senderName = message.sender || message.from;
+        await client.sendMessage(message, {
+             text: responseMessage + commandsList,
+             contextInfo: getContextInfo("BELTAH-MD MAIN MENU", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+         }, { quoted: fgg });
+    } catch (error) {
+        console.error("Menu error: ", error);
+        respond("🥵🥵 Menu error: " + error);
+    }
+});
 
 keith({ nomCom: "list", aliases: ["liste", "helplist", "commandlist"], categorie: "SYSTEM" }, async (message, client, config) => {
     const { ms, respond, prefix, nomAuteurMessage } = config;
