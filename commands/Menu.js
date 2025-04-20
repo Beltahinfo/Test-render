@@ -216,37 +216,31 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
     }
 
     commandsList += readMore + "\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ\n";
-    
     try {
-        const senderName = message.sender || message.from;
+    const senderName = message.sender || message.from;
 
-        // Send a loading message or typing indicator
-        const loadingMessage = await client.sendMessage(message, {
-            text: "⏳ Loading *BELTAH-MD* menu, please wait a Moment...",
-    contextInfo: getContextInfo("BELTAH-MD COMPILING MENU LIST", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
-         }, { quoted: fgg });
-    } catch (error) {
-        console.error("Loading error: ", error);
-        respond("🥵🥵 Loading error: " + error);
-    }
+    // Send a loading message or typing indicator
+    const loadingMessage = await client.sendMessage(message, {
+        text: "⏳ Loading *BELTAH-MD* menu, please wait a Moment...",
+        contextInfo: getContextInfo("BELTAH-MD COMPILING MENU LIST", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+    }, { quoted: fgg });
 
-        // Wait for a short delay (e.g., 2 seconds) to simulate loading
-        await new Promise(resolve => setTimeout(resolve, 2000));
+    // Wait for a short delay (e.g., 3 seconds)
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
-        // Delete the loading message (if supported by the client)
-        await client.deleteMessage(message, loadingMessage); 
+    // Delete the loading message using its key
+    await client.deleteMessage(loadingMessage.key);
 
-    try {
-        const senderName = message.sender || message.from;
-        await client.sendMessage(message, {
-             text: responseMessage + commandsList,
-             contextInfo: getContextInfo("BELTAH-MD SYSTEM-OVERVIEW", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
-         }, { quoted: fgg });
-    } catch (error) {
-        console.error("Menu error: ", error);
-        respond("🥵🥵 Menu error: " + error);
-    }
-});
+    // Send the menu message
+    await client.sendMessage(message, {
+        text: responseMessage + commandsList,
+        contextInfo: getContextInfo("BELTAH-MD SYSTEM-OVERVIEW", senderName, 'https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg')
+    }, { quoted: fgg });
+
+} catch (error) {
+    console.error("Error: ", error);
+    respond("🥵🥵 Error: " + error);
+}
 
 keith({ nomCom: "list", aliases: ["liste", "helplist", "commandlist"], categorie: "SYSTEM" }, async (message, client, config) => {
     const { ms, respond, prefix, nomAuteurMessage } = config;
