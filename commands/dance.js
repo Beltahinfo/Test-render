@@ -43,7 +43,7 @@ function getContextInfo(title = DEFAULT_TITLE, userJid = DEFAULT_PARTICIPANT, th
         title: conf.BOT || 'BELTAH-MD DOWNLOADS',
         body: DEFAULT_BODY,
         thumbnailUrl: thumbnailUrl || conf.URL || '',
-        sourceUrl: conf.GURL || 'https://wa.me/254114141192',
+        sourceUrl: conf.GURL || '',
       },
     };
   } catch (error) {
