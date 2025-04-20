@@ -75,78 +75,6 @@ function getContextInfo(title = DEFAULT_TITLE, userJid = DEFAULT_PARTICIPANT, th
   }
            }
 
-// Function to show loading animation
-async function showLoadingAnimation(dest, zk) {
-  const loadingSymbols = [
-    "😖", 
-    "😵‍💫", 
-    "😕", 
-    "😤",
-    "🤨",
-    "😡", 
-    "😠", 
-    "😬",
-    "🤬", 
-    "🗿", 
-    "*ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ*"
-  ];
-  let { key } = await zk.sendMessage(dest, { text: 'BELTAH-MD SPEED TEST' });
-
-  // Run the loading animation without blocking the main code
-  for (let i = 0; i < loadingSymbols.length; i++) {
-    await zk.sendMessage(dest, { text: loadingSymbols[i], edit: key });
-    await delay(500); // Adjust the speed of the animation here
-  }
-}
-
-
-// Command to test the bot
-keith({
-  nomCom: "test",
-  aliases: ["alive", "testing"],
-  categorie: "system",
-  reaction: "👻"
-}, async (dest, zk, commandeOptions) => {
-  const { ms } = commandeOptions;
-
-  // Array of sound file URLs
-  const audioFiles = [
-    'https://files.catbox.moe/hpwsi2.mp3',
-    'https://files.catbox.moe/xci982.mp3',
-    'https://files.catbox.moe/utbujd.mp3',
-    'https://files.catbox.moe/w2j17k.m4a',
-    'https://files.catbox.moe/851skv.m4a',
-    'https://files.catbox.moe/qnhtbu.m4a',
-    'https://files.catbox.moe/lb0x7w.mp3',
-    'https://files.catbox.moe/efmcxm.mp3',
-    'https://files.catbox.moe/gco5bq.mp3',
-    'https://files.catbox.moe/26oeeh.mp3',
-    'https://files.catbox.moe/a1sh4u.mp3',
-    'https://files.catbox.moe/vuuvwn.m4a',
-    'https://files.catbox.moe/wx8q6h.mp3',
-    'https://files.catbox.moe/uj8fps.m4a',
-    'https://files.catbox.moe/dc88bx.m4a',
-    'https://files.catbox.moe/tn32z0.m4a'
-  ];
-
-  // Randomly pick an audio file from the list
-  const selectedAudio = audioFiles[Math.floor(Math.random() * audioFiles.length)];
-
-  // Audio message object
-  const audioMessage = {
-    audio: {
-      url: selectedAudio,
-    },
-    mimetype: 'audio/mpeg',
-    ptt: true,  // Marking this as a "Push-to-Talk" message
-    waveform: [100, 0, 100, 0, 100, 0, 100],
-    fileName: 'shizo',
-    contextInfo: getContextInfo('𝗕𝗘𝗟𝗧𝗔𝗛-𝗠𝗗 𝗕𝗢𝗧', '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
-  }, {quoted :fgg});
-
-  // Send the audio message with the context of the original message
-  await zk.sendMessage(dest, audioMessage, { quoted: ms });
-});
 
 // Command to restart the bot
 keith({
@@ -301,61 +229,7 @@ keith({
   });
 });
 
-// Command to check bot response time (ping)
-keith({
-  nomCom: 'ping',
-  aliases: ['speed', 'latency'],
-  desc: 'To check bot response time',
-  categorie: 'system',
-  reaction: '👻',
-  fromMe: true,
-}, async (dest, zk) => {
-  // Call the loading animation without delaying the rest of the bot
-  const loadingPromise = showLoadingAnimation(dest, zk);
 
-  // Generate 3 ping results with large random numbers for a more noticeable effect
-  const pingResults = Array.from({ length: 1 }, () => Math.floor(Math.random() * 10000 + 1000));
-
-  // Create larger font for ping results (using special characters for a bigger look)
-  const formattedResults = pingResults.map(ping => `*📡 ᴘᴏɴɢ 📡*\n\n*${ping}...ᴍɪʟʟɪsᴇᴄᴏɴᴅs*\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ*`);
-
-  // Send the ping results with the updated text and format
-  await zk.sendMessage(dest, {
-    text: `${formattedResults}`, 
-    contextInfo: getContextInfo("🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ sᴘᴇᴇᴅ ᴛᴇsᴛ 🛸",'', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg")
- }, {quoted :fgg}); 
-
-  console.log("Ping results sent successfully with new loading animation and formatted results!");
-
-  // Ensure loading animation completes after the ping results
-  await loadingPromise;
-});
-
-// Command to check bot uptime
-keith({
-  nomCom: 'uptime',
-  aliases: ['runtime', 'running'],
-  desc: 'To check runtime',
-  categorie: 'system',
-  reaction: '⚠️',
-  fromMe: true,
-}, async (dest, zk, commandeOptions) => {
-  const { ms, arg, repondre } = commandeOptions;
-
-  // Get bot's runtime
-  const botUptime = process.uptime(); // Get the bot uptime in seconds
-
-  // Send uptime information to the user
-  await zk.sendMessage(dest, {
-    text: `*🛸 ʙᴇʟᴛᴀʜ-ᴍᴅ ʀᴜɴᴛɪᴍᴇ 🛸*\n\n${formatUptime(botUptime)}`,
-    contextInfo: getContextInfo("📡ʙᴇʟᴛᴀʜ-ᴍᴅ ᴜᴘᴛɪᴍᴇ📡", '', "https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" )
-  }, {quoted :fgg});
-
-  console.log("Runtime results sent successfully!");
-
-  // Ensure loading animation completes after sending the uptime message
-  await delay(ms); // Await the delay to simulate the loading animation
-});
 // Command to update and redeploy the bot
 keith({
   nomCom: 'update',
