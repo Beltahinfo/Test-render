@@ -183,7 +183,7 @@ setTimeout(() => {
 let lastTextTime = 0;
 const messageDelay = 5000; // Set the minimum delay between messages (in milliseconds)
 
-/*zk.ev.on('call', async (callData) => {
+zk.ev.on('call', async (callData) => {
   if (conf.ANTICALL === 'yes') {
     const callId = callData[0].id;
     const callerId = callData[0].from;
@@ -205,8 +205,8 @@ const messageDelay = 5000; // Set the minimum delay between messages (in millise
       console.log('Message skipped to prevent overflow');
     }
   }
-});*/
-    zk.ev.on("call", async callData => {
+});
+  /*  zk.ev.on("call", async callData => {
     const settings = await getAntiCallSettings();
     if (settings.status !== 'yes') return;
 
@@ -228,7 +228,7 @@ const messageDelay = 5000; // Set the minimum delay between messages (in millise
     } else {
         console.log('Message not sent due to delay constraint');
     }
-});
+});*/
     //Context to read forwarded info
     const getContextInfo = (title = '', userJid = '') => ({
     mentionedJid: [userJid],
@@ -369,7 +369,7 @@ contextInfo: getContextInfo()
     repliedContacts.add(remoteJid);
   }
 });
-    //functions to handle antidelete 
+  /*  //functions to handle antidelete 
     async function setupAntiDelete(zk) {
     const antiDeleteSettings = await getAntiDeleteSettings();
     if (antiDeleteSettings.status !== 'on') return;
@@ -491,9 +491,9 @@ contextInfo: getContextInfo()
             }  
         }  
     });
-      }
+      }*/
     
-    /*/ Function to format notification message
+    // Function to format notification message
 function createNotification(deletedMessage) {
   const deletedBy = deletedMessage.key.participant || deletedMessage.key.remoteJid;
   return `*『 👻 ${conf.BOT} ᴀɴᴛɪᴅᴇʟᴇᴛᴇ 👻 』*\n\n` +
@@ -715,7 +715,7 @@ zk.ev.on("messages.upsert", async m => {
         });
       }
 //BELTAH MD DID EVERYTHING ,,,DO NOT COPY ...
-if (!superUser && origineMessage === auteurMessage) {
+/*if (!superUser && origineMessage === auteurMessage) {
     const autoReactSettings = await getAutoReactSettings();
     if (autoReactSettings.status === 'on') {
         const randomEmoji = autoReactSettings.emojis[
@@ -733,7 +733,7 @@ if (!superUser && origineMessage === auteurMessage) {
         }
     }
                   }
-                                }
+                                }*/
 if (!superUser && origineMessage === auteurMessage && conf.CHATBOT === 'yes') {
   try {
     const currentTime = Date.now();
