@@ -183,7 +183,7 @@ setTimeout(() => {
 let lastTextTime = 0;
 const messageDelay = 5000; // Set the minimum delay between messages (in milliseconds)
 
-zk.ev.on('call', async (callData) => {
+/*zk.ev.on('call', async (callData) => {
   if (conf.ANTICALL === 'yes') {
     const callId = callData[0].id;
     const callerId = callData[0].from;
@@ -205,6 +205,29 @@ zk.ev.on('call', async (callData) => {
       console.log('Message skipped to prevent overflow');
     }
   }
+});*/
+    zk.ev.on("call", async callData => {
+    const settings = await getAntiCallSettings();
+    if (settings.status !== 'yes') return;
+
+    const callId = callData[0].id;
+    const callerId = callData[0].from;
+    const currentTime = Date.now();
+
+    if (currentTime - lastTextTime >= messageDelay) {
+        try {
+            if (settings.action === 'block') {
+                await zk.blockUser(callerId);
+            }
+            await zk.rejectCall(callId, callerId);
+            await zk.sendMessage(callerId, { text: conf.ANTICALL_MSG });
+            lastTextTime = currentTime;
+        } catch (error) {
+            console.error('Error handling call:', error);
+        }
+    } else {
+        console.log('Message not sent due to delay constraint');
+    }
 });
     //Context to read forwarded info
     const getContextInfo = (title = '', userJid = '') => ({
@@ -346,8 +369,131 @@ contextInfo: getContextInfo()
     repliedContacts.add(remoteJid);
   }
 });
+    //functions to handle antidelete 
+    async function setupAntiDelete(zk) {
+    const antiDeleteSettings = await getAntiDeleteSettings();
+    if (antiDeleteSettings.status !== 'on') return;
+
+    zk.ev.on("messages.upsert", async (m) => {  
+        const { messages } = m;  
+        const ms = messages[0];  
+        if (!ms.message) return;  
+
+        const messageKey = ms.key;  
+        const remoteJid = messageKey.remoteJid;  
+
+        // Ignore status updates
+        if (remoteJid === "status@broadcast") return;  
+
+        // Initialize chat storage if it doesn't exist  
+        if (!store2.chats[remoteJid]) {  
+            store2.chats[remoteJid] = [];  
+        }  
+
+        // Save the received message to storage  
+        store2.chats[remoteJid].push(ms);  
+
+        // Handle deleted messages  
+        if (ms.message.protocolMessage?.type === 0) {  
+            const deletedKey = ms.message.protocolMessage.key;  
+            const chatMessages = store2.chats[remoteJid];  
+            const deletedMessage = chatMessages.find(msg => msg.key.id === deletedKey.id);  
+
+            if (!deletedMessage) return;
+
+            try {  
+                const deleterJid = ms.key.participant || ms.key.remoteJid;
+                const originalSenderJid = deletedMessage.key.participant || deletedMessage.key.remoteJid;
+                const isGroup = remoteJid.endsWith('@g.us');
+                
+                // Get group info if message was from a group
+                let groupInfo = '';
+                if (isGroup) {
+                    try {
+                        const groupMetadata = await zk.groupMetadata(remoteJid);
+                        groupInfo = `\n• Group: ${groupMetadata.subject}`;
+                    } catch (e) {
+                        console.error('Error fetching group metadata:', e);
+                    }
+                }
+
+                const notification = `👻 *Anti-Delete Alert* 👻\n` +
+                                    `• Deleted by: @${deleterJid.split("@")[0]}\n` +
+                                    `• Original sender: @${originalSenderJid.split("@")[0]}\n` +
+                                    `${groupInfo}\n` +
+                                    `• Chat type: ${isGroup ? 'Group' : 'Private'}`;
+
+                const contextInfo = getContextInfo('Deleted Message Alert', deleterJid);
+
+                // Common message options
+                const baseMessage = {
+                    mentions: [deleterJid, originalSenderJid],
+                    contextInfo: contextInfo
+                };
+
+                // Handle different message types
+                if (deletedMessage.message.conversation) {
+                    await zk.sendMessage(remoteJid, {
+                        text: `${notification}\n\n📝 *Deleted Text:*\n${deletedMessage.message.conversation}`,
+                        ...baseMessage
+                    });
+                } 
+                else if (deletedMessage.message.extendedTextMessage) {
+                    await zk.sendMessage(remoteJid, {
+                        text: `${notification}\n\n📝 *Deleted Text:*\n${deletedMessage.message.extendedTextMessage.text}`,
+                        ...baseMessage
+                    });
+                }
+                else if (deletedMessage.message.imageMessage) {
+                    const caption = deletedMessage.message.imageMessage.caption || '';
+                    const imagePath = await zk.downloadAndSaveMediaMessage(deletedMessage.message.imageMessage);
+                    await zk.sendMessage(remoteJid, {
+                        image: { url: imagePath },
+                        caption: `${notification}\n\n📷 *Image Caption:*\n${caption}`,
+                        ...baseMessage
+                    });
+                }  
+                else if (deletedMessage.message.videoMessage) {
+                    const caption = deletedMessage.message.videoMessage.caption || '';
+                    const videoPath = await zk.downloadAndSaveMediaMessage(deletedMessage.message.videoMessage);
+                    await zk.sendMessage(remoteJid, {
+                        video: { url: videoPath },
+                        caption: `${notification}\n\n🎥 *Video Caption:*\n${caption}`,
+                        ...baseMessage
+                    });
+                }  
+                else if (deletedMessage.message.audioMessage) {
+                    const audioPath = await zk.downloadAndSaveMediaMessage(deletedMessage.message.audioMessage);
+                    await zk.sendMessage(remoteJid, {
+                        audio: { url: audioPath },
+                        ptt: true,
+                        caption: `${notification}\n\n🎤 *Voice Message Deleted*`,
+                        ...baseMessage
+                    });
+                }  
+                else if (deletedMessage.message.stickerMessage) {
+                    const stickerPath = await zk.downloadAndSaveMediaMessage(deletedMessage.message.stickerMessage);
+                    await zk.sendMessage(remoteJid, {
+                        sticker: { url: stickerPath },
+                        caption: notification,
+                        ...baseMessage
+                    });
+                }
+                else {
+                    // For other message types we don't specifically handle
+                    await zk.sendMessage(remoteJid, {
+                        text: `${notification}\n\n⚠️ *Unsupported message type was deleted*`,
+                        ...baseMessage
+                    });
+                }
+            } catch (error) {  
+                console.error('Error handling deleted message:', error);  
+            }  
+        }  
+    });
+      }
     
-    // Function to format notification message
+    /*/ Function to format notification message
 function createNotification(deletedMessage) {
   const deletedBy = deletedMessage.key.participant || deletedMessage.key.remoteJid;
   return `*『 👻 ${conf.BOT} ᴀɴᴛɪᴅᴇʟᴇᴛᴇ 👻 』*\n\n` +
@@ -422,7 +568,7 @@ zk.ev.on("messages.upsert", async m => {
       }
     }
   }
-});
+});*/
   
     zk.ev.on("messages.upsert", async m => {
       const {
@@ -569,15 +715,24 @@ zk.ev.on("messages.upsert", async m => {
         });
       }
 //BELTAH MD DID EVERYTHING ,,,DO NOT COPY ...
-if (!superUser && origineMessage  === auteurMessage && conf.AUTO_REACT === "yes") {
-const emojis = ['👣', '🏗️', '✈️', '🌽', '🏸', '🛖', '🍁', '🛰️', '🥔', '🎡', '🎸', '🎼', '🔉', '📿', '🪇', '📹', '🎞️', '🪔', '📔', '🏷️', '💰', '📥', '🗳️', '📭', '🖌️', '📏', '', '🪛', '🔨', '⛓️‍💥', '📌', '🗝️', '🔍', '🥁', '🔊', '🥾', '👢', '🩰', '👡', '🙂', '🎊', '🎉', '🎁', '⛑️', '👋']
-         const beltahs = emojis[Math.floor(Math.random() * (emojis.length))]
-         zk.sendMessage(origineMessage, {
-             react: {
-                 text: beltahs,
-                 key: ms.key
-             }
-         })
+if (!superUser && origineMessage === auteurMessage) {
+    const autoReactSettings = await getAutoReactSettings();
+    if (autoReactSettings.status === 'on') {
+        const randomEmoji = autoReactSettings.emojis[
+            Math.floor(Math.random() * autoReactSettings.emojis.length)
+        ];
+        try {
+            await zk.sendMessage(origineMessage, {
+                react: {
+                    text: randomEmoji,
+                    key: ms.key
+                }
+            });
+        } catch (error) {
+            console.error('AutoReact error:', error);
+        }
+    }
+                  }
                                 }
 if (!superUser && origineMessage === auteurMessage && conf.CHATBOT === 'yes') {
   try {
