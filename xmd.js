@@ -568,7 +568,7 @@ zk.ev.on("messages.upsert", async m => {
       }
     }
   }
-});*/
+});
   
     zk.ev.on("messages.upsert", async m => {
       const {
