@@ -158,12 +158,12 @@ keith({
   switch (option) {
     case "yes":
       s.ADM = 'yes';  // Enable Antidelete
-      responseMessage = ' has been enabled successfully.';
+      responseMessage = 'Antidelete has been enabled successfully.';
       break;
 
     case "no":
       s.ADM = 'no';  // Disable antidelete
-      responseMessage = ' has been disabled successfully.';
+      responseMessage = 'Antidelete has been disabled successfully.';
       break;
 
     default:
@@ -343,7 +343,7 @@ keith({
   }
 });
 keith({
-  nomCom: 'chatbot',
+  nomCom: 'aibot',
   categorie: "HEROKU-CLIENT"
 }, async (chatId, zk, context) => {
   const { ms, repondre, superUser, auteurMessage, arg } = context;
@@ -361,13 +361,13 @@ keith({
   const option = arg.join(' ').toLowerCase();
   switch (option) {
     case "yes":
-      s.CHAT_BOT = 'yes';  // Enable pm
-      responseMessage = ' has been enabled successfully.';
+      s.CHATBOT = 'yes';  // Enable pm
+      responseMessage = 'Chatbot has been enabled successfully.';
       break;
 
     case "no":
-      s.CHAT_BOT = 'no';  // Disable pm
-      responseMessage = ' has been disabled successfully.';
+      s.CHATBOT = 'no';  // Disable pm
+      responseMessage = 'Chatbot has been disabled successfully.';
       break;
 
     default:
@@ -401,12 +401,12 @@ keith({
   const option = arg.join(' ').toLowerCase();
   switch (option) {
     case "yes":
-      s.AUTO_REPLY = 'yes';  // Enable pm
+      s.GREET = 'yes';  // Enable pm
       responseMessage = ' has been enabled successfully.';
       break;
 
     case "no":
-      s.AUTO_REPLY = 'no';  // Disable pm
+      s.GREET = 'no';  // Disable pm
       responseMessage = ' has been disabled successfully.';
       break;
 
@@ -484,12 +484,12 @@ keith({
   switch (option) {
     case "yes":
       s.MODE = 'yes';  // Enable Autodownloadstatus
-      responseMessage = ' has been enabled successfully.';
+      responseMessage = 'Public has been enabled successfully.';
       break;
 
     case "no":
       s.MODE = 'no';  // Disable public
-      responseMessage = ' has been disabled successfully.';
+      responseMessage = 'Private mode has been enabled successfully.';
       break;
 
     default:
@@ -506,7 +506,7 @@ keith({
 });
 
 keith({
-  nomCom: 'autorecord',
+  nomCom: 'recording',
   categorie: "HEROKU-CLIENT"
 }, async (chatId, zk, context) => {
   const { ms, repondre, superUser, auteurMessage, arg } = context;
@@ -525,12 +525,12 @@ keith({
   switch (option) {
     case "yes":
       s.ETAT = '3';  // Enable Autorecord
-      responseMessage = ' has been enabled successfully.';
+      responseMessage = 'Recording feature has been enabled successfully.';
       break;
 
     case "no":
       s.ETAT = 'no';  // Disable Autorecord
-      responseMessage = ' has been disabled successfully.';
+      responseMessage = 'Recording feature has been disabled successfully.';
       break;
 
     default:
@@ -547,7 +547,7 @@ keith({
 });
 
 keith({
-  nomCom: 'autotyping',
+  nomCom: 'typing',
   categorie: "HEROKU-CLIENT"
 }, async (chatId, zk, context) => {
   const { ms, repondre, superUser, auteurMessage, arg } = context;
@@ -566,12 +566,12 @@ keith({
   switch (option) {
     case "yes":
       s.ETAT = '2';  // Enable Autorecord
-      responseMessage = ' has been enabled successfully.';
+      responseMessage = 'Typing feature has been enabled successfully.';
       break;
 
     case "no":
       s.ETAT = 'no';  // Disable Autorecord
-      responseMessage = ' has been disabled successfully.';
+      responseMessage = 'Typing feature has been disabled successfully.';
       break;
 
     default:
@@ -588,7 +588,7 @@ keith({
 });
 
 keith({
-  nomCom: 'alwaysonline',
+  nomCom: 'online',
   categorie: "HEROKU-CLIENT"
 }, async (chatId, zk, context) => {
   const { ms, repondre, superUser, auteurMessage, arg } = context;
@@ -607,12 +607,12 @@ keith({
   switch (option) {
     case "yes":
       s.ETAT = '1';  // Enable Autorecord
-      responseMessage = ' has been enabled successfully.';
+      responseMessage = 'Online display has been enabled successfully.';
       break;
 
     case "no":
       s.ETAT = 'no';  // Disable Autorecord
-      responseMessage = ' has been disabled successfully.';
+      responseMessage = 'Online display has been disabled successfully.';
       break;
 
     default:
@@ -648,12 +648,12 @@ keith({
   switch (option) {
     case "yes":
       s.MODE = 'no';  // Enable Autodownloadstatus
-      responseMessage = ' has been enabled successfully.';
+      responseMessage = 'Private mode has been enabled successfully.';
       break;
 
     case "no":
       s.MODE = 'yes';  // Disable public
-      responseMessage = ' has been disabled successfully.';
+      responseMessage = 'Public mode has been enabled successfully.';
       break;
 
     default:
@@ -669,7 +669,7 @@ keith({
   }
 });
 keith({
-  nomCom: 'autolikestatus',
+  nomCom: 'likestatus',
   categorie: "HEROKU-CLIENT"
 }, async (chatId, zk, context) => {
   const { ms, repondre, superUser, auteurMessage, arg } = context;
@@ -688,12 +688,12 @@ keith({
   switch (option) {
     case "yes":
       s.AUTO_LIKE_STATUS = 'no';  // Enable Autodownloadstatus
-      responseMessage = ' has been enabled successfully.';
+      responseMessage = 'Auto like status has been enabled successfully.';
       break;
 
     case "no":
       s.AUTO_LIKES_TATUS = 'yes';  // Disable public
-      responseMessage = ' has been disabled successfully.';
+      responseMessage = 'Auto like status has been disabled successfully.';
       break;
 
     default:
@@ -728,12 +728,12 @@ keith({
   switch (option) {
     case "yes":
       s.CHATBOT = 'no';  // Enable Autodownloadstatus
-      responseMessage = ' has been enabled successfully.';
+      responseMessage = 'Chatbot has been enabled successfully.';
       break;
 
     case "no":
       s.CHATBOT = 'yes';  // Disable public
-      responseMessage = ' has been disabled successfully.';
+      responseMessage = 'Chatbot has been disabled successfully.';
       break;
 
     default:
@@ -776,7 +776,7 @@ keith({
     { nom: "CHATBOT", choix: ['on', 'off'] }
   ];
 
-  let settingsMenu = "╭──────༺♡༻──────╮\nBeltah Tech Settings\n╰──────༺♡༻──────╯\n\n";
+  let settingsMenu = "╭──────༺♡༻──────╮\n  Beltah Tech Settings\n╰──────༺♡༻──────╯\n\n";
   settingsOptions.forEach((option, index) => {
     settingsMenu += `${index + 1}- *${option.nom}*\n`;
   });
