@@ -198,10 +198,8 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
 ╰──────────────────╯ 
 *${randomQuote}*
 
-
-> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ ©2025
-
-`;
+> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ
+${readmore}`;
 
     let commandsList = "\n🛡️ *COMMAND CATEGORIES:* 🛡️\n";
 const sortedCategories = Object.keys(categorizedCommands).sort();
