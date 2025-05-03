@@ -185,19 +185,22 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
     const randomQuote = getRandomQuote();
 
     let responseMessage = `
- ${greeting}, *${nomAuteurMessage || "User"}*
+ *${nomAuteurMessage || "User"}*
  
 ╭───「${settings.BOT} 」───╮ 
 ┃◦ *ʙᴏᴛ ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
-┃◦*ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
+┃◦ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
 ┃◦ *ᴛɪᴍᴇ:* ${formattedTime}
-┃◦*ᴅᴀᴛᴇ:* ${formattedDate}
+┃◦ *ᴅᴀᴛᴇ:* ${formattedDate}
 ┃◦ *ᴍᴏᴅᴇ:* ${mode}
 ┃◦ *ᴜᴘᴛɪᴍᴇ:* ${formatUptime(process.uptime())}
+┃◦ *ɢʀᴇᴇᴛɪɴɢ :* ${greeting}
 ╰──────────────────╯ 
-* Beltah Tech©2025
+*${randomQuote}*
 
-> *${randomQuote}*
+
+> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ ©2025
+
 `;
 
     let commandsList = "\n🛡️ *COMMAND CATEGORIES:* 🛡️\n";
