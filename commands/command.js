@@ -86,6 +86,87 @@ keith(
   },
   async (dest, zk) => {
     try {
+      // Show loading animation
+      await zk.sendPresenceUpdate('composing', dest); // Simulate typing
+      await zk.sendMessage(
+        dest,
+        { text: "🔄 Checking ping... Please wait.", contextInfo: getContextInfo() },
+        { quoted: fgg }
+      );
+
+      const start = Date.now();
+      const latency = Date.now() - start;
+
+      const pingMessage = `*📡 PING RESULTS 📡*\n\n` +
+                          `*🌐 Latency:* ${latency}ms\n` +
+                          `> *⚡ Powered by Beltah Tech Team*`;
+
+      await zk.sendMessage(
+        dest,
+        { text: pingMessage, contextInfo: getContextInfo("Ping Command Results") },
+        { quoted: fgg }
+      );
+    } catch (error) {
+      console.error(`Error in ping command: ${error.message}`);
+      await zk.sendMessage(dest, {
+        text: `⚠️ An error occurred while processing the ping command. Please try again later.`,
+      });
+    }
+  }
+);
+
+// Uptime Command
+keith(
+  {
+    nomCom: 'uptime',
+    aliases: ['runtime', 'running'],
+    desc: 'To check runtime',
+    categorie: 'system',
+    reaction: '⚠️',
+    fromMe: true,
+  },
+  async (dest, zk) => {
+    try {
+      // Show loading animation
+      await zk.sendPresenceUpdate('composing', dest); // Simulate typing
+      await zk.sendMessage(
+        dest,
+        { text: "🔄 Calculating uptime... Please wait.", contextInfo: getContextInfo() },
+        { quoted: fgg }
+      );
+
+      const botUptime = process.uptime(); // Uptime in seconds
+      const formattedUptime = formatRuntime(botUptime);
+
+      const uptimeMessage = `*⏰ BOT UPTIME ⏰*\n\n` +
+                            `*🛸 Uptime:* ${formattedUptime}\n` +
+                            `> *⚡ Powered by Beltah Tech Team*`;
+
+      await zk.sendMessage(
+        dest,
+        { text: uptimeMessage, contextInfo: getContextInfo("Uptime Command Results") },
+        { quoted: fgg }
+      );
+    } catch (error) {
+      console.error(`Error in uptime command: ${error.message}`);
+      await zk.sendMessage(dest, {
+        text: `⚠️ An error occurred while processing the uptime command. Please try again later.`,
+      });
+    }
+  }
+); 
+/*// Ping Command
+keith(
+  {
+    nomCom: 'ping',
+    aliases: ['speed', 'latency'],
+    desc: 'To check bot response time',
+    categorie: 'system',
+    reaction: '👻',
+    fromMe: true,
+  },
+  async (dest, zk) => {
+    try {
       const start = Date.now();
       await zk.sendPresenceUpdate('composing', dest); // Simulate typing
       const latency = Date.now() - start;
@@ -139,7 +220,7 @@ keith(
       });
     }
   }
-);
+);*/
 
 module.exports = {
   getContextInfo,
