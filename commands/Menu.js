@@ -187,36 +187,33 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
     let responseMessage = `
  ${greeting}, *${nomAuteurMessage || "User"}*
  
-╭━❮  ${settings.BOT}  ❯━╮ 
-┃✰╭────────
-┃✰│ *ʙᴏᴛ ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
-┃✰│ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
-┃✰│ *ᴛɪᴍᴇ:* ${formattedTime}
-┃✰│ *ᴄᴏᴍᴍᴀɴᴅꜱ:* ${commands.length} 
-┃✰│ *ᴅᴀᴛᴇ:* ${formattedDate}
-┃✰│ *ᴍᴏᴅᴇ:* ${mode}
-┃✰│ *ʀᴀᴍ:* ${format(os.totalmem() - os.freemem())}/${format(os.totalmem())}
-┃✰│ *ᴜᴘᴛɪᴍᴇ:* ${formatUptime(process.uptime())}
-┃✰╰────────
-╰═════════════⩥
+╭───「${settings.BOT} 」───╮ 
+┃◦ *ʙᴏᴛ ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
+┃◦*ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
+┃◦ *ᴛɪᴍᴇ:* ${formattedTime}
+┃◦*ᴅᴀᴛᴇ:* ${formattedDate}
+┃◦ *ᴍᴏᴅᴇ:* ${mode}
+┃◦ *ᴜᴘᴛɪᴍᴇ:* ${formatUptime(process.uptime())}
+╰──────────────────╯ 
+* Beltah Tech©2025
+
 > *${randomQuote}*
 `;
 
-    let commandsList = "";
-    const sortedCategories = Object.keys(categorizedCommands).sort();
-    let commandIndex = 1;
+    let commandsList = "\n🛡️ *COMMAND CATEGORIES:* 🛡️\n";
+const sortedCategories = Object.keys(categorizedCommands).sort();
 
-    for (const category of sortedCategories) {
-        commandsList += `\n*╭❮ ${toFancyUppercaseFont(category)} ❯━╮*\n┃✰╭───────`;
-        const sortedCommands = categorizedCommands[category].sort();
-        for (const command of sortedCommands) {
-            commandsList += `\n┃✰ ${toFancyLowercaseFont(command)}`;
-        }
-        commandsList += "\n┃✰╰─────\n╰═══════════⩥";
+for (const category of sortedCategories) {
+    commandsList += `\n╭───「 ${toFancyUppercaseFont(category)} 」───╮\n`;
+    const sortedCommands = categorizedCommands[category].sort();
+    for (const command of sortedCommands) {
+        commandsList += `┃ ◦ ${toFancyLowercaseFont(command)}\n`;
     }
+    commandsList += "╰──────────────────╯\n";
+}
 
-    commandsList += readMore + "\n> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ʜᴀᴄᴋɪɴɢ ᴛᴇᴀᴍ\n";
-    try {
+commandsList += `${readMore}\n> 🔐 *POWERED BY BELTAH HACKING TEAM* 🔐\n`;
+try{
         const senderName = message.sender || message.from;
         await client.sendMessage(message, {
              text: responseMessage + commandsList,
