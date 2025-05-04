@@ -1446,9 +1446,8 @@ zk.ev.on('group-participants.update', async group => {
                 console.log("Command loading completed ✅");
                 
                 if ((conf.DP).toLowerCase() === 'yes') {
-                    let cmsg = `*👾 SYSTEM ONLINE 👾*
+                    let cmsg = `
 ╭═══════⩥
-║ *『𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 𝐎𝐏𝐄𝐑𝐀𝐓𝐈𝐍𝐆』*
 ║   Developer : *Beltah Tech Inc.*
 ║   Prefix : [  ${prefixe}  ]
 ║   Mode : ${md} MODE
@@ -1461,9 +1460,12 @@ zk.ev.on('group-participants.update', async group => {
 ┃  ${conf.BOT}
 ┃  Stay sharp, stay secure.
 ╰══════════════════⩥`;
-                    await zk.sendMessage(zk.user.id, { text: cmsg });
+    await zk.sendMessage(zk.user.id, { 
+    text: cmsg,
+    contextInfo: getContextInfo('BELTAH-MD ACTIVATED ✅', zk.user.id),
+  });
                 }
-            }
+              
             else if (connection == "close") {
                 let raisonDeconnexion = new boom_1.Boom(lastDisconnect?.error)?.output.statusCode;
                 if (raisonDeconnexion === baileys_1.DisconnectReason.badSession) {
