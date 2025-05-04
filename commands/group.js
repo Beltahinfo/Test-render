@@ -1,5 +1,5 @@
 const { keith } = require("../keizzah/keith");
-const { downloadMediaMessage, downloadContentFromMessage } = require("gifted-baileys");
+const { downloadMediaMessage, downloadContentFromMessage } = require("@whiskeysockets/baileys");
 const { exec } = require('child_process');
 const { writeFile } = require("fs/promises");
 const fs = require('fs-extra');
