@@ -1,7 +1,7 @@
 const { keith } = require("../keizzah/keith");
 const { Catbox } = require("node-catbox");
 const fs = require('fs-extra');
-const { downloadAndSaveMediaMessage } = require('gifted-baileys');
+const { downloadAndSaveMediaMessage } = require('@whiskeysockets/baileys');
 
 // Initialize Catbox
 const catbox = new Catbox();
