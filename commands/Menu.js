@@ -187,20 +187,22 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
     let responseMessage = `
 
 ╭───「 *${settings.BOT}* 」───╮ 
-┃◦╭─────────────
-┃◦│ *ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
-┃◦│ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
-┃◦│ *ᴛɪᴍᴇ:* ${formattedTime}
-┃◦│ *ᴅᴀᴛᴇ:* ${formattedDate}
-┃◦│ *ᴍᴏᴅᴇ:* ${mode}
-┃◦│ *ʙᴏᴛ ᴜsᴇʀ:*  *${nomAuteurMessage || "User"}*
-┃◦│ *ɢʀᴇᴇᴛɪɴɢ :*  ${greeting}
-┃◦│ *ᴜᴘᴛɪᴍᴇ:* ${formatUptime(process.uptime())}
-┃◦╰─────────────
+┃ ◦ ╭─────────────
+┃ ◦ │ *ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
+┃ ◦ │ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
+┃ ◦ │ *ᴛɪᴍᴇ:* ${formattedTime}
+┃ ◦ │ *ᴅᴀᴛᴇ:* ${formattedDate}
+┃ ◦ │ *ᴍᴏᴅᴇ:* ${mode}
+┃ ◦ │ *ʙᴏᴛ ᴜsᴇʀ:*  *${nomAuteurMessage || "User"}*
+┃ ◦ │ *ᴄᴏᴍᴍᴀɴᴅꜱ:* ${commands.length}
+┃ ◦ │ *ɢʀᴇᴇᴛɪɴɢ :*  ${greeting}
+┃ ◦ │ *ᴀʟɪᴠᴇ:* ${formatUptime(process.uptime())}
+┃ ◦ ╰─────────────
 ╰──────────────────╯ 
-📍 *${randomQuote}* 📍 
 
-> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ\n\n${readMore}`;
+> 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐁𝐄𝐋𝐓𝐀𝐇 𝐓𝐄𝐂𝐇©𝟐𝟎𝟐𝟓
+
+\n\n${readMore}`;
 
     let commandsList = "\n🛡️ *COMMAND CATEGORIES:* 🛡️\n";
 const sortedCategories = Object.keys(categorizedCommands).sort();
@@ -214,7 +216,7 @@ for (const category of sortedCategories) {
     commandsList += "╰──────────────────╯\n";
 }
 
-commandsList += `${readMore}\n> 🔐 *POWERED BY BELTAH HACKING TEAM* 🔐\n`;
+commandsList += `${readMore}\n> 🔐 *𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐁𝐄𝐋𝐓𝐀𝐇 𝐓𝐄𝐂𝐇 𝐓𝐄𝐀𝐌 ©𝟐𝟎𝟐𝟓* 🔐\n`;
 try{
         const senderName = message.sender || message.from;
         await client.sendMessage(message, {
