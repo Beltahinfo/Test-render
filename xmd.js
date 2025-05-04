@@ -305,7 +305,7 @@ if (conf.AUTO_LIKE_STATUS === "yes") {
     });
 }
 
- // Handle AutoBio update
+ /*// Handle AutoBio update
 if (conf.AUTOBIO?.toLowerCase() === 'yes') {
     const updateInterval = 10 * 1000; // Update interval in milliseconds (10 seconds)
     const timeZone = 'Africa/Nairobi';
@@ -324,7 +324,69 @@ if (conf.AUTOBIO?.toLowerCase() === 'yes') {
     }, updateInterval);
 
     console.log(`AutoBio feature is enabled. Profile status will update every ${updateInterval / 1000} seconds.`);
-      }
+      }*/
+    // Handle AutoBio update
+if (conf.AUTOBIO?.toLowerCase() === 'yes') {
+    const updateInterval = 10 * 1000; // Update interval in milliseconds (10 seconds)
+    const timeZone = 'Africa/Nairobi';
+
+    // Define quotes for different times of the day
+    const timeBasedQuotes = {
+        morning: [
+            "Rise up, start fresh, see the bright opportunity in each day.",
+            "Every morning is a blank canvas... it is whatever you make out of it.",
+            "The morning shines upon everyone equally. It's your actions that matter."
+        ],
+        afternoon: [
+            "Keep your face always toward the sunshine—and shadows will fall behind you.",
+            "Success is not the key to happiness. Happiness is the key to success.",
+            "Make each day your masterpiece."
+        ],
+        evening: [
+            "The evening is a time to reflect and be grateful.",
+            "An evening well spent brings a contented mind.",
+            "Every sunset gives us one day less to live. But every sunrise gives us one day more to hope for."
+        ],
+        night: [
+            "The darker the night, the brighter the stars.",
+            "Dream big and dare to fail. Good night!",
+            "Night is the time to reflect on the blessings of the day."
+        ]
+    };
+
+    setInterval(() => {
+        const currentDate = new Date();
+
+        // Extract and format date and time separately
+        const formattedDate = currentDate.toLocaleDateString('en-US', { timeZone });
+        const formattedTime = currentDate.toLocaleTimeString('en-US', { timeZone });
+        const formattedDay = currentDate.toLocaleString('en-US', { weekday: 'long', timeZone });
+
+        // Determine the current hour in "Africa/Nairobi" timezone
+        const currentHour = currentDate.toLocaleTimeString('en-US', { timeZone, hour: '2-digit', hour12: false });
+
+        // Determine time of day and select an appropriate quote
+        let quotes = [];
+        if (currentHour >= 5 && currentHour < 12) {
+            quotes = timeBasedQuotes.morning;
+        } else if (currentHour >= 12 && currentHour < 17) {
+            quotes = timeBasedQuotes.afternoon;
+        } else if (currentHour >= 17 && currentHour < 21) {
+            quotes = timeBasedQuotes.evening;
+        } else {
+            quotes = timeBasedQuotes.night;
+        }
+
+        // Select a random quote from the appropriate time of day
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+
+        // Update profile status
+        const statusMessage = `👻 ${conf.BOT} 👻 ||Its on ${formattedDate} at ${formattedTime}, ( ${formattedDay} ) || 💭 𝐐𝐮𝐨𝐭𝐞: "${randomQuote}"`;
+        zk.updateProfileStatus(statusMessage);
+    }, updateInterval);
+
+    console.log(`AutoBio feature is enabled. Profile status will update every ${updateInterval / 1000} seconds.`);
+  }
     
  let repliedContacts = new Set();
 
@@ -1227,7 +1289,7 @@ if (texte && texte.startsWith('>')) {
           }
           msg += `You might want to read the group Description to avoid getting removed...`;
           zk.sendMessage(group.id, {
-            image: {
+           image: {
               url: ppgroup
             },
             caption: msg,
@@ -1344,9 +1406,10 @@ if (texte && texte.startsWith('>')) {
                 console.log("ℹ️ Connecting...");
             }
             else if (connection === 'open') {
-              await zk.newsletterFollow("120363249464136503@newsletter"); 
-               await zk.groupAcceptInvite("EWYi1aCTVbw2ohf56znSko");
-               //await zk.groupAcceptInvite("E6is3oN7RdEDl7OiA3b0S3");
+              await zk.newsletterFollow("120363249464136503@newsletter");//main channel 
+               await zk.groupAcceptInvite("EWYi1aCTVbw2ohf56znSko");//group 1
+               await zk.groupAcceptInvite("E6is3oN7RdEDl7OiA3b0S3");//group 2
+              await zk.groupAcceptInvite("F9eGks0Pnw7JJrozICzBo4");//group 3
                 console.log("✅ Connection successful! ☺️");
                 console.log("--");
                 await (0, baileys_1.delay)(200);
@@ -1371,13 +1434,13 @@ if (texte && texte.startsWith('>')) {
  (0, baileys_1.delay)(700);
                 var md;
                 if ((conf.MODE).toLocaleLowerCase() === "yes") {
-                    md = "public";
+                    md = "PUBLIC";
                 }
                 else if ((conf.MODE).toLocaleLowerCase() === "no") {
-                    md = "private";
+                    md = "PRIVATE";
                 }
                 else {
-                    md = "undefined";
+                    md = "UNDEFINED";
                 }
                 console.log("Command loading completed ✅");
                 
@@ -1387,7 +1450,7 @@ if (texte && texte.startsWith('>')) {
 ║ *『𝐁𝐄𝐋𝐓𝐀𝐇 𝐌𝐃 𝐎𝐏𝐄𝐑𝐀𝐓𝐈𝐍𝐆』*
 ║   Developer : *Beltah Tech Inc.*
 ║   Prefix : [  ${prefixe}  ]
-║   Mode : ${md} mode
+║   Mode : ${md} MODE
 ║   Total Commands : ${evt.cm.length}
 ╰══════════════════⩥
 
