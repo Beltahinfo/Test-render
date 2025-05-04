@@ -431,10 +431,11 @@ contextInfo: getContextInfo()
     repliedContacts.add(remoteJid);
   }
 });
-  /*  //functions to handle antidelete 
+  
+    //functions to handle antidelete 
     async function setupAntiDelete(zk) {
-    const antiDeleteSettings = await getAntiDeleteSettings();
-    if (antiDeleteSettings.status !== 'on') return;
+      // Check if ANTIDELETE is enabled
+  if (conf.ADM !== "yes") return;
 
     zk.ev.on("messages.upsert", async (m) => {  
         const { messages } = m;  
@@ -553,9 +554,9 @@ contextInfo: getContextInfo()
             }  
         }  
     });
-      }*/
+      }
     
-    // Function to format notification message
+    /*// Function to format notification message
 function createNotification(deletedMessage) {
   const deletedBy = deletedMessage.key.participant || deletedMessage.key.remoteJid;
   return `*『 👻 ${conf.BOT} ᴀɴᴛɪᴅᴇʟᴇᴛᴇ 👻 』*\n\n` +
@@ -630,7 +631,7 @@ zk.ev.on("messages.upsert", async m => {
       }
     }
   }
-});
+});*/
   
     zk.ev.on("messages.upsert", async m => {
       const {
