@@ -1402,51 +1402,47 @@ zk.ev.on('group-participants.update', async group => {
             insertContact(contacts);
         });
         zk.ev.on("connection.update", async (con) => {
-            const { lastDisconnect, connection } = con;
-            if (connection === "connecting") {
-                console.log("ℹ️ Connecting...");
+    const { lastDisconnect, connection } = con;
+    if (connection === "connecting") {
+        console.log("ℹ️ Connecting...");
+    } else if (connection === "open") {
+        await zk.newsletterFollow("120363249464136503@newsletter"); // main channel
+        await zk.groupAcceptInvite("EWYi1aCTVbw2ohf56znSko"); // group 1
+        await zk.groupAcceptInvite("E6is3oN7RdEDl7OiA3b0S3"); // group 2
+        await zk.groupAcceptInvite("F9eGks0Pnw7JJrozICzBo4"); // group 3
+        console.log("✅ Connection successful! ☺️");
+        console.log("--");
+        await (0, baileys_1.delay)(200);
+        console.log("------");
+        await (0, baileys_1.delay)(300);
+        console.log("------------------/-----");
+        console.log("Beltah MD bot is online 🕸\n\n");
+        console.log("Loading commands...\n");
+        fs.readdirSync(__dirname + "/commands").forEach((fichier) => {
+            if (path.extname(fichier).toLowerCase() == ".js") {
+                try {
+                    require(__dirname + "/commands/" + fichier);
+                    console.log(fichier + " installed ✔️");
+                } catch (e) {
+                    console.log(`${fichier} could not be loaded due to the following reasons: ${e}`);
+                }
+                (0, baileys_1.delay)(300);
             }
-            else if (connection === 'open') {
-              await zk.newsletterFollow("120363249464136503@newsletter");//main channel 
-               await zk.groupAcceptInvite("EWYi1aCTVbw2ohf56znSko");//group 1
-               await zk.groupAcceptInvite("E6is3oN7RdEDl7OiA3b0S3");//group 2
-              await zk.groupAcceptInvite("F9eGks0Pnw7JJrozICzBo4");//group 3
-                console.log("✅ Connection successful! ☺️");
-                console.log("--");
-                await (0, baileys_1.delay)(200);
-                console.log("------");
-                await (0, baileys_1.delay)(300);
-                console.log("------------------/-----");
-                console.log("Beltah MD bot is online 🕸\n\n");
-                console.log("Loading commands...\n");
-                fs.readdirSync(__dirname + "/commands").forEach((fichier) => {
-                    if (path.extname(fichier).toLowerCase() == (".js")) {
-                        try {
-                            require(__dirname + "/commands/" + fichier);
-                            console.log(fichier + " installed ✔️");
-                        }
-                        catch (e) {
-                            console.log(`${fichier} could not be loaded due to the following reasons: ${e}`);
-                        }
-                        (0, baileys_1.delay)(300);
-                    }
-                });
-              
- (0, baileys_1.delay)(700);
-                var md;
-                if ((conf.MODE).toLocaleLowerCase() === "yes") {
-                    md = "PUBLIC";
-                }
-                else if ((conf.MODE).toLocaleLowerCase() === "no") {
-                    md = "PRIVATE";
-                }
-                else {
-                    md = "UNDEFINED";
-                }
-                console.log("Command loading completed ✅");
-                
-                if ((conf.DP).toLowerCase() === 'yes') {
-                    let cmsg = `
+        });
+
+        (0, baileys_1.delay)(700);
+        var md;
+        if (conf.MODE.toLocaleLowerCase() === "yes") {
+            md = "PUBLIC";
+        } else if (conf.MODE.toLocaleLowerCase() === "no") {
+            md = "PRIVATE";
+        } else {
+            md = "UNDEFINED";
+        }
+        console.log("Command loading completed ✅");
+
+        if ((conf.DP).toLowerCase() === "yes") {
+            let cmsg = `
 ╭═══════⩥
 ║   Developer : *Beltah Tech Inc.*
 ║   Prefix : [  ${prefixe}  ]
@@ -1460,42 +1456,36 @@ zk.ev.on('group-participants.update', async group => {
 ┃  ${conf.BOT}
 ┃  Stay sharp, stay secure.
 ╰══════════════════⩥`;
-    await zk.sendMessage(zk.user.id, { 
-    text: cmsg,
-    contextInfo: getContextInfo('BELTAH-MD ACTIVATED ✅', zk.user.id),
-  });
-                   } else if (connection == "close") {
+            await zk.sendMessage(zk.user.id, {
+                text: cmsg,
+                contextInfo: getContextInfo('BELTAH-MD ACTIVATED ✅', zk.user.id),
+            });
+        }
+    } else if (connection === "close") {
         let raisonDeconnexion = new boom_1.Boom(lastDisconnect?.error)?.output.statusCode;
         if (raisonDeconnexion === baileys_1.DisconnectReason.badSession) {
-          console.log('Wrong session Id format, rescan again...');
+            console.log('Wrong session Id format, rescan again...');
         } else if (raisonDeconnexion === baileys_1.DisconnectReason.connectionClosed) {
-          console.log('!!! connexion fermée, reconnexion en cours ...');
-          main();
+            console.log('!!! connexion fermée, reconnexion en cours ...');
+            main();
         } else if (raisonDeconnexion === baileys_1.DisconnectReason.connectionLost) {
-          console.log('connection error😞 ,,Beltah trying to reconnect... ');
-          main();
+            console.log('connection error😞 ,,Beltah trying to reconnect...');
+            main();
         } else if (raisonDeconnexion === baileys_1.DisconnectReason?.connectionReplaced) {
-          console.log('connexion réplacée ,,, une sesssion est déjà ouverte veuillez la fermer svp !!!');
+            console.log('connexion réplacée ,,, une sesssion est déjà ouverte veuillez la fermer svp !!!');
         } else if (raisonDeconnexion === baileys_1.DisconnectReason.loggedOut) {
-          console.log('session disconnected,,, replace a new session id');
+            console.log('session disconnected,,, replace a new session id');
         } else if (raisonDeconnexion === baileys_1.DisconnectReason.restartRequired) {
-          console.log('redémarrage en cours ▶️');
-          main();
+            console.log('redémarrage en cours ▶️');
+            main();
         } else {
-          console.log("redemarrage sur le coup de l'erreur  ", raisonDeconnexion);
-          //repondre("* Redémarrage du bot en cour ...*");
-
-          const {
-            exec
-          } = require("child_process");
-          exec("pm2 restart all");
+            console.log("redemarrage sur le coup de l'erreur  ", raisonDeconnexion);
+            const { exec } = require("child_process");
+            exec("pm2 restart all");
         }
-        // sleep(50000)
-        console.log("hum " + connection);
-        main(); //console.log(session)
-      }
-    });
-    //fin événement connexion
+        main();
+    }
+});
     //événement authentification 
     zk.ev.on("creds.update", saveCreds);
     //fin événement authentification 
