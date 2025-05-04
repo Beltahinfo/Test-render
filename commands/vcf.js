@@ -11,7 +11,7 @@ const fs = require("fs-extra");
 const conf = require("../set");
 const { default: axios } = require('axios');
 //const { uploadImageToImgur } = require('../france/imgur');
-const {getBinaryNodeChild, getBinaryNodeChildren} = require('gifted-baileys').default;
+const {getBinaryNodeChild, getBinaryNodeChildren} = require('@whiskeysockets/bailey').default;
 
 keith({
   nomCom: "vcf",
