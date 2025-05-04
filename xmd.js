@@ -1464,40 +1464,44 @@ zk.ev.on('group-participants.update', async group => {
     text: cmsg,
     contextInfo: getContextInfo('BELTAH-MD ACTIVATED ✅', zk.user.id),
   });
-                }
-              
-            else if (connection == "close") {
-                let raisonDeconnexion = new boom_1.Boom(lastDisconnect?.error)?.output.statusCode;
-                if (raisonDeconnexion === baileys_1.DisconnectReason.badSession) {
-                    console.log('Invalid session ID, please rescan the QR code...');
-                }
-                else if (raisonDeconnexion === baileys_1.DisconnectReason.connectionClosed) {
-                    console.log('!!! Connection closed, reconnecting...');
-                    main();
-                }
-                else if (raisonDeconnexion === baileys_1.DisconnectReason.connectionLost) {
-                    console.log('Connection to the server lost 😞, reconnecting...');
-                    main();
-                }
-                else if (raisonDeconnexion === baileys_1.DisconnectReason?.connectionReplaced) {
-                    console.log('Connection replaced, a session is already open, please close it!!!');
-                }
-                else if (raisonDeconnexion === baileys_1.DisconnectReason.loggedOut) {
-                    console.log('You are logged out, please rescan the QR code');
-                }
-                else if (raisonDeconnexion === baileys_1.DisconnectReason.restartRequired) {
-                    console.log('Restarting... ▶️');
-                    main();
-                }
-                else {
-                    console.log('Restarting due to error: ', raisonDeconnexion);
-                    const { exec } = require("child_process");
-                    exec("pm2 restart all");
-                }
-                main(); // Ensure proper function placement without extraneous parentheses
-            }
-        });
-        zk.ev.on("creds.update", saveCreds);
+                   } else if (connection == "close") {
+        let raisonDeconnexion = new boom_1.Boom(lastDisconnect?.error)?.output.statusCode;
+        if (raisonDeconnexion === baileys_1.DisconnectReason.badSession) {
+          console.log('Wrong session Id format, rescan again...');
+        } else if (raisonDeconnexion === baileys_1.DisconnectReason.connectionClosed) {
+          console.log('!!! connexion fermée, reconnexion en cours ...');
+          main();
+        } else if (raisonDeconnexion === baileys_1.DisconnectReason.connectionLost) {
+          console.log('connection error😞 ,,Beltah trying to reconnect... ');
+          main();
+        } else if (raisonDeconnexion === baileys_1.DisconnectReason?.connectionReplaced) {
+          console.log('connexion réplacée ,,, une sesssion est déjà ouverte veuillez la fermer svp !!!');
+        } else if (raisonDeconnexion === baileys_1.DisconnectReason.loggedOut) {
+          console.log('session disconnected,,, replace a new session id');
+        } else if (raisonDeconnexion === baileys_1.DisconnectReason.restartRequired) {
+          console.log('redémarrage en cours ▶️');
+          main();
+        } else {
+          console.log("redemarrage sur le coup de l'erreur  ", raisonDeconnexion);
+          //repondre("* Redémarrage du bot en cour ...*");
+
+          const {
+            exec
+          } = require("child_process");
+          exec("pm2 restart all");
+        }
+        // sleep(50000)
+        console.log("hum " + connection);
+        main(); //console.log(session)
+      }
+    });
+    //fin événement connexion
+    //événement authentification 
+    zk.ev.on("creds.update", saveCreds);
+    //fin événement authentification 
+    //
+    /** ************* */
+    //fonctions utiles
         zk.downloadAndSaveMediaMessage = async (message, filename = '', attachExtension = true) => {
             let quoted = message.msg ? message.msg : message;
             let mime = (message.msg || message).mimetype || '';
