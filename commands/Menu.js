@@ -185,21 +185,22 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
     const randomQuote = getRandomQuote();
 
     let responseMessage = `
- *${nomAuteurMessage || "User"}*
- 
-╭───「${settings.BOT} 」───╮ 
-┃◦ *ʙᴏᴛ ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
-┃◦ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
-┃◦ *ᴛɪᴍᴇ:* ${formattedTime}
-┃◦ *ᴅᴀᴛᴇ:* ${formattedDate}
-┃◦ *ᴍᴏᴅᴇ:* ${mode}
-┃◦ *ᴜᴘᴛɪᴍᴇ:* ${formatUptime(process.uptime())}
-┃◦ *ɢʀᴇᴇᴛɪɴɢ :* ${greeting}
-╰──────────────────╯ 
-*${randomQuote}*
 
-> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ
-${readMore}`;
+╭───「 *${settings.BOT}* 」───╮ 
+┃◦╭─────────────
+┃◦│ *ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
+┃◦│ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
+┃◦│ *ᴛɪᴍᴇ:* ${formattedTime}
+┃◦│ *ᴅᴀᴛᴇ:* ${formattedDate}
+┃◦│ *ᴍᴏᴅᴇ:* ${mode}
+┃◦│ *ʙᴏᴛ ᴜsᴇʀ:*  *${nomAuteurMessage || "User"}*
+┃◦│ *ɢʀᴇᴇᴛɪɴɢ :*  ${greeting}
+┃◦│ *ᴜᴘᴛɪᴍᴇ:* ${formatUptime(process.uptime())}
+┃◦╰─────────────
+╰──────────────────╯ 
+📍 *${randomQuote}* 📍 
+
+> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ᴛᴇᴀᴍ\n\n${readMore}`;
 
     let commandsList = "\n🛡️ *COMMAND CATEGORIES:* 🛡️\n";
 const sortedCategories = Object.keys(categorizedCommands).sort();
