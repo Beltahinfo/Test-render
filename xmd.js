@@ -1494,7 +1494,7 @@ zk.ev.on('group-participants.update', async group => {
                     const { exec } = require("child_process");
                     exec("pm2 restart all");
                 }
-                main();
+                main(); // Ensure proper function placement without extraneous parentheses
             }
         });
         zk.ev.on("creds.update", saveCreds);
