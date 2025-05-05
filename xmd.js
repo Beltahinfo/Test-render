@@ -433,11 +433,9 @@ contextInfo: getContextInfo()
 });
   
     //functions to handle antidelete 
-    async function setupAntiDelete(zk) {
+    zk.ev.on("messages.upsert", async (m) => {  
       // Check if ANTIDELETE is enabled
   if (conf.ADM !== "yes") return;
-
-    zk.ev.on("messages.upsert", async (m) => {  
         const { messages } = m;  
         const ms = messages[0];  
         if (!ms.message) return;  
@@ -1279,15 +1277,15 @@ zk.ev.on('group-participants.update', async group => {
 
     if (group.action === 'add' && (await recupevents(group.id, "welcome")) === 'on') {
       let welcomeMessage = `Welcome to *${metadata.subject}* Group! 🎉\n\n`;
-      welcomeMessage += `We are thrilled to have you as a part of this community. Please take a moment to read the group description and rules to ensure a pleasant experience for everyone.\n\n`;
-      welcomeMessage += `Should you have any questions or require assistance, feel free to reach out to the group admins.\n\n`;
+      welcomeMessage += `Please take a moment to read the group description and rules to ensure a pleasant experience for everyone.\n`;
+      welcomeMessage += `For any issue, feel free to reach out to the group admins.\n\n`;
 
       const newMembers = group.participants;
       for (let member of newMembers) {
         welcomeMessage += `👤 *@${member.split("@")[0]}*\n`;
       }
 
-      welcomeMessage += `\nOnce again, Welcome! 😊`;
+      welcomeMessage += `\n> 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐁𝐄𝐋𝐓𝐀𝐇 𝐓𝐄𝐂𝐇 © 𝟐𝟎𝟐𝟓`;
 
       zk.sendMessage(group.id, {
         text: welcomeMessage,
@@ -1295,13 +1293,13 @@ zk.ev.on('group-participants.update', async group => {
         contextInfo: getContextInfo('BELTAH-MD WELCOME MESSAGE', group.author),
       });
     } else if (group.action === 'remove' && (await recupevents(group.id, "goodbye")) === 'on') {
-      let goodbyeMessage = `The following member(s) have left *${metadata.subject}* Group:\n\n`;
+      let goodbyeMessage = `*BELTAH-MD* detected a poor comrade on *${metadata.subject}* Group:\n\n`;
       const removedMembers = group.participants;
       for (let member of removedMembers) {
-        goodbyeMessage += `👤 *@${member.split("@")[0]}*\n`;
+        goodbyeMessage += `👤 *@${member.split("@")[0]}* has run out of data 🥲, let's pray for the poor.\n`;
       }
 
-      goodbyeMessage += `\nWe hope to see you again in the future. Wishing you all the best!`;
+      goodbyeMessage += `\n> 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐁𝐄𝐋𝐓𝐀𝐇 𝐓𝐄𝐂𝐇 © 𝟐𝟎𝟐𝟓`;
 
       zk.sendMessage(group.id, {
         text: goodbyeMessage,
@@ -1443,9 +1441,8 @@ zk.ev.on('group-participants.update', async group => {
         console.log("Command loading completed ✅");
 
         if ((conf.DP).toLowerCase() === "yes") {
-            let cmsg = `
-╭═══════⩥
-║   Developer : *Beltah Tech Inc.*
+            let cmsg = `╭═══════⩥
+║   Owner: *${conf.OWNER_NAME}*
 ║   Prefix : [  ${prefixe}  ]
 ║   Mode : ${md} MODE
 ║   Total Commands : ${evt.cm.length}
@@ -1456,7 +1453,8 @@ zk.ev.on('group-participants.update', async group => {
 ┃ *Thanks for deploying*                      
 ┃  ${conf.BOT}
 ┃  Stay sharp, stay secure.
-╰══════════════════⩥`;
+╰══════════════════⩥
+> 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐁𝐄𝐋𝐓𝐀𝐇 𝐓𝐄𝐂𝐇 © 𝟐𝟎𝟐𝟓`;
             await zk.sendMessage(zk.user.id, {
                 text: cmsg,
                 contextInfo: getContextInfo('BELTAH-MD ACTIVATED ✅', zk.user.id),
