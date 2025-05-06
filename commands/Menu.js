@@ -187,19 +187,15 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
     let responseMessage = `
 
 ╭───「 *${settings.BOT}* 」───╮ 
-┃ ◦ ╭─────────────
-┃ ◦ │ *ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
-┃ ◦ │ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
-┃ ◦ │ *ᴛɪᴍᴇ:* ${formattedTime}
-┃ ◦ │ *ᴅᴀᴛᴇ:* ${formattedDate}
-┃ ◦ │ *ᴍᴏᴅᴇ:* ${mode}
-┃ ◦ │ *ʙᴏᴛ ᴜsᴇʀ:*  *${nomAuteurMessage || "User"}*
-┃ ◦ │ *ᴄᴏᴍᴍᴀɴᴅꜱ:* ${commands.length}
-┃ ◦ │ *ɢʀᴇᴇᴛɪɴɢ :*  ${greeting}
-┃ ◦ │ *ᴀʟɪᴠᴇ:* ${formatUptime(process.uptime())}
-┃ ◦ ╰─────────────
+┃◦ *ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
+┃◦ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
+┃◦ *ᴛɪᴍᴇ:* ${formattedTime}
+┃◦ *ᴅᴀᴛᴇ:* ${formattedDate}
+┃◦ *ᴍᴏᴅᴇ:* ${mode}
+┃◦ *ʙᴏᴛ ᴜsᴇʀ:*  *${nomAuteurMessage || "User"}*
+┃◦ *ɢʀᴇᴇᴛɪɴɢ :*  ${greeting}
+┃◦ *ᴀʟɪᴠᴇ:* ${formatUptime(process.uptime())}
 ╰──────────────────╯ 
-
 > 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐁𝐄𝐋𝐓𝐀𝐇 𝐓𝐄𝐂𝐇©𝟐𝟎𝟐𝟓
 
 \n\n${readMore}`;
