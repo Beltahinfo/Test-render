@@ -9,7 +9,7 @@ RUN apt-get update && \
   apt-get upgrade -y && \
   npm i pm2 -g && \
   rm -rf /var/lib/apt/lists/*
-  
+   
 RUN git clone https://github.com/Beltahinfo/Beltah-xmd /root/beltah_Bot
 WORKDIR /root/beltah_Bot/
 
