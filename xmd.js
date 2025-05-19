@@ -231,7 +231,7 @@ zk.ev.on('call', async (callData) => {
 });*/
     
 // Define the createContext function for enhanced context display
-const getContextInfo = (title = '', userJid = '') => ({ 
+const getContextInfo = (title = '', userJid = '', options = {}) => ({ 
     contextInfo: {
         mentionedJid: [userJid], // Tag user if needed
         forwardingScore: 999,
@@ -241,7 +241,7 @@ const getContextInfo = (title = '', userJid = '') => ({
         },
         forwardedNewsletterMessageInfo: {
             newsletterJid: "120363249464136503@newsletter",
-           newsletterName:"𝐁𝐄𝐋𝐓𝐀𝐇 𝐓𝐄𝐂𝐇 © 𝟐𝟎𝟐𝟓" ,
+            newsletterName:"𝐁𝐄𝐋𝐓𝐀𝐇 𝐓𝐄𝐂𝐇 © 𝟐𝟎𝟐𝟓" ,
             serverMessageId: Math.floor(100000 + Math.random() * 900000)
         },
         externalAdReply: {
@@ -250,7 +250,7 @@ const getContextInfo = (title = '', userJid = '') => ({
             thumbnailUrl:"https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" ,
             mediaType: 1,
             mediaUrl: options.mediaUrl || undefined,
-            sourceUrl: options.sourceUrl || "https://wa.me/254114141192", // link to bot or business
+            sourceUrl: options.sourceUrl || "https://wa.me/254114141192",
             showAdAttribution: true,
             renderLargerThumbnail: false 
         }
