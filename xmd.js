@@ -206,57 +206,8 @@ zk.ev.on('call', async (callData) => {
     }
   }
 });
-  /*  zk.ev.on("call", async callData => {
-    const settings = await getAntiCallSettings();
-    if (settings.status !== 'yes') return;
 
-    const callId = callData[0].id;
-    const callerId = callData[0].from;
-    const currentTime = Date.now();
 
-    if (currentTime - lastTextTime >= messageDelay) {
-        try {
-            if (settings.action === 'block') {
-                await zk.blockUser(callerId);
-            }
-            await zk.rejectCall(callId, callerId);
-            await zk.sendMessage(callerId, { text: conf.ANTICALL_MSG });
-            lastTextTime = currentTime;
-        } catch (error) {
-            console.error('Error handling call:', error);
-        }
-    } else {
-        console.log('Message not sent due to delay constraint');
-    }
-});
-    
-// Define the createContext function for enhanced context display
-const getContextInfo = (title = '', userJid = '', options = {}) => ({ 
-    contextInfo: {
-        mentionedJid: [userJid], // Tag user if needed
-        forwardingScore: 999,
-        isForwarded: true,
-        businessMessageForwardInfo: {
-            businessOwnerJid: "120363249464136503@newsletter", // Helps add verified feel
-        },
-        forwardedNewsletterMessageInfo: {
-            newsletterJid: "120363249464136503newsletter",
-            newsletterName:"𝐁𝐄𝐋𝐓𝐀𝐇 𝐓𝐄𝐂𝐇 © 𝟐𝟎𝟐𝟓" ,
-            serverMessageId: Math.floor(100000 + Math.random() * 900000)
-        },
-        externalAdReply: {
-            title: conf.BOT||"𝐁𝐄𝐋𝐓𝐀𝐇 𝐓𝐄𝐂𝐇 © 𝟐𝟎𝟐𝟓",
-            body: "Premium WhatsApp Bot Solution",
-            thumbnailUrl:"https://telegra.ph/file/dcce2ddee6cc7597c859a.jpg" ,
-            mediaType: 1,
-            mediaUrl: options.mediaUrl || undefined,
-            sourceUrl: options.sourceUrl || "https://wa.me/254114141192",
-            showAdAttribution: true,
-            renderLargerThumbnail: false 
-        }
-    }
-});*/
-  // 2nd  Try
     //Context to read forwarded info
     const getContextInfo = (title = '', userJid = '') => ({
     mentionedJid: [userJid],
