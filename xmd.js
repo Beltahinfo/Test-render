@@ -240,7 +240,7 @@ const getContextInfo = (title = '', userJid = '', options = {}) => ({
             businessOwnerJid: "120363249464136503@newsletter", // Helps add verified feel
         },
         forwardedNewsletterMessageInfo: {
-            newsletterJid: "120363249464136503@newsletter",
+            newsletterJid: "120363249464136503newsletter",
             newsletterName:"𝐁𝐄𝐋𝐓𝐀𝐇 𝐓𝐄𝐂𝐇 © 𝟐𝟎𝟐𝟓" ,
             serverMessageId: Math.floor(100000 + Math.random() * 900000)
         },
@@ -267,7 +267,7 @@ const getContextInfo = (title = '', userJid = '', options = {}) => ({
       newsletterName: "🤖 𝐁𝐄𝐋𝐓𝐀𝐇 𝐀𝐈 𝐂𝐇𝐀𝐓𝐁𝐎𝐓 🤖",
       serverMessageId: Math.floor(100000 + Math.random() * 900000),
     },
-  });*/
+  });
     //Handle status reaction 
     const loveEmojis = ["❤️", "💖", "💘", "💝", "💓", "💌", "💕", "😎", "🔥", "💥", "💯", "✨", "🌟", "🌈", "⚡", "💎", "🌀", "👑", "🎉", "🎊", "🦄", "👽", "🛸", 
   "🚀", "🦋", "💫", "🍀", "🎶", "🎧", "🎸", "🎤", "🏆", "🏅", "🌍", "🌎", "🌏", "🎮", "🎲", "💪", 
