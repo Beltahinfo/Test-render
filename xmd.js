@@ -228,7 +228,7 @@ zk.ev.on('call', async (callData) => {
     } else {
         console.log('Message not sent due to delay constraint');
     }
-});*/
+});
     
 // Define the createContext function for enhanced context display
 const getContextInfo = (title = '', userJid = '', options = {}) => ({ 
@@ -255,8 +255,8 @@ const getContextInfo = (title = '', userJid = '', options = {}) => ({
             renderLargerThumbnail: false 
         }
     }
-});
- /* // 2nd  Try
+});*/
+  // 2nd  Try
     //Context to read forwarded info
     const getContextInfo = (title = '', userJid = '') => ({
     mentionedJid: [userJid],
