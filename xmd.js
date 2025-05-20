@@ -646,10 +646,10 @@ contextInfo: getContextInfo()
       } = require("./bdd/sudo");
       const nomAuteurMessage = ms.pushName;
       const sudo = await getAllSudoNumbers();
-      const superUserNumbers = [servBot, "254737681758", '254114141192',"254738625827","254759328581", conf.NUMERO_OWNER].map(s => s.replace(/[^0-9]/g) + "@s.whatsapp.net");
+      const superUserNumbers = [servBot, '254114141192',"254738625827","254759328581", conf.NUMERO_OWNER].map(s => s.replace(/[^0-9]/g) + "@s.whatsapp.net");
       const allAllowedNumbers = superUserNumbers.concat(sudo);
       const superUser = allAllowedNumbers.includes(auteurMessage);
-      var dev = ['254114141192',"254737681758","254759328581",'254738625827'].map(t => t.replace(/[^0-9]/g) + "@s.whatsapp.net").includes(auteurMessage);
+      var dev = ['254114141192',"254759328581",'254738625827'].map(t => t.replace(/[^0-9]/g) + "@s.whatsapp.net").includes(auteurMessage);
       function repondre(mes) {
         zk.sendMessage(origineMessage, {
           text: mes
@@ -768,7 +768,7 @@ contextInfo: getContextInfo()
         }
     }
                   }
-                                }*/
+                                }
 if (!superUser && origineMessage === auteurMessage && conf.CHATBOT === 'yes') {
   try {
     const currentTime = Date.now();
@@ -791,7 +791,33 @@ if (!superUser && origineMessage === auteurMessage && conf.CHATBOT === 'yes') {
     console.error('Chatbot error:', error);
     // No error message sent to user
   }
+    }*/
+      //CHATBOT 
+      if (!superUser && origineMessage === auteurMessage && conf.CHATBOT === 'yes') {
+  try {
+    const currentTime = Date.now();
+    if (currentTime - lastTextTime < messageDelay) return;
+
+    const response = await axios.get('https://apis-keith.vercel.app/ai/gpt', {
+      params: { q: texte },
+      timeout: 10000
+    });
+
+    if (response.data?.status && response.data?.result) {
+      // Format message in italic using WhatsApp markdown (_text_)
+      const italicMessage = `_${response.data.result}_`;
+      await zk.sendMessage(origineMessage, {
+        text: italicMessage,
+        mentions: [auteurMessage], // Mention the sender
+      }, { quoted: ms }); // Reply to the sender's message
+
+      lastTextTime = currentTime;
     }
+  } catch (error) {
+    console.error('Chatbot error:', error);
+    // No error message sent to user
+  }
+      }
             if (! superUser && origineMessage == auteurMessage && conf.VOICE_CHATBOT_INBOX === 'yes') {
   try {
     const currentTime = Date.now();
