@@ -184,9 +184,7 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
 
     const randomQuote = getRandomQuote();
 
-    let responseMessage = `
-
-╭───「 *${settings.BOT}* 」───╮ 
+    let responseMessage = `╭───「 *${settings.BOT}* 」───╮ 
 ┃◦ *ᴏᴡɴᴇʀ:* ${settings.OWNER_NAME}
 ┃◦ *ᴘʀᴇғɪx:* *[ ${settings.PREFIXE} ]*
 ┃◦ *ᴛɪᴍᴇ:* ${formattedTime}
@@ -196,7 +194,7 @@ keith({ nomCom: "menu", aliases: ["liste", "helplist", "commandlist"], categorie
 ┃◦ *ɢʀᴇᴇᴛɪɴɢ :*  ${greeting}
 ┃◦ *ᴀʟɪᴠᴇ:* ${formatUptime(process.uptime())}
 ╰──────────────────╯ 
-> 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐁𝐄𝐋𝐓𝐀𝐇 𝐓𝐄𝐂𝐇©𝟐𝟎𝟐𝟓
+> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʙᴇʟᴛᴀʜ ᴛᴇᴄʜ ʜᴜʙ
 
 \n\n${readMore}`;
 
