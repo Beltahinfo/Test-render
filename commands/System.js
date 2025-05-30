@@ -230,7 +230,7 @@ keith({
 });
 
 
-// Command to update and redeploy the bot
+// Command to update and redeploy the bot in a clear, user-friendly way
 keith({
   nomCom: 'update',
   aliases: ['redeploy', 'sync'],
@@ -238,41 +238,56 @@ keith({
 }, async (chatId, zk, context) => {
   const { repondre, superUser } = context;
 
-  // Ensure the command is issued by the owner
+  // Only allow the bot owner to use this command
   if (!superUser) {
-    return repondre("*❌ Access Denied: This operation is restricted to the bot owner or Beltah Tech.*");
+    return repondre("❌ Access Denied: Only the bot owner can run this command.");
   }
 
-  // Retrieve Heroku app name and API key from settings
+  // Get Heroku app credentials from settings
   const herokuAppName = settings.HEROKU_APP_NAME;
   const herokuApiKey = settings.HEROKU_API_KEY;
 
-  // Validate Heroku configuration
+  // Ensure Heroku credentials are set
   if (!herokuAppName || !herokuApiKey) {
     await repondre(
-      "*❌ Configuration Missing:*\n\n" +
-      "🛠️ Ensure that `HEROKU_APP_NAME` and `HEROKU_API_KEY` are properly set in the environment variables."
+      "❌ Configuration Missing:\n\n" +
+      "Please check that `HEROKU_APP_NAME` and `HEROKU_API_KEY` are set in your environment variables."
     );
     return;
   }
 
-  // Centralized redeployment logic
+  // Function to simulate an animated progress update
+  async function showProgress() {
+    const steps = [
+      { percent: 10, message: "Checking for updates..." },
+      { percent: 25, message: "Downloading the latest version..." },
+      { percent: 50, message: "Building the application..." },
+      { percent: 75, message: "Deploying to Heroku..." },
+      { percent: 90, message: "Finalizing deployment..." },
+      { percent: 100, message: "Update complete! The bot is restarting." }
+    ];
+
+    for (const step of steps) {
+      await repondre(`🔄 Update Progress: ${step.percent}%\n${step.message}`);
+      // Simulate animation delay for user feedback
+      await new Promise(resolve => setTimeout(resolve, 1200));
+    }
+  }
+
+  // Main redeployment logic
   async function redeployApp() {
     const herokuUrl = `https://api.heroku.com/apps/${herokuAppName}/builds`;
     const sourceBlobUrl = "https://github.com/Beltahinfo/Beltah-xmd/tarball/main";
 
     try {
-      // Notify the user about the redeployment start
+      // Announce start
       await repondre(
-        "*⚙️ INITIATED: Deploying updates to BELTAH-MD...*\n\n" +
-        "```Loading payload...``` 🔗\n" +
-        "```Injecting binaries...``` 💾\n" +
-        "```Establishing secure uplink with Heroku...``` 🌐\n\n" +
-        "*🛸 SYSTEM ONLINE:* Deployment in progress. ETA ~5 minutes.\n\n" +
-        "```RESETTING SYSTEM INTEGRITY...``` 🔄\n" +
-        "```UPGRADING INFRASTRUCTURE...``` 🛠️\n\n" +
-        "*Stay Tuned, Operator. The system shall evolve...*"
+        "🚀 Updating Beltah Tech Bot...\n\n" +
+        "This may take a few minutes. Please wait while the update is applied."
       );
+
+      // Show animated progress messages
+      showProgress();
 
       // Trigger the Heroku build via API
       const response = await axios.post(
@@ -286,89 +301,34 @@ keith({
         }
       );
 
-      // Notify the user about successful deployment initiation
+      // Optionally log for debugging
       console.log("Heroku Build Details:", response.data);
+
+      // Final confirmation
+      await repondre(
+        "✅ The update has been successfully started! The bot may restart soon.\n" +
+        "If you don’t see changes after a few minutes, please check your Heroku dashboard."
+      );
     } catch (error) {
-      // Handle and log errors during the redeployment process
+      // Handle errors clearly
       const errorMessage = error.response?.data?.message || error.message || "Unknown error occurred.";
       await repondre(
-        `*❌ DEPLOYMENT FAILED:*\n\n` +
-        "```Execution halted.``` 🚨\n" +
-        `**Error:** ${errorMessage}\n\n` +
-        "*🛠️ Debugging required: Verify Heroku API key and app name.*"
+        `❌ Update Failed:\n\n` +
+        `Error: ${errorMessage}\n\n` +
+        "Please check your Heroku configuration and try again."
       );
       console.error("Error triggering Heroku redeploy:", errorMessage);
     }
   }
 
-  // Execute the redeployment process
+  // Run the redeployment process
   try {
     await redeployApp();
   } catch (error) {
     console.error("Unexpected error during redeployment:", error.message);
     await repondre(
-      "*❌ CRITICAL ERROR:*\n\n" +
-      "```System malfunction detected.``` 🔥\n" +
-      "```Reverting operations...``` ⏳\n\n" +
-      "*Operator, please retry the deployment after resolving the issue.*"
+      "❌ Critical Error:\n\n" +
+      "There was an unexpected issue during the update process. Please try again after resolving the problem."
     );
   }
 });
-
-/*// Command to update and redeploy the bot
-keith({
-  nomCom: 'update',
-  aliases: ['redeploy', 'sync'],
-  categorie: "system"
-}, async (chatId, zk, context) => {
-  const { repondre, superUser } = context;
-
-  // Check if the command is issued by the owner
-  if (!superUser) {
-    return repondre("*This command is restricted to the bot owner or Beltah Tech*");
-  }
-
-  // Ensure Heroku app name and API key are set
-  const herokuAppName = settings.HEROKU_APP_NAME;
-  const herokuApiKey = settings.HEROKU_API_KEY;
-
-  // Check if Heroku app name and API key are set in environment variables
-  if (!herokuAppName || !herokuApiKey) {
-    await repondre("It looks like the Heroku app name or API key is not set. Please make sure you have set the `HEROKU_APP_NAME` and `HEROKU_API_KEY` environment variables.");
-    return;
-  }
-
-  // Function to redeploy the app
-  async function redeployApp() {
-    try {
-      const response = await axios.post(
-        `https://api.heroku.com/apps/${herokuAppName}/builds`,
-        {
-          source_blob: {
-            url: "https://github.com/Beltahinfo/Beltah-xmd/tarball/main",
-          },
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${herokuApiKey}`,
-            Accept: "application/vnd.heroku+json; version=3",
-          },
-        }
-      );
-
-      // Notify the user about the update and redeployment
-      await repondre("*BELTAH-MD Syncing updates, wait 5 minutes for the redeploy to finish!*\n\n *This will install the latest version of ʙᴇʟᴛᴀʜ ʙᴏᴛ.*");
-      console.log("Build details:", response.data);
-    } catch (error) 
-      // Handle any errors during the redeployment process
-      const errorMessage = error.response?.data || error.message;
-      await repondre(`*Failed to update and redeploy. ${errorMessage} Please check if you have set the Heroku API key and Heroku app name correctly.*`);
-      console.error("Error triggering redeploy:", errorMessage);
-    }
-  }
-
-  // Trigger the redeployment function
-  redeployApp();
-});*/
-
-//These improvements include enhanced readability, better error handling, and more modular code structure, which makes the code easier to maintain and debug.
