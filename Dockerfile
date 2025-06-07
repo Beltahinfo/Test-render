@@ -22,4 +22,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["npm", "run" , "xmd.js"]
+CMD ["npm", "start" , "xmd.js"]
