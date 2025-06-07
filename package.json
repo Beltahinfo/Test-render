@@ -4,9 +4,9 @@
   "description": "",
   "main": "xmd.js",
   "scripts": {
+    "start": "node xmd.js",
     "test": "node xmd.js",
     "s": "node xmd.js",
-    "beltahinc": "pm2 start xmd.js --attach",
     "beltahinc": "pm2 start xmd.js --attach",
     "c": "tsc"
   },
