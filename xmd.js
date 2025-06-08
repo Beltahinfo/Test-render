@@ -50,9 +50,9 @@ var __importDefault = this && this.__importDefault || function (mod) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
 const baileys_1 = __importStar(require("@whiskeysockets/baileys"));
 const logger_1 = __importDefault(require("@whiskeysockets/baileys/lib/Utils/logger"));
-//const logger_1 = __importDefault(require("gifted-baileys/src/Utils/logger"));
 const logger = logger_1.default.child({});
 logger.level = 'silent';
 const pino = require("pino");
@@ -68,35 +68,43 @@ const {
   createSticker,
   StickerTypes
 } = require('wa-sticker-formatter');
-//import chalk from 'chalk'
-const {
-  verifierEtatJid,
-  recupererActionJid
-} = require("./bdd/antilien");
-const {
-  atbverifierEtatJid,
-  atbrecupererActionJid
-} = require("./bdd/antibot");
+
+// === COMBINED BELTAHTECH (BDD) REQUIRES ===
+const beltahtech = {
+  antilien: require('./beltahtech/antilien'),
+  antibot: require('./beltahtech/antibot'),
+  banUser: require('./beltahtech/banUser'),
+  banGroup: require('./beltahtech/banGroup'),
+  onlyAdmin: require('./beltahtech/onlyAdmin'),
+  sudo: require('./beltahtech/sudo'),
+  cron: require('./beltahtech/cron'),
+  warn: require('./beltahtech/warn'),
+  welcome: require('./beltahtech/welcome'),
+  mention: require('./beltahtech/mention'),
+  hentai: require('./beltahtech/hentai'),
+  stickcmd: require('./beltahtech/stickcmd'),
+  level: require('./beltahtech/level')
+};
+// ==========================================
+
+// Replace all bdd requires with beltahtech
+const { verifierEtatJid, recupererActionJid } = beltahtech.antilien;
+const { atbverifierEtatJid, atbrecupererActionJid } = beltahtech.antibot;
+const { isUserBanned, addUserToBanList, removeUserFromBanList } = beltahtech.banUser;
+const { addGroupToBanList, isGroupBanned, removeGroupFromBanList } = beltahtech.banGroup;
+const { isGroupOnlyAdmin, addGroupToOnlyAdminList, removeGroupFromOnlyAdminList } = beltahtech.onlyAdmin;
+const { getAllSudoNumbers } = beltahtech.sudo;
+const { ajouterOuMettreAJourUserData } = beltahtech.level;
+// Warn module
+const { ajouterUtilisateurAvecWarnCount, getWarnCountByJID } = beltahtech.warn;
+// Welcome
+const { recupevents } = beltahtech.welcome;
+// Mention
+const mentionDb = beltahtech.mention;
+
+// Your remaining requires and logic
 let evt = require(__dirname + "/keizzah/keith");
-const {
-  isUserBanned,
-  addUserToBanList,
-  removeUserFromBanList
-} = require("./bdd/banUser");
-const {
-  addGroupToBanList,
-  isGroupBanned,
-  removeGroupFromBanList
-} = require("./bdd/banGroup");
-const {
-  isGroupOnlyAdmin,
-  addGroupToOnlyAdminList,
-  removeGroupFromOnlyAdminList
-} = require("./bdd/onlyAdmin");
-//const //{loadCmd}=require("/keizzah/mesfonctions")
-let {
-  reagir
-} = require(__dirname + "/keizzah/app");
+let { reagir } = require(__dirname + "/keizzah/app");
 var session = conf.session.replace(/BELTAH-MD;;;=>/g, "");
 const prefixe = conf.PREFIXE || [];
 
@@ -1074,7 +1082,7 @@ if (texte && texte.startsWith('>')) {
                                        await fs.unlink("st1.webp");
 
                                     } else if(action === 'warn') {
-                                        const {getWarnCountByJID ,ajouterUtilisateurAvecWarnCount} = require('./bdd/warn') ;
+                                       /* const {getWarnCountByJID ,ajouterUtilisateurAvecWarnCount} = require('./bdd/warn') ;*/
 
                             let warn = await getWarnCountByJID(auteurMessage) ; 
                             let warnlimit = conf.WARN_COUNT
@@ -1172,7 +1180,7 @@ if (texte && texte.startsWith('>')) {
                await fs.unlink("st1.webp");
 
             } else if(action === 'warn') {
-                const {getWarnCountByJID ,ajouterUtilisateurAvecWarnCount} = require('./bdd/warn') ;
+              /*  const {getWarnCountByJID ,ajouterUtilisateurAvecWarnCount} = require('./bdd/warn') ;*/
 
     let warn = await getWarnCountByJID(auteurMessage) ; 
     let warnlimit = conf.WARN_COUNT
@@ -1266,9 +1274,9 @@ if (texte && texte.startsWith('>')) {
     //fin événement message
 
     /******** evenement groupe update ****************/
-    const {
+  /*  const {
   recupevents
-} = require('./bdd/welcome');
+} = require('./bdd/welcome');*/
 
 zk.ev.on('group-participants.update', async group => {
   console.log(group);
@@ -1341,9 +1349,9 @@ zk.ev.on('group-participants.update', async group => {
 
     async function activateCrons() {
       const cron = require('node-cron');
-      const {
+     /* const {
         getCron
-      } = require('./bdd/cron');
+      } = require('./bdd/cron');*/
       let crons = await getCron();
       console.log(crons);
       if (crons.length > 0) {
